@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% load account %}
+{% load socialaccount %}
+{% load static %}
+
+{% block content %}
+<section class="section">
+    <div class="tile is-ancestor">
+        {% for d in devices %}
+        <div class="tile is-3 is-parent">
+            <div class="tile is-child box">
+                <p class="title">{{d.family.brand}} {{d.name}} <span class="tag is-info is-rounded">${{d.repairs}}</span> </p>
+                <p>{{d.name}}</p>
+                <a class="button is-rounded is-pulled-right is-primary">Buy</a>
+            </div>
+        </div>
+        <figure class="image">
+            <img src="{{d.family.image}}"/>
+        </figure>
+        {% endfor %}
+    </div>
+</section>
+<div class="footer">
+        {% if user.is_authenticated %}
+        <p class="subtitle">Welcome, {{ user.username }}</p>
+        <a class="button is-primary" href="/accounts/logout/"><span class="icon is-small"><i class="fas fa-ban"> </i></span><span>Log Out</span></a>
+        {% else %}
+        <a class="button is-primary" href="{% provider_login_url 'github' %}"><span class="icon is-small"><i class="fab fa-github"> </i></span><span>Sign in w/ GitHub</span></a>
+        <a class="button is-primary" href="{% provider_login_url 'auth0' %}"><span class="icon is-small"><i class="fas fa-user"></i></span><span>Sign up</span></a>
+        {% endif %}
+    </div>
+{% endblock %}
