@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Repair - {{device.name}}{% endblock %}
+
+{% block content %}
+
+<section class="hero is-info is-small is-bold">
+    <div class="hero-head">
+        {% include 'nav.html' %}
+    </div>
+    <div class="hero-body">
+        <div class="container has-text-centered">
+            <h1 class="title is-1">{{device.name}}</h1>
+        </div>
+    </div>
+</section>
+
+
+<section class="section">
+    <div class="container">
+        <div class="content">
+        <article class="media">
+            <figure class="media-left">
+                <p class="image">
+                    <img src="/media/largeX.png">
+                </p>
+            </figure>
+            <div class="media-content">
+                <div class="content has-text-centered">
+                    <div class="card">
+                        <header class="card-header">
+                            <div class="hero card-header-title is-dark is-small">
+                                <h1 class="hero-body title">Repairs</h1>
+                            </div>
+                        </header>
+                        <div class="card-content">
+                            <div class="content">
+                                <div class="tile is-ancestor is-wrapping">
+                                    {% for r in device.get_repairs %}
+                                    <div class="tile is-4 is-parent">
+                                        <div class="tile is-child hvr-float-shadow box">
+                                            <span class="icon {{ r.bulma_icon_color }} is-large">
+                                                <i class="{{ r.icon }}"></i>
+                                            </span>
+                                            <div class="has-overlay">
+                                                <p class="subtitle is-6">{{ r.short_name }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</div>
+</section>
+
+{% endblock %}

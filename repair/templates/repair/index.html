@@ -1,33 +1,160 @@
-{% extends 'base.html' %}
 
-{% load account %}
-{% load socialaccount %}
-{% load static %}
+{% extends 'base.html'%}
+{% block title%}Home{% endblock %}
+
 
 {% block content %}
-<section class="section">
-    <div class="tile is-ancestor">
-        {% for d in devices %}
-        <div class="tile is-3 is-parent">
-            <div class="tile is-child box">
-                <p class="title">{{d.family.brand}} {{d.name}} <span class="tag is-info is-rounded">${{d.repairs}}</span> </p>
-                <p>{{d.name}}</p>
-                <a class="button is-rounded is-pulled-right is-primary">Buy</a>
+<section class="hero is-info is-bold is-fullheight">
+    <div class="hero-head">
+        {% include 'nav.html' %}
+    </div>
+
+    <div class="hero-body">
+        <div class="container">
+            <div class="level">
+                <div class="level-left">
+                    <div class="column">
+                        <h1 class="level-item title is-1">Mobile Repair</h1>
+                        <h1 class="level-item subtitle">Broken screen? Won't Charge? Get it fixed today.</h1>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <figure class="image">
+                            <img src="media/largeX.png"/>
+                        </figure>
+                    </div>
+                </div>
             </div>
         </div>
-        <figure class="image">
-            <img src="{{d.family.image}}"/>
-        </figure>
-        {% endfor %}
     </div>
+
+    <div class="hero-foot">
+        <div class="container has-text-centered">
+            <a href="#phones" class="button is-info">
+                <span class="icon is-small"><i class="fas fa-caret-down"></i></span>
+                <span><p class="subtitle">View Devices</p></span>
+            </a>
+        </div>
+    </div>
+
 </section>
-<div class="footer">
-        {% if user.is_authenticated %}
-        <p class="subtitle">Welcome, {{ user.username }}</p>
-        <a class="button is-primary" href="/accounts/logout/"><span class="icon is-small"><i class="fas fa-ban"> </i></span><span>Log Out</span></a>
-        {% else %}
-        <a class="button is-primary" href="{% provider_login_url 'github' %}"><span class="icon is-small"><i class="fab fa-github"> </i></span><span>Sign in w/ GitHub</span></a>
-        <a class="button is-primary" href="{% provider_login_url 'auth0' %}"><span class="icon is-small"><i class="fas fa-user"></i></span><span>Sign up</span></a>
-        {% endif %}
+
+<section id="phones" class="section has-background-light">
+
+    <div class="container">
+        <h1 class="title">Phones</h1>
+        <h2 class="subtitle">iPhones, Galaxy, and more.</h2>
+        <hr>
+    <div class="tile is-ancestor">
+
+        {% for p in phones %}
+        <div class="tile is-4 is-parent">
+            <div class="tile is-child box">
+                <article class="media">
+                    <figure class="media-left">
+                        <p class="image is-64x64">
+                            <img src="media/{{ p.image }}"/>
+                        </p>
+                    </figure>
+                    <div class="media-content">
+                        <h1 class="title is-4">{{ p.name }}</h1>
+                        <p class="subtitle">{{p.name }}<span class="tag is-pulled-right is-rounded">{{p.brand}}</span> </p>
+                        <p>{{ p.format_repairs }}</p>
+                        <a class="button is-pulled-right is-info" href="{% url 'repair:device' p.slug %}">Repair</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+        {% endfor %}
+
+        {% for f in phone_families %}
+        <div class="tile is-4 is-parent">
+            <div class="tile is-child box">
+                <article class="media">
+                    <figure class="media-left">
+                        <p class="image is-64x64">
+                            <img src="media/{{ f.image }}"/>
+                        </p>
+                    </figure>
+                    <div class="media-content">
+                        <h1 class="title is-4">{{ f.name }}</h1>
+                        <p class="subtitle">{{f.device_names }} <span class="tag is-pulled-right is-rounded">{{f.brand}}</span> </p>
+                        <p>{{ f.format_repairs }}</p>
+                        <a class="button is-pulled-right is-info">Repair</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+        {% endfor %}
+
+
     </div>
+
+</div>
+
+</section>
+
+<section id="tablets" class="section box is-marginless has-background-light">
+
+        <div class="container">
+            <h1 class="title">Tablets</h1>
+            <h2 class="subtitle">Airs, Minis, Fires and more</h2>
+            <hr>
+        <div class="tile is-ancestor">
+
+            <div class="tile is-4 is-parent">
+                <div class="tile is-child box">
+                    <article class="media">
+                        <figure class="media-left">
+                            <p class="image is-64x64">
+                                <img src="/home/bradenmars/Pictures/Ready/smallX.png"/>
+                            </p>
+                        </figure>
+                        <div class="media-content">
+                            <h1 class="title is-4">iPhone X</h1>
+                            <p class="subtitle">Apple <span class="tag is-pulled-right is-rounded is-success">$239.99</span> </p>
+                            <p>New futuristic looking one</p>
+                            <a class="button is-pulled-right is-info">Repair</a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    </section>
+
+    <section id="laptops" class="section box is-marginless has-background-light">
+
+            <div class="container">
+                <h1 class="title">Laptops</h1>
+                <h2 class="subtitle">Pros, Airs, and more.</h2>
+                <hr>
+            <div class="tile is-ancestor">
+    
+                <div class="tile is-4 is-parent">
+                    <div class="tile is-child box">
+                        <article class="media">
+                            <figure class="media-left">
+                                <p class="image is-64x64">
+                                    <img src="/home/bradenmars/Pictures/Ready/smallX.png"/>
+                                </p>
+                            </figure>
+                            <div class="media-content">
+                                <h1 class="title is-4">iPhone X</h1>
+                                <p class="subtitle">Apple <span class="tag is-pulled-right is-rounded is-success">$239.99</span> </p>
+                                <p>New futuristic looking one</p>
+                                <a class="button is-pulled-right is-info">Repair</a>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+    
+        </section>
+
 {% endblock %}
