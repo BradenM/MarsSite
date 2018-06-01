@@ -19,10 +19,8 @@ class IndexView(generic.ListView):
         context['laptops'] = Device.objects.filter(device_type = LAP)
         return context
 
+
 class DeviceView(generic.DetailView):
     model = Device
     template_name = "repair/detail.html"
 
-# def sort_devices(request):
-#     brand = get_object_or_404(Brand, pk=request.POST['brand'])
-#     return reverse('repair:index', args=())

@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.safestring import mark_safe
 from django.utils.html import format_html
 from django.template.defaultfilters import slugify
+from .forms import SelectDevice
 
 PHONE = "Phone"
 TAB = "Tablet"
@@ -54,6 +55,13 @@ class Family(models.Model):
             repair_format += f" {r.name},"
         repair_format += " and more!"
         return repair_format
+
+
+    def get_select_form(self, *args, **kwargs):
+        choices = self.devices.all().values_list('id', 'name')
+        select_form = SelectDevice(devices=choices)
+        return select_form
+
 
     def __str__(self):
         names = self.device_names()

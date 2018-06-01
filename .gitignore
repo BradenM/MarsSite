@@ -1,6 +1,5 @@
 # My Ignores
 HTML/
-*.sqlite3
 */migrations
 
 # Python Boilerplate

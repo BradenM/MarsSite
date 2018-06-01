@@ -4,6 +4,7 @@
 
 
 {% block content %}
+
 <section class="hero is-info is-bold is-fullheight">
     <div class="hero-head">
         {% include 'nav.html' %}
@@ -69,6 +70,7 @@
         {% endfor %}
 
         {% for f in phone_families %}
+        {% include 'repair/family_modal.html' %}
         <div class="tile is-4 is-parent">
             <div class="tile is-child box">
                 <article class="media">
@@ -81,18 +83,16 @@
                         <h1 class="title is-4">{{ f.name }}</h1>
                         <p class="subtitle">{{f.device_names }} <span class="tag is-pulled-right is-rounded">{{f.brand}}</span> </p>
                         <p>{{ f.format_repairs }}</p>
-                        <a class="button is-pulled-right is-info">Repair</a>
+                        <a class="button is-pulled-right is-info" onclick="showModal('{{f}}')" >Repair</a>
                     </div>
                 </article>
             </div>
         </div>
         {% endfor %}
 
-
     </div>
 
 </div>
-
 </section>
 
 <section id="tablets" class="section box is-marginless has-background-light">
