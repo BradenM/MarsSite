@@ -7,3 +7,4 @@ urlpatterns = [
     path('select/', views.select_device, name="select_device"),
     path('<slug:slug>/', views.DeviceView.as_view(), name="device"),
 ]
+

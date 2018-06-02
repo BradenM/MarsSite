@@ -2,8 +2,6 @@
 
     function showModal(family){
         var modal = document.getElementById("family_modal");
-        var modal_device = document.getElementById("family_name");
-        modal_device.innerHTML = family;
         modal.classList.add('is-active');
     }
 </script>
@@ -12,31 +10,33 @@
 {% load crispy_forms_tags %}
 
 <div id="family_modal" class="modal">
-    <div class="modal-background"></div>
-    <div class="modal-content">
-        <section class="modal-card-body is-paddingless">
-            <div class="hero is-small is-info">
-                <div class="hero-body">
-                    <h1 class="title">
-                        Choose a Phone
-                    </h1>
+        <div class="modal-background"></div>
+        <div class="modal-content box">
+            <div class="section is-light">
+                <div class="content has-text-centered">
+                    <article class="media">
+                        <figure class="media-left has-text-centered">
+                            <p class="image is-64x64">
+                                <img src="/media/{{ f.image }}">
+                            </p>
+                        </figure>
+                        <div class="media-content ">
+                            <h1 class="title">Select a Device</h1>
+                            <form method="post" action="{% url 'repair:select_device'%}">
+                                {% csrf_token %}
+                                <div class="select">
+                                    <select id="selected_device" class="select is-rounded" name="selected_device">
+                                        {% for device in f.devices.all %}
+                                        <option value="{{ device.id }}">{{ device.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <input type="submit" value='Repair' class="button is-info"/>
+                            </form>
+                        </div>
+                    </article>
                 </div>
-            </div>
-            <div class="section">
-                <div id="family_name" class="content">
-                    <h1>OKay fine</h1>
-                </div>
-                <form method="post" action="{% url 'repair:select_device'%}">
-                    {% csrf_token %}
-                    <select id="selected_device" name="selected_device">
-                        {% for device in f.devices.all %}
-                        <option value="{{ device.id }}">{{ device.name }}</option>
-                        {% endfor %}
-                    </select>
-                    <input type="submit"/>
-                </form>
-            </div>
-        </section>
-    </div>
+            </div> 
+        </div>
     <button class="modal-close is-large" aria-label="close" onclick="document.getElementById('family_modal').classList.remove('is-active')"></button>
 </div>
