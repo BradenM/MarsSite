@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.safestring import mark_safe
 from django.utils.html import format_html
 from django.template.defaultfilters import slugify
-from .forms import SelectDevice
+from django import forms
 
 PHONE = "Phone"
 TAB = "Tablet"
@@ -57,12 +57,6 @@ class Family(models.Model):
         return repair_format
 
 
-    def get_select_form(self, *args, **kwargs):
-        choices = self.devices.all().values_list('id', 'name')
-        select_form = SelectDevice(devices=choices)
-        return select_form
-
-
     def __str__(self):
         names = self.device_names()
         return f"{self.name} + {names}"
@@ -71,7 +65,6 @@ class Device(models.Model):
     name = models.CharField(max_length=200)
     device_type = models.CharField(max_length=200, choices=DEV_TYPES, default=PHONE)
     repairs = models.ManyToManyField(Repair, through='RepairCost', related_name="repairs")
-    #family = models.ForeignKey(Family, on_delete=models.CASCADE, blank=True, null=True, related_name="parent_family")
     has_family = models.BooleanField(default=False)
     family_identifier = models.CharField(max_length=100, blank=True, null=True)
     brand = models.CharField(max_length=200, blank=True, null=True)

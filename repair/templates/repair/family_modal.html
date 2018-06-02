@@ -11,7 +11,6 @@
 
 {% load crispy_forms_tags %}
 
-
 <div id="family_modal" class="modal">
     <div class="modal-background"></div>
     <div class="modal-content">
@@ -25,9 +24,17 @@
             </div>
             <div class="section">
                 <div id="family_name" class="content">
-                    <h1>Device info</h1>
+                    <h1>OKay fine</h1>
                 </div>
-                {% crispy f.get_select_form %}
+                <form method="post" action="{% url 'repair:select_device'%}">
+                    {% csrf_token %}
+                    <select id="selected_device" name="selected_device">
+                        {% for device in f.devices.all %}
+                        <option value="{{ device.id }}">{{ device.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit"/>
+                </form>
             </div>
         </section>
     </div>
