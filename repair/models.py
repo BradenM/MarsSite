@@ -77,12 +77,6 @@ class Device(models.Model):
             repair_format += f" {r.name},"
         repair_format += " and more!"
         return repair_format
-
-    def get_repairs(self):
-        device_repairs = []
-        for r in Repair.objects.filter(repairs=self):
-            device_repairs.append(r)
-        return device_repairs
         
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)

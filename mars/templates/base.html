@@ -4,21 +4,25 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Braden Mars | {% block title%}{% endblock%}</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+    <link rel="stylesheet" href="/static/css/bulma.min.css">
+    <link rel="stylesheet" href='/static/css/bulma-extensions.min.css'>
     <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.3.1/css/hover-min.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+    <script src="/static/js/main.js"></script>
 </head>
 
-<body>
+<body class="Site">
+    <main class="Site-content">
     {% block content %}
     {% endblock %}
+    </main>
 </body>
 
-<section id="footer" class="section has-background-dark is-small">
-    <div class="column">
+<footer class="footer has-background-dark">
+    <div class="container">
         <div class="content has-text-centered">
             <p class="subtitle has-text-light">&copy; 2018 | Braden Mars</h1>
         </div>
     </div>
-</section>
+</footer>

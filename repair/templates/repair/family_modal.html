@@ -1,3 +1,5 @@
+{% block fam_modal %}
+
 <script>
 
     function showModal(family){
@@ -9,7 +11,7 @@
 
 {% load crispy_forms_tags %}
 
-<div id="family_modal" class="modal">
+<div id="family_modal" class="modal is-active">
         <div class="modal-background"></div>
         <div class="modal-content box">
             <div class="section is-light">
@@ -17,7 +19,7 @@
                     <article class="media">
                         <figure class="media-left has-text-centered">
                             <p class="image is-64x64">
-                                <img src="/media/{{ f.image }}">
+                                <img src="/media/{{ fam.image }}">
                             </p>
                         </figure>
                         <div class="media-content ">
@@ -26,7 +28,7 @@
                                 {% csrf_token %}
                                 <div class="select">
                                     <select id="selected_device" class="select is-rounded" name="selected_device">
-                                        {% for device in f.devices.all %}
+                                        {% for device in fam.devices.all %}
                                         <option value="{{ device.id }}">{{ device.name }}</option>
                                         {% endfor %}
                                     </select>
@@ -40,3 +42,4 @@
         </div>
     <button class="modal-close is-large" aria-label="close" onclick="document.getElementById('family_modal').classList.remove('is-active')"></button>
 </div>
+{% endblock %}

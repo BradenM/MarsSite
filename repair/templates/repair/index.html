@@ -22,7 +22,7 @@
                 <div class="level-right">
                     <div class="level-item">
                         <figure class="image">
-                            <img src="media/largeX.png"/>
+                            <img src="/media/largeX.png"/>
                         </figure>
                     </div>
                 </div>
@@ -41,6 +41,12 @@
 
 </section>
 
+{% if active_fam %}
+{% block fam_modal %}
+{% include 'repair/family_modal.html' with fam=active_fam %}
+{% endblock %}
+{% endif %}
+
 <section id="phones" class="section has-background-light">
 
     <div class="container">
@@ -55,7 +61,7 @@
                 <article class="media">
                     <figure class="media-left">
                         <p class="image is-64x64">
-                            <img src="media/{{ p.image }}"/>
+                            <img src="/media/{{ p.image }}"/>
                         </p>
                     </figure>
                     <div class="media-content">
@@ -70,20 +76,20 @@
         {% endfor %}
 
         {% for f in phone_families %}
-        {% include 'repair/family_modal.html' %}
         <div class="tile is-4 is-parent">
             <div class="tile is-child box">
                 <article class="media">
                     <figure class="media-left">
                         <p class="image is-64x64">
-                            <img src="media/{{ f.image }}"/>
+                            <img src="/media/{{ f.image }}"/>
                         </p>
                     </figure>
                     <div class="media-content">
                         <h1 class="title is-4">{{ f.name }}</h1>
                         <p class="subtitle">{{f.device_names }} <span class="tag is-pulled-right is-rounded">{{f.brand}}</span> </p>
                         <p>{{ f.format_repairs }}</p>
-                        <a class="button is-pulled-right is-info" onclick="showModal('{{f}}')" >Repair</a>
+                        <div class="message"></div>
+                        <a class="button is-pulled-right is-info" href="{% url 'repair:determine_device' f.pk %}">Repair</a>
                     </div>
                 </article>
             </div>
