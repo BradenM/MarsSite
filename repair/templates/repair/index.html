@@ -89,7 +89,12 @@
                         <p class="subtitle">{{f.device_names }} <span class="tag is-pulled-right is-rounded">{{f.brand}}</span> </p>
                         <p>{{ f.format_repairs }}</p>
                         <div class="message"></div>
-                        <a class="button is-pulled-right is-info" href="{% url 'repair:determine_device' f.pk %}">Repair</a>
+                        <!-- <a class="button is-pulled-right is-info" href="{% url 'repair:determine_device' f.pk %}">Repair</a> -->
+                        <form id="family_show" method="GET">
+                            <!-- <a id="repair_button" class="button is-pulled-right is-info" onclick="document.getElementById('family_show').submit();">Repair</a> -->
+                            <input class="button is-pulled-right is-info" type='submit' value="Repair"/>
+                            <input id="selected_fam" name="fam_mod" type='hidden' value="{{ f.pk }}">
+                        </form>
                     </div>
                 </article>
             </div>

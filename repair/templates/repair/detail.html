@@ -3,9 +3,6 @@
 
 {% block content %}
 
-{% if active_repair %}
-<h1>{{ active_repair }}</h1>
-{% endif %}
 
 <section class="section is-paddingless">
     <div class="hero is-small is-info is-bold">
@@ -43,19 +40,21 @@
                 <div class="content box">
 
                     <div class="tile is-wrapping is-ancestor">
-                        {% for r in device.repairs.all %}
-                        <div id="{{ r.id }}" class="tile is-4 is-parent" data-show="quickview" data-target="quickviewDefault">
-                            <article onclick="document.getElementById('repair_{{ forloop.counter }}').submit();" class="tile hvr-float-shadow is-child box">
+                        {% for r in device.repair.all %}
+                        {% include 'repair/repair_detail.html' with rep=r %}
+                        <div class="tile is-4 is-parent" data-show="quickview" data-target="quickview_{{ r.repair.id }}">
+                            <article class="tile hvr-float-shadow is-child box">
                                 <figure>
-                                    <span class="icon {{ r.bulma_icon_color }} is-large">
-                                        <i class="{{ r.icon }}"></i>
+                                    <span class="icon {{ r.repair.bulma_icon_color }} is-large">
+                                        <i class="{{ r.repair.icon }}"></i>
                                     </span>
                                     <figcaption>
-                                        <p class="subtitle is-repair-subtitle">{{ r.short_name }}</p>
+                                        <p class="subtitle is-repair-subtitle">{{ r.repair.short_name }}</p>
                                     </figcaption>
                                 </figure>
                             </article>
                         </div>
+
                     {% endfor %}
                 </div>
             </div>

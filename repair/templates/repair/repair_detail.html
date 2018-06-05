@@ -55,15 +55,33 @@
 
 
 
-<div id="quickviewDefault" class="quickview">
+<div id="quickview_{{ rep.repair.id }}" class="quickview">
     <header class="quickview-header">
-        <p class="title">header</p>
+        <h1 class="title is-6">{{ rep.repair.name }}</h1>
         <span class="delete" data-dismiss="quickview"></span>
     </header>
 
     <div class="quickview-body">
         <div class="quickview-block">
-            <p>Example Test</p>
+            <section class="section">
+                <div class="content">
+                    <div class="content has-text-centered">
+                        <span class="icon {{ r.repair.bulma_icon_color }} is-large">
+                            <i style="font-size:5em;" class="{{ r.repair.icon }}"></i>
+                        </span>
+                        <div class="is-divider" data-content=""></div>
+                    </div>
+
+                    <h1 class="subtitle">Description: </h1>
+                    <p>asjndjkasndkjanskdjnajksndkjasd</p>
+
+                    <div class="is-divider" data-content=""></div>
+
+                    <h1 class="subtitle">Price: </h1>
+                    <p>{{ rep.price }}</p>
+                    <div class="is-divider" data-content=""></div>
+                </div>
+            </section>
         </div>
     </div>
 

@@ -24,17 +24,7 @@
                         </figure>
                         <div class="media-content ">
                             <h1 class="title">Select a Device</h1>
-                            <form method="post" action="{% url 'repair:select_device'%}">
-                                {% csrf_token %}
-                                <div class="select">
-                                    <select id="selected_device" class="select is-rounded" name="selected_device">
-                                        {% for device in fam.devices.all %}
-                                        <option value="{{ device.id }}">{{ device.name }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <input type="submit" value='Repair' class="button is-info"/>
-                            </form>
+                            {% crispy form %}
                         </div>
                     </article>
                 </div>

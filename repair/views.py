@@ -1,10 +1,11 @@
 from django.http import HttpResponse
-from django.shortcuts import HttpResponseRedirect, get_object_or_404, render, render_to_response, reverse
+from django.shortcuts import HttpResponseRedirect, redirect, get_object_or_404, render, render_to_response, reverse, resolve_url
 from django.views import generic
+from django.views.generic.edit import ModelFormMixin, ProcessFormView
 from .models import Device, Family, Repair, LAP, PHONE, TAB
+from .forms import SelectDeviceForm
 
-
-class IndexView(generic.TemplateView):
+class IndexView(generic.TemplateView, ProcessFormView):
     template_name = "repair/index.html"
     context_object_name = "devices"
 
@@ -19,24 +20,24 @@ class IndexView(generic.TemplateView):
         context['tablets'] = Device.objects.filter(device_type = TAB)
         context['laptops'] = Device.objects.filter(device_type = LAP)
 
-        active_fam = kwargs.get('pk', None)
-        if active_fam:
-            fam = Family.objects.get(pk=active_fam) 
-            context['active_fam'] = fam
         return context
+
+    def get(self, request, *args, **kwargs):
+        if request.GET.get('fam_mod'):
+            active_fam = get_object_or_404(Family, pk=request.GET.get('fam_mod'))
+            form = SelectDeviceForm()
+            form.fields['devices'].queryset = active_fam.devices.all()
+            return render(request, self.template_name, context={'active_fam': active_fam, 'form': form})
+        else:
+            return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        query = request.POST.get('devices')
+        dev = get_object_or_404(Device, pk=query)
+        return HttpResponseRedirect(reverse('repair:device', args=[dev.slug]))
+    
 
 
 class DeviceView(generic.DetailView):
     model = Device
     template_name = "repair/detail.html"
-
-# def repair_info(request, pk):
-#     rep = get_object_or_404(Repair, pk=pk)
-#     print(rep)
-#     return reverse('repair:device', kwargs={'repair':rep})
-
-# Select Device from Family on Index View
-def select_device(request):
-    query = request.POST.get('selected_device')
-    dev = get_object_or_404(Device, id=query)
-    return HttpResponseRedirect(reverse('repair:device', args=[dev.slug]))
