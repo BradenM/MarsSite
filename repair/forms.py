@@ -19,29 +19,12 @@ class SelectDeviceForm(forms.ModelForm):
         super(SelectDeviceForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_method = 'post'
-        # self.helper.layout = Layout(
-        #     HTML("""
-        #         <div class='select'>
-        #             <select id='selected_device' class='select is-rounded' name='selected_device'>
-        #                 {{ devices }}
-        #             </select>
-        #         </div>
-        #         <input type='submit' value='Repair' class='button is-info'/>
-        #     """),
-        # )
-
+        self.helper.form_action = reverse('repair:select_device')
         self.helper.layout = Layout(
-            Div(
-                Div(
-                'Legend of fieldsets',
-                'devices',
-                css_class="select"
-                ),
-            ),
-            Div(
-                Div(
-                    Submit('submit', 'Repair', css_class="button is-info"), 
-                )
-            ),
+            HTML("""
+                <div class='select'>
+                    {{ form.devices }}
+                </div>
+                <input type='submit' value='Repair' class='button is-info'/>
+            """),
         )
-        #self.helper.add_input(Submit('submit', 'Repair', css_class="button is-info"))
