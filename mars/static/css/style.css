@@ -8,6 +8,17 @@
     flex: 1;
 }
 
+#view-devices{
+    -moz-animation-duration: 1.5s;
+    -moz-animation-delay: 1.5s;
+    -webkit-animation-duration: 1.5s;
+    -webkit-animation-delay: 1.5s;
+}
+
+#modal{
+    -moz-animation-duration: .1s;
+    -webkit-animation-duration: .1s;
+}
 
 .hvr-float-shadow{
     box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1) !important;

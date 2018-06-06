@@ -15,6 +15,7 @@ DEV_TYPES = (
 
 class Repair(models.Model):
     name = models.CharField(max_length=200)
+    desc = models.CharField(max_length=4012, blank=True)
     short_name = models.CharField(max_length=200, blank=True)
     icon = models.CharField(max_length=200, blank=True)
     bulma_icon_color = models.CharField(max_length=200, blank=True)

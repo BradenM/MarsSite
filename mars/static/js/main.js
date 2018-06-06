@@ -1,7 +1,10 @@
-var navigationFn = {
-    goToSection: function(id) {
-        $('html, body').animate({
-            scrollTop: $(id).offset().top
-        }, 0);
-    }
-}
+$(document).ready(function(){
+    console.log('Main Script file loaded');
+
+    jQuery.fn.extend({
+        aniscroll: function(){
+            $(this).animatescroll({scrollSpeed:1500,easing:'easeInOutSine'});
+        }
+    })
+
+})
