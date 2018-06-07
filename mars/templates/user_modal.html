@@ -1,0 +1,22 @@
+<script>
+
+    function showUserModal(){
+        var modal = document.getElementById("user_modal");
+        modal.classList.add('is-active');
+    }
+</script>
+
+{% load crispy_forms_tags %}
+{% load socialaccount %}
+
+<div id="user_modal" class="modal">
+        <div class="modal-background animated fadeIn"></div>
+        <div class="modal-content animated fadeInRight box">
+            <div class="section is-light">
+                <div class="content has-text-centered">
+                    <a href="{% provider_login_url 'google'%}">Google</a>
+                </div>
+            </div> 
+        </div>
+    <button class="modal-close is-large" aria-label="close" onclick="document.getElementById('user_modal').classList.remove('is-active')"></button>
+</div>
