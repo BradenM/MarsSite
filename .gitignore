@@ -67,3 +67,5 @@ target/
 db\.sqlite3
 
 \.env
+
+\.vscode/tags

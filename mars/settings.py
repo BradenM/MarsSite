@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'homepage.apps.HomepageConfig',
     'repair.apps.RepairConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -45,7 +46,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.auth0'
+    'allauth.socialaccount.providers.auth0',
 ]
 
 MIDDLEWARE = [
@@ -132,13 +133,19 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 
 }
+
 # Auth Settings
 LOGIN_REDIRECT_URL = '/'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_USERNAME_REQUIRED = False
-
+ACCOUNT_SIGNUP_FORM_CLASS = 'homepage.forms.ExtSignupForm'
+ACCOUNT_FORMS = {
+    'login': 'homepage.forms.ExtLoginForm'
+}
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+ACCOUNT_LOGOUT_ON_GET = True
 
 
 # Internationalization

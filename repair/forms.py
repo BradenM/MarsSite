@@ -6,7 +6,6 @@ from django.urls import reverse
 from django.shortcuts import HttpResponseRedirect
 
 
-
 class SelectDeviceForm(forms.ModelForm):
     class Meta:
         model = Family

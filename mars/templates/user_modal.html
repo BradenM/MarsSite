@@ -11,12 +11,17 @@
 
 <div id="user_modal" class="modal">
         <div class="modal-background animated fadeIn"></div>
-        <div class="modal-content animated fadeInRight box">
-            <div class="section is-light">
-                <div class="content has-text-centered">
-                    <a href="{% provider_login_url 'google'%}">Google</a>
-                </div>
-            </div> 
+        <div class="modal-content has-text-centered is-half animated fadeInRight box">
+            <div class="tabs is-fullwidth is-medium is-centered">
+                <ul>
+                    <li id="login_tab_button" class="is-active" ><a onclick="$('#login_tab').switchTab();">Login</a></li>
+                    <li id="signup_tab_button" ><a onclick="$('#signup_tab').switchTab();" >Sign Up</a></li>
+                </ul>
+            </div>
+
+            {% include 'accounts/signup.html' %}
+            {% include 'accounts/login.html' %}
+
         </div>
     <button class="modal-close is-large" aria-label="close" onclick="document.getElementById('user_modal').classList.remove('is-active')"></button>
 </div>

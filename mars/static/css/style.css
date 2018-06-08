@@ -36,3 +36,7 @@
 .asteriskField {
     display: none;
 }
+
+.tabs li{
+    margin-top: 0px !important;
+}

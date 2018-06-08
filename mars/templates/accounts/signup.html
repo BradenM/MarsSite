@@ -1,0 +1,28 @@
+{% load crispy_forms_tags %}
+{% load account %}
+{% load socialaccount %}
+
+<div class="columns" id="signup_tab">
+        <div class="column has-text-left">
+            {% if signup_form %}
+            {% crispy signup_form %}
+            {% endif %}
+        </div>
+        <div class="is-divider-vertical" data-content="OR"></div>
+        <div class="column has-text-centered">
+            <p class="buttons is-centered">
+                <a href="{% provider_login_url 'google' %}" class="button is-medium is-danger">
+                    <span class="icon is-small">
+                        <i class="fab fa-google"></i>
+                    </span>
+                    <span>Google</span>
+                </a>
+                <a class="button is-medium is-info">
+                    <span class="icon is-small">
+                        <i class="fab fa-facebook"></i>
+                    </span>
+                    <span>Facebook</span>
+                </a>
+            </p>
+        </div>
+    </div>

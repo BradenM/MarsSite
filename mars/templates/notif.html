@@ -1,0 +1,12 @@
+{% if messages %}
+{% for msg in messages %}
+{% if 'user_alert' in msg.tags %}
+
+<div data-bulma="notification" data-dismiss-interval="3000" class="notification is-link has-text-centered">
+    <button class="delete"></button>
+    {{ msg }}
+</div>
+
+{% endif %}
+{% endfor %}
+{% endif %}
