@@ -19,8 +19,21 @@ class IndexView(generic.ListView):
         context['phone_families'] = Family.objects.filter(device_type = PHONE)
         context['tablets'] = Device.objects.filter(device_type = TAB)
         context['laptops'] = Device.objects.filter(device_type = LAP)
-        context['signup_form'] = SignupForm()
         context['login_form'] = ExtLoginForm()
+        signup_data = self.request.session.get('invalid_signup', None)
+        if signup_data is None:
+            sign_up = SignupForm()
+        else:
+            sign_up = SignupForm(signup_data)
+        context['signup_form'] = sign_up
+
+        login_data = self.request.session.get('invalid_login', None)
+        if login_data is None:
+            log_in = ExtLoginForm()
+        else:
+            log_in = ExtLoginForm(login_data)
+        context['login_form'] = log_in
+
         return context
 
 
