@@ -1,11 +1,24 @@
 {% load crispy_forms_tags %}
 {% load account %}
 {% load socialaccount %}
+{% load homepage_tags %}
 
 <div class="columns" id="login_tab">
         <div class="column has-text-left">
             {% if login_form %}
             {% crispy login_form %}
+            {% if login_form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+                <p>{{ error|escape }}</p>
+            {% endfor %}
+            {% endif %}
+            {% else %}
+            {% bad_login request %}
+            <meta http-equiv="REFRESH" content="0;url={% url 'repair:index' %}">
+            {% comment %} <form id="redirect" method='get' action="/accounts/login/"></form>
+            <script>
+                document.getElementById('redirect').submit();
+            </script> {% endcomment %}
             {% endif %}
         </div>
         <div class="is-divider-vertical" data-content="OR"></div>

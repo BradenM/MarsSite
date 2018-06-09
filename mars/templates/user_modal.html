@@ -7,7 +7,6 @@
 </script>
 
 {% load crispy_forms_tags %}
-{% load socialaccount %}
 
 <div id="user_modal" class="modal">
         <div class="modal-background animated fadeIn"></div>
@@ -19,8 +18,8 @@
                 </ul>
             </div>
 
-            {% include 'accounts/signup.html' %}
-            {% include 'accounts/login.html' %}
+            {% include 'account/signup.html' %}
+            {% include 'account/login.html' %}
 
         </div>
     <button class="modal-close is-large" aria-label="close" onclick="document.getElementById('user_modal').classList.remove('is-active')"></button>

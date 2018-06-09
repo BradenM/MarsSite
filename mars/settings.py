@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "sslserver",
     'homepage.apps.HomepageConfig',
     'repair.apps.RepairConfig',
     'django.contrib.admin',
@@ -64,7 +65,10 @@ ROOT_URLCONF = 'mars.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['mars/templates'],
+        'DIRS': [
+            'mars/templates',
+            os.path.join(BASE_DIR, 'mars', 'templates', 'allauth'),
+            ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -136,6 +140,7 @@ SOCIALACCOUNT_PROVIDERS = {
 
 # Auth Settings
 LOGIN_REDIRECT_URL = '/'
+LOGIN_PAGE = '/'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_AUTHENTICATION_METHOD = "email"
@@ -146,6 +151,7 @@ ACCOUNT_FORMS = {
 }
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_ADAPTER = 'homepage.adapter.ExtAccountAdapter'
 
 
 # Internationalization
@@ -179,10 +185,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'mars/media/')
 SITE_ID = 1
 
 # MAIL SETTINGS
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = config('EMAIL_HOST')
 EMAIL_HOST_USER = 'braden@bradenmars.me'
 EMAIL_HOST_PASSWORD = config('EMAIL_PASSWORD')
 EMAIL_PORT = config('EMAIL_PORT', cast=int)
 EMAIL_USE_TLS = True
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER

@@ -33,6 +33,7 @@ class ExtLoginForm(LoginForm):
     def __init__(self, *args, **kwargs):
         super(ExtLoginForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
+        self.helper.form_method = "post"
         self.helper.form_action = "/accounts/login/"
         self.helper.add_input(Submit('submit', 'Login', css_class="button is-info is-rounded"))
         self.helper.form_class = 'form'

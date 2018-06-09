@@ -10,11 +10,13 @@ pillow = "*"
 Pipfile = "*"
 django-crispy-forms = "*"
 python-decouple = "*"
+django-smtp-ssl = "*"
 
 [dev-packages]
 pylint = "*"
 pylint-django = "*"
 rope = "*"
+django-sslserver = "*"
 
 [requires]
 python_version = "3.6"

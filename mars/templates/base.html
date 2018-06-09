@@ -1,5 +1,4 @@
 {% load staticfiles %}
-{% include 'user_modal.html' %}
 
 <head>
     <meta charset="utf-8">
@@ -20,6 +19,7 @@
 
 <body class="Site">
     <main class="Site-content">
+    {% include 'user_modal.html' %}
     {% block content %}
     {% endblock %}
     </main>
