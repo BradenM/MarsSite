@@ -17,6 +17,7 @@ pylint = "*"
 pylint-django = "*"
 rope = "*"
 django-sslserver = "*"
+"autopep8" = "*"
 
 [requires]
 python_version = "3.6"

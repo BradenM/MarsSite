@@ -3,7 +3,6 @@
 
 {% block content %}
 
-
 <section class="section is-paddingless">
     <div class="hero is-small is-info is-bold">
         <div class="hero-head">
@@ -16,6 +15,21 @@
         </div>
     </div>
 </section>
+
+<script>
+    function load_repair(item){
+        console.log(item)
+        $('.quickview').html('').load(
+            "repair/" + item, function(){
+                $.getScript("/static/js/main.js");
+            });
+    };
+</script>
+
+
+<div id="quickviewDef" class="quickview">
+    {% include 'repair/repair_detail.html' %}
+</div>
 
 <section class="section">
     <div class="content">
@@ -38,12 +52,10 @@
                         </div>
                     </div>
                 <div class="content box">
-
                     <div class="tile is-wrapping is-ancestor">
                         {% for r in device.repair.all %}
-                        {% include 'repair/repair_detail.html' with rep=r %}
-                        <div class="tile is-4 is-parent" data-show="quickview" data-target="quickview_{{ r.repair.id }}">
-                            <article class="tile hvr-float-shadow is-child box">
+                        <div class="tile is-4 is-parent" data-show="quickview" data-target="quickviewDef">
+                            <article class="tile hvr-float-shadow is-child box repair_tile" onclick="load_repair({{ r.pk }});">
                                 <figure>
                                     <span class="icon {{ r.repair.bulma_icon_color }} is-large">
                                         <i class="{{ r.repair.icon }}"></i>
@@ -54,7 +66,6 @@
                                 </figure>
                             </article>
                         </div>
-
                     {% endfor %}
                 </div>
             </div>
