@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="section is-paddingless">
+    <div class="hero is-small is-info is-bold">
+        <div class="hero-head">
+            {% include 'nav.html' %}
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <h1 class="title">Your Cart</h1>
+        <table class="table is-fullwidth is-striped">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Device</th>
+                    <th>Order</th>
+                    <th>Price</th>
+                    <th class="has-text-centered">Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Repair</td>
+                    <td>iPhone 6s</td>
+                    <td>Screen Repair</td>
+                    <td>$129.99</td>
+                    <td class="has-text-centered"><span class="delete is-small"></span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+
+{% endblock %}

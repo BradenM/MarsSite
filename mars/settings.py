@@ -33,7 +33,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "sslserver",
-    'homepage.apps.HomepageConfig',
+    'users.apps.UsersConfig',
+    'store.apps.StoreConfig',
     'repair.apps.RepairConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -146,13 +147,13 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_SIGNUP_FORM_CLASS = 'homepage.forms.ExtSignupForm'
+ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.ExtSignupForm'
 ACCOUNT_FORMS = {
-    'login': 'homepage.forms.ExtLoginForm'
+    'login': 'users.forms.ExtLoginForm'
 }
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 ACCOUNT_LOGOUT_ON_GET = True
-ACCOUNT_ADAPTER = 'homepage.adapter.ExtAccountAdapter'
+ACCOUNT_ADAPTER = 'users.adapter.ExtAccountAdapter'
 
 
 # Internationalization

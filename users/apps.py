@@ -1,7 +1,7 @@
 from django.apps import AppConfig
 
-class HomepageConfig(AppConfig):
-    name = 'homepage'
+class UsersConfig(AppConfig):
+    name = 'users'
 
     def ready(self):
         from . import signals

@@ -3,7 +3,7 @@ from django.shortcuts import HttpResponseRedirect, redirect, get_object_or_404, 
 from django.views import generic
 from .models import Device, Family, Repair, RepairCost, LAP, PHONE, TAB
 from allauth.account.forms import SignupForm
-from homepage.forms import ExtLoginForm
+from users.forms import ExtLoginForm
 
 class IndexView(generic.ListView):
     template_name = "repair/index.html"
