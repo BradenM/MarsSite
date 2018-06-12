@@ -1,12 +1,14 @@
 from django import forms
 from crispy_forms.helper import FormHelper
+from phonenumber_field.formfields import PhoneNumberField
 from crispy_forms.layout import Layout, Submit, Fieldset, Field, MultiField, HTML, Div
 from allauth.account.forms import LoginForm
-
+from .models import Profile
 
 class ExtSignupForm(forms.Form):
     first_name = forms.CharField(max_length=32, label='First Name', widget=forms.TextInput(attrs={'placeholder': 'First Name', 'class': 'input'}))
     last_name = forms.CharField(max_length=32, label='Last Name', widget=forms.TextInput(attrs={'placeholder': 'Last Name', 'class': 'input'}))
+    phone = PhoneNumberField()
 
     def __init__(self, *args, **kwargs):
         super(ExtSignupForm, self).__init__(*args, **kwargs)
@@ -28,7 +30,7 @@ class ExtSignupForm(forms.Form):
                 css_class="field"
             ),
             Div(
-                Field('password1', css_class='input'),
+                Field('phone', css_class="input"),
                 css_class="field"
             ),
             Div(
@@ -38,15 +40,21 @@ class ExtSignupForm(forms.Form):
             Div(
                 Field('password2', css_class='input'),
                 css_class="field"
-            )
+            ),
 
         )
 
     def signup(self, request, user):
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
+        user.profile.phone = self.cleaned_data['phone']
         user.save()
+        user.profile.save()
 
+# class ProfileForm(forms.ModelForm):
+#     class Meta:
+#         model = Profile
+#         fields = ('phone',)
 
 class ExtLoginForm(LoginForm):
     def __init__(self, *args, **kwargs):

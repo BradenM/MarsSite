@@ -27,12 +27,14 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = []
+INTERNAL_IPS = ['127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
     "sslserver",
+    'phonenumber_field',
     'users.apps.UsersConfig',
     'store.apps.StoreConfig',
     'repair.apps.RepairConfig',
@@ -42,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
     'django.contrib.sites',
     'crispy_forms',
     'allauth',
@@ -52,6 +55,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -154,6 +158,7 @@ ACCOUNT_FORMS = {
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_ADAPTER = 'users.adapter.ExtAccountAdapter'
+PHONENUMBER_DEFAULT_REGION = 'US'
 
 
 # Internationalization

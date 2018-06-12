@@ -11,6 +11,7 @@ Pipfile = "*"
 django-crispy-forms = "*"
 python-decouple = "*"
 django-smtp-ssl = "*"
+django-phonenumber-field = "*"
 
 [dev-packages]
 pylint = "*"
@@ -18,6 +19,7 @@ pylint-django = "*"
 rope = "*"
 django-sslserver = "*"
 "autopep8" = "*"
+django-debug-toolbar = "*"
 
 [requires]
 python_version = "3.6"

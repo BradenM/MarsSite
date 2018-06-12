@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% block title %}Your Cart{% endblock %}
+
 {% block content %}
 
 <section class="section is-paddingless">
@@ -13,6 +15,7 @@
 <section class="section">
     <div class="container">
         <h1 class="title">Your Cart</h1>
+    {% if cart.products.all|length >= 1 %}
         <table class="table is-fullwidth is-striped">
             <thead>
                 <tr>
@@ -24,15 +27,21 @@
                 </tr>
             </thead>
             <tbody>
+                {% for item in cart.products.all %}
                 <tr>
-                    <td>Repair</td>
-                    <td>iPhone 6s</td>
-                    <td>Screen Repair</td>
-                    <td>$129.99</td>
-                    <td class="has-text-centered"><span class="delete is-small"></span></td>
+                    <td>{{ item.type }}</td>
+                    <td>{{ item.order.device.name }}</td>
+                    <td>{{ item.order.repair.name }}</td>
+                    <td>${{ item.order.price }}</td>
+                    <td class="has-text-centered"><a href="{% url 'store:remove_cart' item.pk %}"><span class="delete is-small"></span></td>
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
+        {% else %}
+        <div class="is-divider"></div>
+        <h6 class="subtitle has-text-centered"> You current have no items in your cart</h6>
+        {% endif %}
     </div>
 </section>
 
