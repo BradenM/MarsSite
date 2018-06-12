@@ -24,7 +24,7 @@ class Repair(models.Model):
         return f"{self.name}"
 
 
-class RepairCost(models.Model):
+class DeviceRepair(models.Model):
     device = models.ForeignKey('Device', related_name="repair", on_delete=models.CASCADE)
     repair = models.ForeignKey(Repair, related_name="repair", on_delete=models.CASCADE)
     type = models.CharField(max_length=200, default="screen")
@@ -65,7 +65,7 @@ class Family(models.Model):
 class Device(models.Model):
     name = models.CharField(max_length=200)
     device_type = models.CharField(max_length=200, choices=DEV_TYPES, default=PHONE)
-    repairs = models.ManyToManyField(Repair, through='RepairCost', related_name="repairs")
+    repairs = models.ManyToManyField(Repair, through='DeviceRepair', related_name="repairs")
     has_family = models.BooleanField(default=False)
     family_identifier = models.CharField(max_length=100, blank=True, null=True)
     brand = models.CharField(max_length=200, blank=True, null=True)

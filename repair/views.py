@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import HttpResponseRedirect, redirect, get_object_or_404, render, render_to_response, reverse, resolve_url
 from django.views import generic
-from .models import Device, Family, Repair, RepairCost, LAP, PHONE, TAB
+from .models import Device, Family, Repair, DeviceRepair, LAP, PHONE, TAB
 from allauth.account.forms import SignupForm
 from users.forms import ExtLoginForm
 
@@ -49,6 +49,6 @@ class DeviceView(generic.DetailView):
 
 
 def get_repair(request, slug, pk):
-    repair = get_object_or_404(RepairCost, pk=pk)
+    repair = get_object_or_404(DeviceRepair, pk=pk)
     print(repair.repair.name)
     return render(request, 'repair/repair_detail.html', {'active_repair': repair})

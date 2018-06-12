@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import Device, Family, Repair, RepairCost, PHONE
+from .models import Device, Family, Repair, DeviceRepair, PHONE
 
 class DeviceTest(TestCase):
 
@@ -38,14 +38,14 @@ class DeviceTest(TestCase):
         self.battery_repair = Repair.objects.create(name="Battery Repair")
 
         # Add a screen repair to iPhone X
-        RepairCost.objects.create(
+        DeviceRepair.objects.create(
             device = self.iphone_x,
             repair = self.screen_repair,
             type = "screen", 
             price = 89.99
         )
 
-        RepairCost.objects.create(
+        DeviceRepair.objects.create(
             device = self.iphone_x,
             repair = self.battery_repair,
             type = "battery", 
@@ -68,7 +68,7 @@ class DeviceTest(TestCase):
 
     def test_screen_repair(self):
         # Is the iPhone X Screen repair 89.99?
-        iphone_x_screenrepair = RepairCost.objects.get(repair=self.screen_repair, device=self.iphone_x)
+        iphone_x_screenrepair = DeviceRepair.objects.get(repair=self.screen_repair, device=self.iphone_x)
         print("REPAIR PRICE TEST:")
         print(iphone_x_screenrepair.price)
         self.assertEqual(iphone_x_screenrepair.price, 89.99)

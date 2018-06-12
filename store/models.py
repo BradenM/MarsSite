@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from repair.models import RepairCost
+from repair.models import DeviceRepair
 
 REPAIR = "Repair"
 COMPUTER = "Computer"
@@ -16,7 +16,7 @@ class UserCart(models.Model):
 
 class CartItem(models.Model):
     type = models.CharField(max_length=32, choices=ITEM_TYPES)
-    order = models.ForeignKey(RepairCost, related_name='order', on_delete=models.CASCADE)
+    order = models.ForeignKey(DeviceRepair, related_name='order', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.type

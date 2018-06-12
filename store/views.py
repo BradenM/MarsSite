@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect, reverse
 from django.views import generic
-from repair.models import RepairCost
+from repair.models import DeviceRepair
 from .models import UserCart, CartItem, REPAIR
 
 class CartView(generic.TemplateView):
@@ -19,7 +19,7 @@ def add_to_cart(request, pk):
     current_user = request.user
     cart = current_user.usercart
     print(cart.id)
-    item = RepairCost.objects.get(pk=pk)
+    item = DeviceRepair.objects.get(pk=pk)
     cart_item = CartItem.objects.create(type=REPAIR, order=item)
     cart.products.add(cart_item)
     cart.save()
