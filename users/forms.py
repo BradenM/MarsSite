@@ -51,10 +51,6 @@ class ExtSignupForm(forms.Form):
         user.save()
         user.profile.save()
 
-# class ProfileForm(forms.ModelForm):
-#     class Meta:
-#         model = Profile
-#         fields = ('phone',)
 
 class ExtLoginForm(LoginForm):
     def __init__(self, *args, **kwargs):

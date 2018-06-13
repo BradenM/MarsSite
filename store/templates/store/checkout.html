@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+
+<section class="section is-paddingless">
+    <div class="hero is-small is-info is-bold">
+        <div class="hero-head">
+            {% include 'nav.html' %}
+        </div>
+    </div>
+</section>
+{% include 'notif.html'%}
+
+<section class="section">
+    <div class="columns is-multiline">
+        
+        <div class="column">
+            <div class="card">
+                <header class="card-header has-background-dark">
+                    <p class="card-header-title has-text-light">
+                        Your Information
+                    </p>
+                </header>
+                <div class="card-content">
+                    <div class="block">
+                        <ul class="is-info-list">
+                        <li><span>Name: </span>{{ user.first_name }} {{ user.last_name }}</li>
+                        <li><span>Email: </span>{{ user.email }}</li>
+                        <li><span>Phone: </span>{{ user.profile.phone }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="card">
+                <header class="card-header has-background-dark">
+                    <p class="card-header-title has-text-light">
+                        Your Cart Summary
+                    </p>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        <table class="table is-narrow is-striped has-text-centered">
+                            <thead>
+                                <tr>
+                                    <th>Repairs</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in user.usercart.products.all %}
+                                <tr>
+                                    <td>{{ item.order.device }}</td>
+                                    <td>{{ item.order.repair.name }}</td>
+                                    <td>${{ item.order.price }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="columns">
+
+        <div class="column">
+            <div class="card">
+                <header class="card-header has-background-dark">
+                    <p class="card-header-title has-text-light">
+                        Payment Method
+                    </p>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        {% if customer.sources.all %}
+                        {% include 'store/card.html' %}
+                        <a id="reveal_form" class="button is-link">Add Card</a>
+                        <div class="new_card animated fadeIn column is-4">
+                            {% crispy form  %} 
+                        </div>  
+                        {% else %}
+                        <p class="subtitle">You have no active cards on your account, please add one to continue. </p>
+                        <div class="is-divider"></div>
+                        {% crispy form %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="card">
+                <header class="card-header has-background-dark">
+                    <p class="card-header-title has-text-light">
+                        Checkout
+                    </p>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        Example Content
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+{% endblock %}

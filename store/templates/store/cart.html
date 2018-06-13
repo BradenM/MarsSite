@@ -14,7 +14,7 @@
 
 <section class="section">
     <div class="container">
-        <h1 class="title">Your Cart</h1>
+        <h1 class="title">Your Cart <span class="subtitle">({{ cart.products.all|length }})</span></h1>
     {% if cart.products.all|length >= 1 %}
         <table class="table is-fullwidth is-striped">
             <thead>
@@ -38,6 +38,10 @@
                 {% endfor %}
             </tbody>
         </table>
+        <p class="buttons is-pulled-right">
+            <a href="{% url 'store:clear_cart' %}" class="button is-info is-rounded">Clear Cart</a>
+            <a href="{% url 'store:checkout' %}" class="button is-success is-rounded">Checkout</a>
+        </p>
         {% else %}
         <div class="is-divider"></div>
         <h6 class="subtitle has-text-centered"> You current have no items in your cart</h6>

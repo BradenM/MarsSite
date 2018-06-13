@@ -40,3 +40,11 @@
 .tabs li{
     margin-top: 0px !important;
 }
+
+.is-info-list span{
+    font-weight:500;
+}
+
+.card-level{
+    padding-left:0px !important;
+}

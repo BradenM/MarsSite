@@ -83,3 +83,19 @@ $('.quickview').on("mouseenter", function(event){
         }
     });
 })
+
+// Notification Fade Out
+$(document).ready(function(){
+    setTimeout(function(){
+        $('.notif-dismiss').addClass('fadeOut'); 
+        setTimeout(function(){
+            $('.notif-dismiss').remove();
+        }, 1000)
+    }, 4000);
+
+    $('.new_card').css('display', 'none');
+    $('#reveal_form').on('click', function (event) {
+        $('.new_card').css('display', 'block');
+    });
+    
+});

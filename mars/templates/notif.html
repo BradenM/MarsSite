@@ -2,7 +2,7 @@
 {% for msg in messages %}
 
 {% if 'user_alert_info' in msg.tags %}
-<div data-bulma="notification" data-dismiss-interval="3000" class="notification is-link has-text-centered">
+<div data-bulma="notification" class="notification notif-dismiss is-link has-text-centered animated fadeIn">
     <button class="delete"></button>
     {{ msg }}
 </div>

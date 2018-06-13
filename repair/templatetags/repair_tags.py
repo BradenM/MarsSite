@@ -9,3 +9,11 @@ def family_modal(family):
     form = SelectDeviceForm()
     form.fields['devices'].queryset = devs
     return {'form': form, 'fam': family}
+
+# A hackish way of getting base device url
+@register.filter(name="url_base")
+def url_base(value):
+    split = value.split('/')
+    del split[-2:]
+    redirect = "/".join([x for x in split])
+    return redirect

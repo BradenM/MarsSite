@@ -4,6 +4,7 @@ from django.shortcuts import HttpResponseRedirect, reverse
 from django.contrib import messages
 from allauth.account.forms import SignupForm
 
+
 # Override invalid form on Signup
 class ExtSignupView(SignupView):
 
@@ -11,8 +12,7 @@ class ExtSignupView(SignupView):
         self.request.session['invalid_signup'] = self.request.POST
         return HttpResponseRedirect('/')
 
-
-
+# Override invalid form on Login
 class ExtLoginView(LoginView):
 
     def form_invalid(self, form):

@@ -22,7 +22,7 @@ from users.views import ExtSignupView, ExtLoginView
 urlpatterns = [
     # Home
     path('admin/', admin.site.urls),
-    path('', include('repair.urls')),
+    path('', include('repair.urls', namespace="repair")),
 
     # Accounts
     path('accounts/signup/', ExtSignupView.as_view()),
@@ -30,7 +30,8 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
 
     # Store
-    path('store/', include('store.urls'))
+    path('store/', include('store.urls')),
+    path('payments/', include('djstripe.urls', namespace="djstripe"))
 ] 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(f"/{settings.STATIC_URL}", document_root=settings.STATIC_ROOT)

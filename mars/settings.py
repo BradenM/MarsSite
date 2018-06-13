@@ -36,8 +36,8 @@ INSTALLED_APPS = [
     "sslserver",
     'phonenumber_field',
     'users.apps.UsersConfig',
-    'store.apps.StoreConfig',
     'repair.apps.RepairConfig',
+    'store.apps.StoreConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.auth0',
+    'djstripe',
 ]
 
 MIDDLEWARE = [
@@ -160,6 +161,15 @@ ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_ADAPTER = 'users.adapter.ExtAccountAdapter'
 PHONENUMBER_DEFAULT_REGION = 'US'
 
+
+# Stripe (Dj-Stripe) Settings
+# STRIPE_LIVE_PUBLIC_KEY = os.environ.get(
+#     "STRIPE_LIVE_PUBLIC_KEY", "<your publishable key>")
+# STRIPE_LIVE_SECRET_KEY = os.environ.get(
+#     "STRIPE_LIVE_SECRET_KEY", "<your secret key>")
+STRIPE_TEST_PUBLIC_KEY = config('STRIPE_TEST_PUBLIC')
+STRIPE_TEST_SECRET_KEY = config('STRIPE_TEST_SECRET')
+STRIPE_LIVE_MODE = False
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/

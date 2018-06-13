@@ -1,0 +1,28 @@
+ {% for source in customer.sources.all %}
+
+<div class="tile is-ancestor">
+    <div class="tile is-4 is-vertical is-parent has-text-center">
+        <div class="tile is-child">
+            <div class="level box card-level">
+                <div class="level-item">
+                    <figure class="image" style="width: 96px;">
+                        <img src="http://www.credit-card-logos.com/images/visa_credit-card-logos/new_visa_big.gif" border='0' />
+                    </figure>
+                </div>
+                <div class="level-item">
+                    <p class="subtitle">{{ source.last4 }}</p>
+                </div>
+                <div class="level-item">
+                    <div class="control">
+                        <label class="radio">
+                            <input type="radio" name="{{ source.id }}">
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endfor %}

@@ -1,3 +1,5 @@
+{% load repair_tags %}
+
 <header class="quickview-header">
     <h1 class="title is-6">{{ active_repair.repair.name }}</h1>
     <span id="quickview-dismiss" class="delete" data-dismiss="quickview"></span>
@@ -37,9 +39,7 @@
             </div>
             <div class="level-right">
                     <div class="level-item">
-                        
-                        <a href="/store/cart/add/{{ active_repair.pk }}" class="button is-info is-rounded hvr-glow">Order Now</a>
-                        
+                        <a href="/store/cart/add/{{ active_repair.pk }}?next={{ request.path|url_base|urlencode}}" class="button is-info is-rounded hvr-glow">Order Now</a>
                     </div>                
             </div>
         </nav>
