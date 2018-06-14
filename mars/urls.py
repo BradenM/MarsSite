@@ -31,7 +31,8 @@ urlpatterns = [
 
     # Store
     path('store/', include('store.urls')),
-    path('payments/', include('djstripe.urls', namespace="djstripe"))
+    path('payments/', include('djstripe.urls', namespace="djstripe")),
+    re_path(r'^paypal/', include('paypal.standard.ipn.urls')),
 ] 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(f"/{settings.STATIC_URL}", document_root=settings.STATIC_ROOT)

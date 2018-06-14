@@ -14,7 +14,9 @@ urlpatterns = [
 
     # User Checkout
     path('checkout/', verified_email_required(views.Checkout.as_view()), name="checkout"),
+    path('checkout/paypal/', verified_email_required(views.pay_with_paypal), name="pay_paypal"),
 
-    # User Payments
+    # User Pay Methods
     path('user/add-card/', verified_email_required(views.add_card), name="add-card"),
+    path('user/remove-card/<int:pk>', verified_email_required(views.remove_card), name="remove_card"),
 ]

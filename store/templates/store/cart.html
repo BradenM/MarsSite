@@ -3,6 +3,7 @@
 {% block title %}Your Cart{% endblock %}
 
 {% block content %}
+{% load store_tags %}
 
 <section class="section is-paddingless">
     <div class="hero is-small is-info is-bold">
@@ -26,6 +27,15 @@
                     <th class="has-text-centered">Remove</th>
                 </tr>
             </thead>
+            <tfoot>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>Total: {% cart_total cart %}</th>
+                </tr>
+            </tfoot>
             <tbody>
                 {% for item in cart.products.all %}
                 <tr>

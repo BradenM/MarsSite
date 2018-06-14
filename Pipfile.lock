@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "1c7ea3d35f8c7df3fcff016a4b6262420e9a7a774a4002bee0ccd2af81e66742"
+            "sha256": "7d66754ca2150a0b1afed07bf372685c6ccc1c24f18b31611ec177ac44a77608"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -74,6 +74,14 @@
             ],
             "index": "pypi",
             "version": "==1.7.2"
+        },
+        "django-paypal": {
+            "hashes": [
+                "sha256:03f82eafadd0edc78b59edc5985bdbd5f956c083d77d5f17ca787ead12b75618",
+                "sha256:352877bdde17a6d61d77ab233aa209789163ae50031ba8b002b80f5512ebf64d"
+            ],
+            "index": "pypi",
+            "version": "==0.5.0"
         },
         "django-phonenumber-field": {
             "hashes": [
@@ -201,6 +209,13 @@
                 "sha256:fe3282f48fb134ee0035712159f5429215459407f6d5484013343031ff1a400d"
             ],
             "version": "==1.0.0"
+        },
+        "six": {
+            "hashes": [
+                "sha256:70e8a77beed4562e7f14fe23a786b54f6296e34344c23bc42f07b15018ff98e9",
+                "sha256:832dc0e10feb1aa2c68dcc57dbb658f1c7e65b9b61af69048abc87a2db00a0eb"
+            ],
+            "version": "==1.11.0"
         },
         "stripe": {
             "hashes": [

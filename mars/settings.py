@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.auth0',
     'djstripe',
+    'paypal.standard.ipn',
 ]
 
 MIDDLEWARE = [
@@ -170,6 +171,11 @@ PHONENUMBER_DEFAULT_REGION = 'US'
 STRIPE_TEST_PUBLIC_KEY = config('STRIPE_TEST_PUBLIC')
 STRIPE_TEST_SECRET_KEY = config('STRIPE_TEST_SECRET')
 STRIPE_LIVE_MODE = False
+
+# Paypal Settings
+PAYPAL_TEST = True
+PAYPAL_REC = config('PAYPAL_RECEIVER')
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
