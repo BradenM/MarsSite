@@ -12,8 +12,8 @@ django-crispy-forms = "*"
 python-decouple = "*"
 django-smtp-ssl = "*"
 django-phonenumber-field = "*"
-dj-stripe = "*"
 stripe = "*"
+pinax-stripe = "*"
 
 [dev-packages]
 pylint = "*"

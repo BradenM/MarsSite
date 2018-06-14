@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.auth0',
-    'djstripe',
+    'pinax.stripe',
 ]
 
 MIDDLEWARE = [
@@ -162,13 +162,9 @@ ACCOUNT_ADAPTER = 'users.adapter.ExtAccountAdapter'
 PHONENUMBER_DEFAULT_REGION = 'US'
 
 
-# Stripe (Dj-Stripe) Settings
-# STRIPE_LIVE_PUBLIC_KEY = os.environ.get(
-#     "STRIPE_LIVE_PUBLIC_KEY", "<your publishable key>")
-# STRIPE_LIVE_SECRET_KEY = os.environ.get(
-#     "STRIPE_LIVE_SECRET_KEY", "<your secret key>")
-STRIPE_TEST_PUBLIC_KEY = config('STRIPE_TEST_PUBLIC')
-STRIPE_TEST_SECRET_KEY = config('STRIPE_TEST_SECRET')
+# Stripe Settings
+PINAX_STRIPE_PUBLIC_KEY = config('STRIPE_TEST_PUBLIC')
+PINAX_STRIPE_SECRET_KEY = config('STRIPE_TEST_SECRET')
 STRIPE_LIVE_MODE = False
 
 # Internationalization

@@ -31,7 +31,9 @@ urlpatterns = [
 
     # Store
     path('store/', include('store.urls')),
-    path('payments/', include('djstripe.urls', namespace="djstripe"))
+
+    # Payments
+    path('payments/', include("pinax.stripe.urls"))
 ] 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(f"/{settings.STATIC_URL}", document_root=settings.STATIC_ROOT)
