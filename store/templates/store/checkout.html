@@ -1,9 +1,10 @@
-{% extends 'base.html' %}
+{% extends 'store/base.html' %} 
 
-{% block title %}Checkout{% endblock %}
+{% block title %}Checkout{% endblock %} 
 
-{% block content %}
-{% load crispy_forms_tags %}
+{% block content %} 
+{% load crispy_forms_tags %} 
+{% load store_tags %}
 
 <section class="section is-paddingless">
     <div class="hero is-small is-info is-bold">
@@ -16,7 +17,7 @@
 
 <section class="section">
     <div class="columns is-multiline">
-        
+
         <div class="column">
             <div class="card">
                 <header class="card-header has-background-dark">
@@ -27,9 +28,12 @@
                 <div class="card-content">
                     <div class="block">
                         <ul class="is-info-list">
-                        <li><span>Name: </span>{{ user.first_name }} {{ user.last_name }}</li>
-                        <li><span>Email: </span>{{ user.email }}</li>
-                        <li><span>Phone: </span>{{ user.profile.phone }}</li>
+                            <li>
+                                <span>Name: </span>{{ user.first_name }} {{ user.last_name }}</li>
+                            <li>
+                                <span>Email: </span>{{ user.email }}</li>
+                            <li>
+                                <span>Phone: </span>{{ user.profile.phone }}</li>
                         </ul>
                     </div>
                 </div>
@@ -45,12 +49,17 @@
                 </header>
                 <div class="card-content">
                     <div class="content">
-                        <table class="table is-narrow is-striped has-text-centered">
+                        <table class="table is-striped has-text-centered">
                             <thead>
                                 <tr>
                                     <th>Repairs</th>
                                 </tr>
                             </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Total: {% cart_total user.usercart %}</th>
+                                </tr>
+                            </tfoot>
                             <tbody>
                                 {% for item in user.usercart.products.all %}
                                 <tr>
@@ -78,19 +87,38 @@
                     </p>
                 </header>
                 <div class="card-content">
-                    <div class="content">
-                        {% if customer.sources.all %}
-                        {% include 'store/card.html' %}
-                        <a id="reveal_form" class="button is-link">Add Card</a>
-                        <div class="new_card animated fadeIn column is-4">
-                            {% crispy form  %} 
-                        </div>  
-                        {% else %}
-                        <p class="subtitle">You have no active cards on your account, please add one to continue. </p>
-                        <div class="is-divider"></div>
-                        {% crispy form %}
-                        {% endif %}
-                    </div>
+                    <section class="accordions">
+                        <article class="accordion is-active">
+                            <div class="accordion-header toggle">
+                                <p>Paypal</p>
+                            </div>
+                            <div class="accordion-body">
+                                <div class="accordion-content">
+                                    {% comment %} {% include 'store/paypal_payments.html' %} {% endcomment %}
+                                </div>
+                            </div>
+                        </article>
+                        <article class="accordion">
+                            <div class="accordion-header toggle">
+                                <p>Credit/Debit Card</p>
+                            </div>
+                            <div class="accordion-body">
+                                <div class="accordion-content">
+                                    {% if sources %} 
+                                    {% include 'store/card.html' %}
+                                    <a id="reveal_form" class="button is-link">Add Card</a>
+                                    <div class="new_card animated fadeIn column is-4">
+                                        {% crispy form %}
+                                    </div>
+                                    {% else %}
+                                    <p class="subtitle">You have no active cards on your account, please add one to continue. </p>
+                                    <div class="is-divider"></div>
+                                    {% crispy form %} {% endif %}
+                                </div>
+                            </div>
+                        </article>
+                    </section>
+
                 </div>
             </div>
         </div>
@@ -104,7 +132,7 @@
                 </header>
                 <div class="card-content">
                     <div class="content">
-                        Example Content
+                        {% include 'store/stripe_charge.html' %}
                     </div>
                 </div>
             </div>

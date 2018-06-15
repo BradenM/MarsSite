@@ -5,6 +5,8 @@ from .models import UserCart, CartItem, REPAIR
 from django.contrib import messages
 from django.conf import settings
 from .forms import CardForm
+from billing.views import CustomerMixin
+from pinax.stripe.mixins import PaymentsContextMixin
 
 class CartView(generic.TemplateView):
     template_name = "store/cart.html"
@@ -48,15 +50,16 @@ def clear_cart(request):
 
 
 # Checkout
-class Checkout(generic.TemplateView):
+class Checkout(generic.TemplateView, CustomerMixin):
     template_name = "store/checkout.html"
 
     def get_context_data(self, **kwargs):
         context = super(Checkout, self).get_context_data(**kwargs)
         context['user'] = self.request.user
-        #context['customer'] = customer
+        context['customer'] = self.customer
+        context['sources'] = self.sources
+        context['stripe_id'] = settings.PINAX_STRIPE_PUBLIC_KEY
         context['form'] = CardForm()
-        context['stripe_key'] = settings.STRIPE_TEST_PUBLIC_KEY
         return context
     
 

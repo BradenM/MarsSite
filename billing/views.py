@@ -1,0 +1,31 @@
+from django.shortcuts import render
+from pinax.stripe.actions import customers
+from pinax.stripe import mixins
+from pinax.stripe.actions import sources
+from pinax.stripe.models import Card
+from django.conf import settings
+from django.shortcuts import HttpResponse, redirect
+from django.views.generic import View
+import stripe
+
+#stripe_token = settings.PINAX_STRPI
+
+class CustomerMixin(mixins.CustomerMixin):
+
+    def create_card(self, stripe_token):
+        sources.create_card(self.customer, token=stripe_token)
+
+    @property
+    def sources(self):
+        return Card.objects.filter(customer=self.customer)
+
+
+
+class AddCard(View, CustomerMixin):
+    def post(self, request, *args, **kwargs):
+        try:
+            self.create_card(request.POST.get("stripeToken"))
+            return redirect("store:checkout")
+        except stripe.CardError as e:
+            print(e)
+            return redirect("store:checkout")

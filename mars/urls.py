@@ -33,7 +33,8 @@ urlpatterns = [
     path('store/', include('store.urls')),
 
     # Payments
-    path('payments/', include("pinax.stripe.urls"))
+    path('payments/', include("pinax.stripe.urls")),
+    path('pay/', include('billing.urls'))
 ] 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(f"/{settings.STATIC_URL}", document_root=settings.STATIC_ROOT)

@@ -11,4 +11,7 @@ urlpatterns = [
     path('cart/add/<int:pk>', verified_email_required(views.add_to_cart), name="add_cart"),
     path('cart/remove/<int:pk>', verified_email_required(views.remove_from_cart), name="remove_cart"),
     path('cart/clear/', verified_email_required(views.clear_cart), name="clear_cart"),
+
+    # Checkout
+    path('checkout/', verified_email_required(views.Checkout.as_view()), name="checkout"),
 ]

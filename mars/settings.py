@@ -26,7 +26,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*.ngrok.io', '*']
 INTERNAL_IPS = ['127.0.0.1']
 
 
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'users.apps.UsersConfig',
     'repair.apps.RepairConfig',
+    'billing.apps.BillingConfig',
     'store.apps.StoreConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -165,6 +166,8 @@ PHONENUMBER_DEFAULT_REGION = 'US'
 # Stripe Settings
 PINAX_STRIPE_PUBLIC_KEY = config('STRIPE_TEST_PUBLIC')
 PINAX_STRIPE_SECRET_KEY = config('STRIPE_TEST_SECRET')
+PINAX_STRIPE_API_VERSION = "2018-05-21"
+PINAX_STRIPE_INVOICE_FROM_EMAIL = "braden@bradenmars.me"
 STRIPE_LIVE_MODE = False
 
 # Internationalization
