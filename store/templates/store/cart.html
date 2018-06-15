@@ -12,10 +12,12 @@
     </div>
 </section>
 
+{% include 'notif.html' %}
+
 <section class="section">
     <div class="container">
-        <h1 class="title">Your Cart <span class="subtitle">({{ cart.products.all|length }})</span></h1>
-    {% if cart.products.all|length >= 1 %}
+        <h1 class="title">Your Cart <span class="subtitle">({{ cart.entries.all|length }})</span></h1>
+    {% if cart.entries.all|length >= 1 %}
         <table class="table is-fullwidth is-striped">
             <thead>
                 <tr>
@@ -26,13 +28,22 @@
                     <th class="has-text-centered">Remove</th>
                 </tr>
             </thead>
+            <tfoot>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>Total: ${{ cart.total }}</th>
+                </tr>
+            </tfoot>
             <tbody>
-                {% for item in cart.products.all %}
+                {% for item in cart.entries.all %}
                 <tr>
                     <td>{{ item.type }}</td>
-                    <td>{{ item.order.device.name }}</td>
-                    <td>{{ item.order.repair.name }}</td>
-                    <td>${{ item.order.price }}</td>
+                    <td>{{ item.product.device.name }}</td>
+                    <td>{{ item.product.repair.name }}</td>
+                    <td>${{ item.product.price }}</td>
                     <td class="has-text-centered"><a href="{% url 'store:remove_cart' item.pk %}"><span class="delete is-small"></span></td>
                 </tr>
                 {% endfor %}

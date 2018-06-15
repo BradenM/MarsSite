@@ -57,15 +57,15 @@
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th>Total: {% cart_total user.usercart %}</th>
+                                    <th>Total: ${{ cart.total }}</th>
                                 </tr>
                             </tfoot>
                             <tbody>
-                                {% for item in user.usercart.products.all %}
+                                {% for item in cart.entries.all %}
                                 <tr>
-                                    <td>{{ item.order.device }}</td>
-                                    <td>{{ item.order.repair.name }}</td>
-                                    <td>${{ item.order.price }}</td>
+                                    <td>{{ item.product.device }}</td>
+                                    <td>{{ item.product.repair.name }}</td>
+                                    <td>${{ item.product.price }}</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
