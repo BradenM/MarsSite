@@ -15,16 +15,30 @@ class CustomerMixin(mixins.CustomerMixin):
     def create_card(self, stripe_token):
         sources.create_card(self.customer, token=stripe_token)
 
+    def delete_card(self, stripe_id):
+        sources.delete_card(self.customer, stripe_id)
+
     @property
     def sources(self):
         return Card.objects.filter(customer=self.customer)
 
 
 
-class AddCard(View, CustomerMixin):
+class SaveCard(View, CustomerMixin):
     def post(self, request, *args, **kwargs):
         try:
             self.create_card(request.POST.get("stripeToken"))
+            return redirect("store:checkout")
+        except stripe.CardError as e:
+            print(e)
+            return redirect("store:checkout")
+
+
+class RemoveCard(View, CustomerMixin):
+    def get(self, request, pk):
+        try:
+            source = Card.objects.get(pk=pk)
+            self.delete_card(source.stripe_id)
             return redirect("store:checkout")
         except stripe.CardError as e:
             print(e)

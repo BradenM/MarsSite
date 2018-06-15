@@ -28,10 +28,3 @@ def get_card_image(source):
         return f'/media/cards/{CARD_BRANDS[brand]}'
 
     return 'blank'
-
-
-@register.simple_tag(name="default_card")
-def get_default_card(customer, source):
-    #card = customer.sources.get(pk=source)
-    print("asd")
-    return ''

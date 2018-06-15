@@ -15,9 +15,9 @@
                 </div>
                 <div class="level-item has-text-centered">
                     <div class="field">
-                        <input class="is-checkradio is-circle is-success" id="card_{{ source.pk }}" type="checkbox" name="card_{{ source.pk }}" checked="{% default_card customer source.pk%}">
+                        <input class="is-checkradio is-circle is-success" id="card_{{ source.pk }}" type="checkbox" name="card_{{ source.pk }}" checked="">
                         <label for="card_{{ source.pk }}"></label>
-                        <a href="" class="tooltip" data-tooltip="Remove Card">
+                        <a href="{% url 'billing:remove_card' source.pk %}" class="tooltip" data-tooltip="Remove Card">
                             <span class="delete">
                         </a>
                     </div>

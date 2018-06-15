@@ -4,7 +4,6 @@ from repair.models import DeviceRepair
 from .models import UserCart, CartItem, REPAIR
 from django.contrib import messages
 from django.conf import settings
-from .forms import CardForm
 from billing.views import CustomerMixin
 from pinax.stripe.mixins import PaymentsContextMixin
 
@@ -59,7 +58,6 @@ class Checkout(generic.TemplateView, CustomerMixin):
         context['customer'] = self.customer
         context['sources'] = self.sources
         context['stripe_id'] = settings.PINAX_STRIPE_PUBLIC_KEY
-        context['form'] = CardForm()
         return context
     
 
