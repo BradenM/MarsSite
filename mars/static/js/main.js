@@ -93,9 +93,12 @@ $(document).ready(function(){
         }, 1000)
     }, 4000);
 
+    // Add Card Form Reveal
     $('.new_card').css('display', 'none');
     $('#reveal_form').on('click', function (event) {
         $('.new_card').css('display', 'block');
     });
     
 });
+
+

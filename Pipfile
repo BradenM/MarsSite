@@ -12,8 +12,8 @@ django-crispy-forms = "*"
 python-decouple = "*"
 django-smtp-ssl = "*"
 django-phonenumber-field = "*"
-dj-stripe = "*"
 stripe = "*"
+pinax-stripe = "*"
 
 [dev-packages]
 pylint = "*"
@@ -22,6 +22,7 @@ rope = "*"
 django-sslserver = "*"
 "autopep8" = "*"
 django-debug-toolbar = "*"
+ipython = "*"
 
 [requires]
 python_version = "3.6"

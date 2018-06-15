@@ -20,8 +20,12 @@ from django.conf.urls.static import static
 from users.views import ExtSignupView, ExtLoginView
 
 urlpatterns = [
-    # Home
+
+    # Admin
+    path('admin/manage/', include('staff.urls', namespace='staff')),
     path('admin/', admin.site.urls),
+
+    # Home
     path('', include('repair.urls', namespace="repair")),
 
     # Accounts
@@ -31,7 +35,10 @@ urlpatterns = [
 
     # Store
     path('store/', include('store.urls')),
-    path('payments/', include('djstripe.urls', namespace="djstripe"))
+
+    # Payments
+    path('payments/', include("pinax.stripe.urls")),
+    path('pay/', include('billing.urls'))
 ] 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(f"/{settings.STATIC_URL}", document_root=settings.STATIC_ROOT)

@@ -26,7 +26,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*.ngrok.io', '*']
 INTERNAL_IPS = ['127.0.0.1']
 
 
@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'users.apps.UsersConfig',
     'repair.apps.RepairConfig',
+    'billing.apps.BillingConfig',
     'store.apps.StoreConfig',
+    'staff.apps.StaffConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -52,7 +54,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.auth0',
-    'djstripe',
+    'pinax.stripe',
 ]
 
 MIDDLEWARE = [
@@ -74,7 +76,7 @@ TEMPLATES = [
         'DIRS': [
             'mars/templates',
             os.path.join(BASE_DIR, 'mars', 'templates', 'allauth'),
-            ],
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -127,18 +129,18 @@ AUTHENTICATION_BACKENDS = (
 )
 
 SOCIALACCOUNT_PROVIDERS = {
-    'auth0':{
+    'auth0': {
         'AUTH0_URL': 'https://bradenmars.auth0.com',
-        'PROFILE_FIELDS':[
+        'PROFILE_FIELDS': [
             'user_id'
         ]
     },
-    'google':{
-        'SCOPE':[
+    'google': {
+        'SCOPE': [
             'profile',
             'email',
         ],
-        'AUTH_PARAMS':{
+        'AUTH_PARAMS': {
             'access_type': 'online',
         }
     }
@@ -146,6 +148,7 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 # Auth Settings
+LOGIN_URL = '/'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_PAGE = '/'
 ACCOUNT_EMAIL_REQUIRED = True
@@ -162,13 +165,11 @@ ACCOUNT_ADAPTER = 'users.adapter.ExtAccountAdapter'
 PHONENUMBER_DEFAULT_REGION = 'US'
 
 
-# Stripe (Dj-Stripe) Settings
-# STRIPE_LIVE_PUBLIC_KEY = os.environ.get(
-#     "STRIPE_LIVE_PUBLIC_KEY", "<your publishable key>")
-# STRIPE_LIVE_SECRET_KEY = os.environ.get(
-#     "STRIPE_LIVE_SECRET_KEY", "<your secret key>")
-STRIPE_TEST_PUBLIC_KEY = config('STRIPE_TEST_PUBLIC')
-STRIPE_TEST_SECRET_KEY = config('STRIPE_TEST_SECRET')
+# Stripe Settings
+PINAX_STRIPE_PUBLIC_KEY = config('STRIPE_TEST_PUBLIC')
+PINAX_STRIPE_SECRET_KEY = config('STRIPE_TEST_SECRET')
+PINAX_STRIPE_API_VERSION = "2018-05-21"
+PINAX_STRIPE_INVOICE_FROM_EMAIL = "braden@bradenmars.me"
 STRIPE_LIVE_MODE = False
 
 # Internationalization

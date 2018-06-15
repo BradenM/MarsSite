@@ -28,7 +28,7 @@ class DeviceRepair(models.Model):
     device = models.ForeignKey('Device', related_name="repair", on_delete=models.CASCADE)
     repair = models.ForeignKey(Repair, related_name="repair", on_delete=models.CASCADE)
     type = models.CharField(max_length=200, default="screen")
-    price = models.FloatField(default=0.00)
+    price = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
 
     def __str__(self):
         return f"{self.repair} - {self.device} - ${self.price}"

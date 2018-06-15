@@ -1,0 +1,25 @@
+{% extends 'store/base.html' %}
+
+{% block title%}Thank You{% endblock %}
+
+{% block content %}
+
+<section class="section is-paddingless">
+    <div class="hero is-small is-info is-bold">
+        <div class="hero-head">
+            {% include 'nav.html' %}
+        </div>
+    </div>
+</section>
+
+{% include 'notif.html' %}
+
+<section class="section">
+    <div class="content">
+        <h1 class="title">Thank you for your order.</h1>
+        <p class="subtitle">Order Summary</p>
+        <p>Tracking info and such</p>
+    </div>
+</section>
+
+{% endblock %}
