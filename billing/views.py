@@ -22,6 +22,8 @@ class CustomerMixin(mixins.CustomerMixin):
     def sources(self):
         return Card.objects.filter(customer=self.customer)
 
+    
+
 
 
 class SaveCard(View, CustomerMixin):
@@ -43,3 +45,14 @@ class RemoveCard(View, CustomerMixin):
         except stripe.CardError as e:
             print(e)
             return redirect("store:checkout")
+
+class Order(View, CustomerMixin):
+    def post(self, request):
+        try:
+            # Get Payment Method
+            payment_selection = request.POST.get("selected_card")
+            source_obj = Card.objects.get(pk=payment_selection)
+            source = source_obj.stripe_id
+            # Get Cart Total
+        except:
+            pass

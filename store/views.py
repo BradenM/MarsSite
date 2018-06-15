@@ -38,13 +38,12 @@ def add_to_cart(request, pk):
 def remove_from_cart(request, pk):
     _, cart = get_cart(request)
     cart_item = CartItem.objects.get(pk=pk)
-    cart.products.remove(cart_item)
+    cart_item.delete()
     return HttpResponseRedirect(reverse('store:cart'))
 
 def clear_cart(request):
     _, cart = get_cart(request)
-    for item in cart.products.all():
-        cart.products.remove(item)
+    cart.products.all().delete()
     return HttpResponseRedirect(reverse('store:cart'))
 
 

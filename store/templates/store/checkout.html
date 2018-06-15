@@ -133,7 +133,10 @@
                 </header>
                 <div class="card-content">
                     <div class="content">
-                        tba
+                        <form id="order-form" method="post" action="{% url 'billing:complete_order' %}">
+                            {% csrf_token %}
+                            <input type="submit" value="Pay">
+                        </form>
                     </div>
                 </div>
             </div>

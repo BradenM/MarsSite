@@ -28,3 +28,11 @@ def get_card_image(source):
         return f'/media/cards/{CARD_BRANDS[brand]}'
 
     return 'blank'
+
+@register.simple_tag(name="default_source")
+def get_default_source(source):
+    default_id = source.customer.stripe_customer.default_source
+    source_id = source.stripe_id
+    if source_id == default_id:
+        return "checked=checked"
+    return ''

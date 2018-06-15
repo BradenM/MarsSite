@@ -15,7 +15,7 @@
                 </div>
                 <div class="level-item has-text-centered">
                     <div class="field">
-                        <input class="is-checkradio is-circle is-success" id="card_{{ source.pk }}" type="checkbox" name="card_{{ source.pk }}" checked="">
+                        <input form="order-form" value="{{ source.pk }}" class="is-checkradio is-circle is-success" id="card_{{ source.pk }}" type="radio" name="selected_card" autocomplete="off" {% default_source source %}>
                         <label for="card_{{ source.pk }}"></label>
                         <a href="{% url 'billing:remove_card' source.pk %}" class="tooltip" data-tooltip="Remove Card">
                             <span class="delete">
