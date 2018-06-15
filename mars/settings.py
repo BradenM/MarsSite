@@ -75,7 +75,7 @@ TEMPLATES = [
         'DIRS': [
             'mars/templates',
             os.path.join(BASE_DIR, 'mars', 'templates', 'allauth'),
-            ],
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -128,18 +128,18 @@ AUTHENTICATION_BACKENDS = (
 )
 
 SOCIALACCOUNT_PROVIDERS = {
-    'auth0':{
+    'auth0': {
         'AUTH0_URL': 'https://bradenmars.auth0.com',
-        'PROFILE_FIELDS':[
+        'PROFILE_FIELDS': [
             'user_id'
         ]
     },
-    'google':{
-        'SCOPE':[
+    'google': {
+        'SCOPE': [
             'profile',
             'email',
         ],
-        'AUTH_PARAMS':{
+        'AUTH_PARAMS': {
             'access_type': 'online',
         }
     }
@@ -147,6 +147,7 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 # Auth Settings
+LOGIN_URL = '/'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_PAGE = '/'
 ACCOUNT_EMAIL_REQUIRED = True
