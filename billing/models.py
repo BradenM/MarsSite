@@ -9,7 +9,7 @@ class Invoice(models.Model):
     total = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return f"{self.user.email}'s order of ${self.total} on {self.date}"
+        return f"{self.user.email}'s invoice of ${self.total} on {self.date.date()}"
 
 
 class Order(models.Model):

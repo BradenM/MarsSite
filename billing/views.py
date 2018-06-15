@@ -1,34 +1,13 @@
-from django.shortcuts import render
-from pinax.stripe.actions import customers
-from pinax.stripe import mixins
-from pinax.stripe.actions import sources, charges
-from pinax.stripe.models import Card
-from django.conf import settings
-from django.shortcuts import HttpResponse, redirect
-from django.views.generic import View
 import stripe
+from .mixins import CustomerMixin
+from .models import Invoice, Order
+from django.conf import settings
+from django.shortcuts import HttpResponse, redirect, render
+from django.views.generic import View
+from pinax.stripe import mixins
+from pinax.stripe.actions import charges, customers, sources
+from pinax.stripe.models import Card
 from store.mixins import CartMixin
-
-
-class CustomerMixin(mixins.CustomerMixin):
-
-    def create_card(self, stripe_token):
-        sources.create_card(self.customer, token=stripe_token)
-
-    def delete_card(self, stripe_id):
-        sources.delete_card(self.customer, stripe_id)
-
-    def charge_customer(self, amount, source):
-        charges.create(
-            amount=amount,
-            customer=self.customer,
-            source=source,
-            send_receipt=False
-        )
-
-    @property
-    def sources(self):
-        return Card.objects.filter(customer=self.customer)
 
 
 class SaveCard(View, CustomerMixin):
@@ -52,7 +31,7 @@ class RemoveCard(View, CustomerMixin):
             return redirect("store:checkout")
 
 
-class Order(View, CustomerMixin, CartMixin):
+class ChargeCustomer(View, CustomerMixin, CartMixin):
     def post(self, request):
         try:
             # Get Payment Method
@@ -61,6 +40,8 @@ class Order(View, CustomerMixin, CartMixin):
             source = source_obj.stripe_id
             # Get Cart Total
             charge_amnt = self.cart.total
+            # Create Orders
+            self.create_order(self.cart)
             # Charge
             self.charge_customer(charge_amnt, source)
             # Clear Cart
