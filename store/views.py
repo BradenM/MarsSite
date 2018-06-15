@@ -26,11 +26,13 @@ class AddCartEntry(View, CartMixin):
         redirect = request.GET['next']
         return HttpResponseRedirect(redirect)
 
+
 class RemoveCartEntry(View, CartMixin):
     def get(self, request, pk):
         entry = CartEntry.objects.get(pk=pk)
         self.remove_item(entry)
         return HttpResponseRedirect(reverse('store:cart'))
+
 
 class ClearCart(View, CartMixin):
     def get(self, request):
@@ -50,5 +52,13 @@ class Checkout(TemplateView, CustomerMixin, CartMixin):
         context['sources'] = self.sources
         context['stripe_id'] = settings.PINAX_STRIPE_PUBLIC_KEY
         return context
-    
 
+
+class CheckoutComplete(TemplateView, CartMixin):
+    template_name = "store/thanks.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(CheckoutComplete, self).get_context_data(**kwargs)
+        context['user'] = self.user
+        context['cart'] = self.cart
+        return context

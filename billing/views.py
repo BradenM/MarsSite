@@ -1,14 +1,14 @@
 from django.shortcuts import render
 from pinax.stripe.actions import customers
 from pinax.stripe import mixins
-from pinax.stripe.actions import sources
+from pinax.stripe.actions import sources, charges
 from pinax.stripe.models import Card
 from django.conf import settings
 from django.shortcuts import HttpResponse, redirect
 from django.views.generic import View
 import stripe
+from store.mixins import CartMixin
 
-#stripe_token = settings.PINAX_STRPI
 
 class CustomerMixin(mixins.CustomerMixin):
 
@@ -18,12 +18,17 @@ class CustomerMixin(mixins.CustomerMixin):
     def delete_card(self, stripe_id):
         sources.delete_card(self.customer, stripe_id)
 
+    def charge_customer(self, amount, source):
+        charges.create(
+            amount=amount,
+            customer=self.customer,
+            source=source,
+            send_receipt=False
+        )
+
     @property
     def sources(self):
         return Card.objects.filter(customer=self.customer)
-
-    
-
 
 
 class SaveCard(View, CustomerMixin):
@@ -46,7 +51,8 @@ class RemoveCard(View, CustomerMixin):
             print(e)
             return redirect("store:checkout")
 
-class Order(View, CustomerMixin):
+
+class Order(View, CustomerMixin, CartMixin):
     def post(self, request):
         try:
             # Get Payment Method
@@ -54,5 +60,12 @@ class Order(View, CustomerMixin):
             source_obj = Card.objects.get(pk=payment_selection)
             source = source_obj.stripe_id
             # Get Cart Total
-        except:
-            pass
+            charge_amnt = self.cart.total
+            # Charge
+            self.charge_customer(charge_amnt, source)
+            # Clear Cart
+            self.clear_cart()
+            return redirect('store:checkout_thanks')
+        except stripe.CardError as e:
+            print(e)
+            return HttpResponse(f"Card Error: {e}")
