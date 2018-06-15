@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'repair.apps.RepairConfig',
     'billing.apps.BillingConfig',
     'store.apps.StoreConfig',
+    'staff.apps.StaffConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

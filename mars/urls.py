@@ -20,8 +20,12 @@ from django.conf.urls.static import static
 from users.views import ExtSignupView, ExtLoginView
 
 urlpatterns = [
-    # Home
+
+    # Admin
+    path('admin/manage/', include('staff.urls', namespace='staff')),
     path('admin/', admin.site.urls),
+
+    # Home
     path('', include('repair.urls', namespace="repair")),
 
     # Accounts
