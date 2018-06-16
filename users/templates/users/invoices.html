@@ -1,0 +1,25 @@
+{% extends 'users/base.html' %}
+
+{% block title %}My Invoices{% endblock %}
+
+{% block info %}
+<section class="section">
+    <h1 class="title">Your Invoices</h1>
+    <div class="is-divider"></div>
+    <div class="tile is-ancestor">
+            <div class="tile is-vertical is-parent">
+                {% for item in invoices %}
+                <div class="tile is-child box">
+                    <p class="subtitle">{{ item.date }}</p>
+                    <p>{% for order in item.orders.all %}
+                        {{ order.product.repair }}
+                        {% endfor %}
+                    </p>
+                    <p>Total: ${{ item.total }}</p>
+                    <a class="button is-pulled-right is-info">Details</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+</section>
+{% endblock %}

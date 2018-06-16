@@ -8,43 +8,42 @@
     flex: 1;
 }
 
-#view-devices{
+#view-devices {
     -moz-animation-duration: 1.5s;
     -moz-animation-delay: 1.5s;
     -webkit-animation-duration: 1.5s;
     -webkit-animation-delay: 1.5s;
 }
 
-
-.hvr-float-shadow{
+.hvr-float-shadow {
     box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1) !important;
-    cursor:pointer;
+    cursor: pointer;
 }
 
-.is-wrapping{
-    flex-wrap:wrap !important;
+.is-wrapping {
+    flex-wrap: wrap !important;
 }
 
-.device-image img{
-    max-width:256px;
+.device-image img {
+    max-width: 256px;
 }
 
-.is-repair-subtitle{
-    font-style:normal;
+.is-repair-subtitle {
+    font-style: normal;
 }
 
 .asteriskField {
     display: none;
 }
 
-.tabs li{
+.tabs li {
     margin-top: 0px !important;
 }
 
-.is-info-list span{
-    font-weight:500;
+.is-info-list span {
+    font-weight: 500;
 }
 
-.card-level{
-    padding-left:0px !important;
+.card-level {
+    padding-left: 0px !important;
 }

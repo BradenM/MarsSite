@@ -32,6 +32,7 @@ urlpatterns = [
     path('accounts/signup/', ExtSignupView.as_view()),
     path('accounts/login/', ExtLoginView.as_view()),
     path('accounts/', include('allauth.urls')),
+    path('account/', include('users.urls', namespace="users")),
 
     # Store
     path('store/', include('store.urls')),
@@ -39,9 +40,10 @@ urlpatterns = [
     # Payments
     path('payments/', include("pinax.stripe.urls")),
     path('pay/', include('billing.urls'))
-] 
+]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-urlpatterns += static(f"/{settings.STATIC_URL}", document_root=settings.STATIC_ROOT)
+urlpatterns += static(f"/{settings.STATIC_URL}",
+                      document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
     import debug_toolbar

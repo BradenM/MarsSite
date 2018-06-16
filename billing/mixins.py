@@ -42,3 +42,11 @@ class CustomerMixin(mixins.CustomerMixin):
     @property
     def sources(self):
         return Card.objects.filter(customer=self.customer)
+
+    @property
+    def invoices(self):
+        return Invoice.objects.filter(user=self.request.user)
+
+    @property
+    def orders(self):
+        return Order.objects.filter(user=self.request.user)
