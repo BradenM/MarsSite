@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'billing.apps.BillingConfig',
     'store.apps.StoreConfig',
     'staff.apps.StaffConfig',
+    'tracker.apps.TrackerConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

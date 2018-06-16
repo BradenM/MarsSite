@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Tracker{% endblock %}
+
+{% block content %}
+{% include 'snippets/header.html' %}
+
+<section class="section">
+    <div class="columns">
+        <div class="column">
+            <figure class="image">
+                <img style="width:96px;" src="/media/{{ tracker.order.product.device.image }}"/>
+            </figure>
+        </div>
+
+        <div class="column">
+            three
+        </div>
+
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        {% include 'tracker/steps.html' %}
+    </div>
+</section>
+
+{% endblock %}
