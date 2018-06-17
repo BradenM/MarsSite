@@ -22,3 +22,15 @@ def get_step_status(tracker):
             incomplete.append(choice)
 
     return {'complete': complete, 'incomplete': incomplete, 'latest': latest}
+
+
+@register.simple_tag(name="get_order_summary")
+def compile_order_summary(tracker):
+    repair = tracker.order.product.repair
+    device = tracker.order.product.device
+    summary = {
+        "Device": device.name,
+        "Repair": repair.name,
+        "Price":  f"${tracker.order.product.price}",
+    }
+    return summary
