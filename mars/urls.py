@@ -32,6 +32,7 @@ urlpatterns = [
     path('accounts/signup/', ExtSignupView.as_view()),
     path('accounts/login/', ExtLoginView.as_view()),
     path('accounts/', include('allauth.urls')),
+    path('account/tracker/', include('tracker.urls', namespace="tracker")),
     path('account/', include('users.urls', namespace="users")),
 
     # Store

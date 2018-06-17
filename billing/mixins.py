@@ -1,5 +1,6 @@
 import stripe
 from .models import Invoice, Order
+from tracker.models import Tracker, TrackerUpdate
 from django.conf import settings
 from django.shortcuts import HttpResponse, redirect, render
 from django.views.generic import View
@@ -25,7 +26,7 @@ class CustomerMixin(mixins.CustomerMixin):
             send_receipt=False
         )
 
-    def create_order(self, cart):
+    def create_order(self, cart, tracker=True):
         # Create Invoice
         invoice = Invoice.objects.create(
             user=self.user,
@@ -33,11 +34,20 @@ class CustomerMixin(mixins.CustomerMixin):
         )
         # Create Orders
         for item in cart.entries.all():
-            Order.objects.create(
+            order = Order.objects.create(
                 user=self.user,
                 product=item.product,
                 invoice=invoice
             )
+            # Create Tracker if needed
+            if tracker:
+                new_track = Tracker.objects.create(
+                    user=self.user,
+                    order=order
+                )
+                TrackerUpdate.objects.create(
+                    tracker=new_track
+                )
 
     @property
     def sources(self):

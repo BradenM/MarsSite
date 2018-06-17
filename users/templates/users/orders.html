@@ -12,7 +12,7 @@
                 <div class="tile is-child box">
                     <p class="subtitle">{{ item.product }}</p>
                     <p>Total: ${{ item.invoice.total }}</p>
-                    <a class="button is-pulled-right is-info">Review</a>
+                    <a href="{% url 'tracker:tracker' item.pk %}" class="button is-pulled-right is-info">Review</a>
                 </div>
                 {% endfor %}
             </div>
