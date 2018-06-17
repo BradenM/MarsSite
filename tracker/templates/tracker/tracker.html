@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Tracker{% endblock %}
+
+{% block content %}
+{% include 'snippets/header.html' %}
+{% load tracker_tags %}
+
+<section class="section">
+    <div class="container">
+    <nav class="level">
+        <div class="level-item">
+            <figure class="image">
+                <img style="width:128px;" src="/media/{{ tracker.order.product.device.image }}"/>
+            </figure>
+        </div>
+        <div class="level-item">
+            <div class="card">
+                <header class="card-header has-background-dark">
+                    <p class="card-header-title has-text-light is-centered">
+                        Your Order
+                    </p>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        {% get_order_summary tracker as order_summary%}
+                        <table class="table is-fullwidth">
+                            <tbody>
+                                {% for title, value in order_summary.items %}
+                                <tr>
+                                    <th>{{ title }}</th>
+                                    <td>{{ value }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        {% include 'tracker/timeline.html' %}
+    </div>
+</section>
+
+{% endblock %}

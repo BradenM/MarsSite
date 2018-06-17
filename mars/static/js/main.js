@@ -1,29 +1,31 @@
-$(document).ready(function(){
+$(document).ready(function () {
     console.log('Main Script file loaded');
     $('#signup_tab').hide();
 
     jQuery.fn.extend({
         // Animated Scroll
-        aniscroll: function(){
-            $(this).animatescroll({scrollSpeed:1500,easing:'easeInOutSine'});
+        aniscroll: function () {
+            $(this).animatescroll({
+                scrollSpeed: 1500,
+                easing: 'easeInOutSine'
+            });
         },
         // Hardcoded cause im lazy user tab switching function, will fix later
-        switchTab: function(){
+        switchTab: function () {
             var target = this
             console.log('tab switched');
-            if (this.is('#signup_tab')){
+            if (this.is('#signup_tab')) {
                 $('#signup_tab').show();
                 $('#login_tab').hide();
                 $('#login_tab_button').removeClass('is-active');
                 $('#signup_tab_button').addClass('is-active');
-            }
-            else{
+            } else {
                 $('#signup_tab').hide();
                 $('#login_tab').show();
                 $('#login_tab_button').addClass('is-active');
                 $('#signup_tab_button').removeClass('is-active');
             }
-            return(false);
+            return (false);
         }
 
     })
@@ -70,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-$('.quickview').on("mouseenter", function(event){
+$('.quickview').on("mouseenter", function (event) {
     // Get all document sliders
     var dismissQuickView = document.querySelectorAll('[data-dismiss="quickview"]');
     [].forEach.call(dismissQuickView, function (dismiss) {
@@ -85,10 +87,10 @@ $('.quickview').on("mouseenter", function(event){
 })
 
 // Notification Fade Out
-$(document).ready(function(){
-    setTimeout(function(){
-        $('.notif-dismiss').addClass('fadeOut'); 
-        setTimeout(function(){
+$(document).ready(function () {
+    setTimeout(function () {
+        $('.notif-dismiss').addClass('fadeOut');
+        setTimeout(function () {
             $('.notif-dismiss').remove();
         }, 1000)
     }, 4000);
@@ -98,7 +100,10 @@ $(document).ready(function(){
     $('#reveal_form').on('click', function (event) {
         $('.new_card').css('display', 'block');
     });
-    
+
+    // Set Fullheight against footer
+    var footerHeight = $('.footer').height();
+    var res = 100 - footerHeight;
+    var height = res + 'vh';
+    $('.is-fullheight-menu').css('height', height);
 });
-
-

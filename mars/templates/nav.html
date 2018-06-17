@@ -43,8 +43,14 @@
                                 </div>
                                 <div class="dropdown-menu" id="dropdown-menu4" role="menu">
                                     <div class="dropdown-content">
+                                    <a href="{% url 'users:my_account' %}" class="dropdown-item">
+                                        <span>My Account</span>
+                                    </a>
+                                    <a href="{% url 'users:my_orders' %}" class="dropdown-item">
+                                            <span>My Orders</span>
+                                    </a>
                                     <a href="{% url 'store:cart' %}" class="dropdown-item">
-                                        <span>Your Cart</span>
+                                        <span>My Cart</span>
                                     </a>
                                     <a href="{% url 'account_logout' %}" class="dropdown-item">
                                         <strong>Logout</strong>

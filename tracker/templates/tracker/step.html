@@ -1,0 +1,30 @@
+{% for update in complete %}
+<div class="step-item is-active is-success is-completed ">
+    <div class="step-marker">
+        {% if update != latest %}
+        <span class="icon">
+            <i class="fa fa-check"></i>
+        </span>
+        {% elif update.status == "Complete" %}
+        <span class="icon">
+            <i class="fa fa-thumbs-up"></i>
+        </span>
+        {% endif %}
+    </div>
+    <div class="step-details">
+        <p class="step-title">{{ update.status }}</p>
+        {% if update == latest %}
+        <p>{{ update.description }}</p>
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
+
+{% for update in incomplete %}
+<div class="step-item ">
+    <div class="step-marker"></div>
+    <div class="step-details">
+        <p class="step-title">{{ update }}</p>
+    </div>
+</div>
+{% endfor %}

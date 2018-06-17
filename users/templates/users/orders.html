@@ -1,0 +1,22 @@
+{% extends 'users/base.html' %}
+
+{% block title %}My Orders{% endblock %}
+
+{% block info %}
+<section class="section">
+    <h1 class="title">Your Orders</h1>
+    <div class="is-divider"></div>
+    <div class="tile is-ancestor">
+            <div class="tile is-vertical is-parent">
+                {% for item in orders %}
+                <div class="tile is-child box">
+                    <p class="subtitle">{{ item.product }}</p>
+                    <p>Total: ${{ item.invoice.total }}</p>
+                    <a href="{% url 'tracker:tracker' item.pk %}" class="button is-pulled-right is-info">Review</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+</section>
+
+{% endblock %}

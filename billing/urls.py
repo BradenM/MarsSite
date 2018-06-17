@@ -9,5 +9,5 @@ urlpatterns = [
     path('remove-card/<int:pk>/', views.RemoveCard.as_view(), name="remove_card"),
 
     # Charge
-    path('order/', views.Order.as_view(), name="complete_order"),
+    path('order/', views.ChargeCustomer.as_view(), name="complete_order"),
 ]
