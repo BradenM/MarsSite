@@ -107,3 +107,29 @@ $(document).ready(function () {
     var height = res + 'vh';
     $('.is-fullheight-menu').css('height', height);
 });
+
+// Auth Ajax
+$('#auth_loginform').submit(function (event) {
+    event.preventDefault();
+    console.log('Ajax Login');
+    $.ajax({
+        url: "/accounts/login/",
+        data: $(this).serialize(),
+        dataType: 'json',
+        method: 'POST',
+        success: function (data) {
+            location.reload();
+        },
+        error: function (data) {
+            var resp = data.responseJSON
+            var errors = $('#form_errors');
+            var loader = $('#form_loader');
+            errors.html('');
+            loader.removeClass('is-hidden');
+            setTimeout(function () {
+                loader.addClass('is-hidden');
+                errors.html(resp.form.errors);
+            }, 500)
+        },
+    })
+})

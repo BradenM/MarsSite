@@ -5,16 +5,20 @@ from crispy_forms.layout import Layout, Submit, Fieldset, Field, MultiField, HTM
 from allauth.account.forms import LoginForm
 from .models import Profile
 
+
 class ExtSignupForm(forms.Form):
-    first_name = forms.CharField(max_length=32, label='First Name', widget=forms.TextInput(attrs={'placeholder': 'First Name', 'class': 'input'}))
-    last_name = forms.CharField(max_length=32, label='Last Name', widget=forms.TextInput(attrs={'placeholder': 'Last Name', 'class': 'input'}))
+    first_name = forms.CharField(max_length=32, label='First Name', widget=forms.TextInput(
+        attrs={'placeholder': 'First Name', 'class': 'input'}))
+    last_name = forms.CharField(max_length=32, label='Last Name', widget=forms.TextInput(
+        attrs={'placeholder': 'Last Name', 'class': 'input'}))
     phone = PhoneNumberField()
 
     def __init__(self, *args, **kwargs):
         super(ExtSignupForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_action = "/accounts/signup/"
-        self.helper.add_input(Submit('submit', 'Sign Up', css_class="button is-info is-rounded"))
+        self.helper.add_input(
+            Submit('submit', 'Sign Up', css_class="button is-info is-rounded"))
         self.helper.form_class = 'form'
         self.helper.layout = Layout(
             Div(
@@ -57,17 +61,25 @@ class ExtLoginForm(LoginForm):
         super(ExtLoginForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_method = "post"
-        self.helper.form_action = "/accounts/login/"
-        self.helper.add_input(Submit('submit', 'Login', css_class="button is-info is-rounded"))
         self.helper.form_class = 'form'
+        self.helper.form_id = 'auth_loginform'
         self.helper.layout = Layout(
+            HTML(
+                "{% csrf_token %}"
+            ),
             Div(
                 Field('login', css_class="input", type="email"),
-                css_class = "field"
+                css_class="field"
             ),
             Div(
                 Field('password', css_class="input"),
+                HTML("<p id='form_errors' class='help is-danger'></p>"),
+                HTML(
+                    "<a id='form_loader' class='button is-text is-loading is-hidden'></a>"),
                 css_class="field"
+            ),
+            Div(
+                Submit('submit', 'Login', css_class="button is-info is-rounded"),
             )
         )
 

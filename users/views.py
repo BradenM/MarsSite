@@ -15,14 +15,6 @@ class ExtSignupView(SignupView):
         return HttpResponseRedirect('/')
 
 
-# Override invalid form on Login
-class ExtLoginView(LoginView):
-
-    def form_invalid(self, form):
-        self.request.session['invalid_login'] = self.request.POST
-        return HttpResponseRedirect('/')
-
-
 class AccountPage(TemplateView):
     template_name = 'users/account.html'
 

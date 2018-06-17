@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.urls import path, include, re_path
 from django.conf.urls.static import static
-from users.views import ExtSignupView, ExtLoginView
+from users.views import ExtSignupView
 
 urlpatterns = [
 
@@ -30,7 +30,6 @@ urlpatterns = [
 
     # Accounts
     path('accounts/signup/', ExtSignupView.as_view()),
-    path('accounts/login/', ExtLoginView.as_view()),
     path('accounts/', include('allauth.urls')),
     path('account/tracker/', include('tracker.urls', namespace="tracker")),
     path('account/', include('users.urls', namespace="users")),

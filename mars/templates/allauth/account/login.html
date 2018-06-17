@@ -7,14 +7,6 @@
             {% if login_form %}
             {% crispy login_form %}
             {% if not user.is_authenticated %}
-            {% if login_form.errors %}
-            <script>showUserModal();</script>
-            <script>
-                $(document).ready(function(){
-                    $('#login_tab').switchTab();
-                });
-            </script>
-            {% endif %}
             {% endif %}
             {% endif %}
         </div>
