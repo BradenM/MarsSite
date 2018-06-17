@@ -1,5 +1,8 @@
 from .models import Cart, CartEntry, REPAIR
 from django.contrib import messages
+from paypal.standard.forms import PayPalPaymentsForm
+from django.shortcuts import reverse
+
 
 class CartMixin:
     status_removed = "removed from your cart"
@@ -26,6 +29,19 @@ class CartMixin:
     def notify_cart_update(self, item, status):
         messages.success(
             self.request, f'{item.product.device.name} {item.product.repair.name} {item.type} has been {status}.', extra_tags='user_alert_info')
+
+    def generate_paypal(self):
+        paypal_charge = {
+            "business": "braden@bradenmars.me",
+            "amount": self.cart.total,
+            "item_name": "Order from BradenMars.me",
+            "notify_url": self.request.build_absolute_uri(reverse('paypal-ipn')),
+            "return": self.request.build_absolute_uri(reverse("store:checkout")),
+            "cancel_return": self.request.build_absolute_uri(reverse("store:checkout")),
+        }
+
+        form = PayPalPaymentsForm(initial=paypal_charge)
+        return form
 
     @property
     def user(self):

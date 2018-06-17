@@ -1,9 +1,4 @@
-{% extends 'store/base.html' %} 
-
-{% block title %}Checkout{% endblock %} 
-
-{% block content %} 
-{% load crispy_forms_tags %} 
+{% extends 'store/base.html' %} {% block title %}Checkout{% endblock %} {% block content %} {% load crispy_forms_tags %}
 {% load store_tags %}
 
 <section class="section is-paddingless">
@@ -94,7 +89,7 @@
                             </div>
                             <div class="accordion-body">
                                 <div class="accordion-content">
-                                    {% comment %} {% include 'store/paypal_payments.html' %} {% endcomment %}
+                                    {{ paypal.render }}
                                 </div>
                             </div>
                         </article>
@@ -104,8 +99,7 @@
                             </div>
                             <div class="accordion-body">
                                 <div class="accordion-content">
-                                    {% if sources %} 
-                                    {% include 'store/card.html' %}
+                                    {% if sources %} {% include 'store/card.html' %}
                                     <a id="reveal_form" class="button is-link">Add Card</a>
                                     <div class="new_card animated fadeIn column">
                                         {% include 'store/stripe_card.html' %}
@@ -113,8 +107,7 @@
                                     {% else %}
                                     <p class="subtitle">You have no active cards on your account, please add one to continue. </p>
                                     <div class="is-divider"></div>
-                                    {% include 'store/stripe_card.html' %} 
-                                    {% endif %}
+                                    {% include 'store/stripe_card.html' %} {% endif %}
                                 </div>
                             </div>
                         </article>

@@ -2,7 +2,7 @@ import stripe
 from .models import Invoice, Order
 from tracker.models import Tracker, TrackerUpdate
 from django.conf import settings
-from django.shortcuts import HttpResponse, redirect, render
+from django.shortcuts import HttpResponse, redirect, render, reverse
 from django.views.generic import View
 from pinax.stripe import mixins
 from pinax.stripe.actions import charges, customers, sources

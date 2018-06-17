@@ -50,6 +50,7 @@ class Checkout(TemplateView, CustomerMixin, CartMixin):
         context['cart'] = self.cart
         context['customer'] = self.customer
         context['sources'] = self.sources
+        context['paypal'] = self.generate_paypal()
         context['stripe_id'] = settings.PINAX_STRIPE_PUBLIC_KEY
         return context
 

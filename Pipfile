@@ -14,6 +14,7 @@ django-smtp-ssl = "*"
 django-phonenumber-field = "*"
 stripe = "*"
 pinax-stripe = "*"
+django-paypal = "*"
 
 [dev-packages]
 pylint = "*"

@@ -40,7 +40,8 @@ urlpatterns = [
 
     # Payments
     path('payments/', include("pinax.stripe.urls")),
-    path('pay/', include('billing.urls'))
+    path('pay/', include('billing.urls')),
+    path('paypal/', include('paypal.standard.ipn.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(f"/{settings.STATIC_URL}",

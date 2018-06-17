@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.auth0',
     'pinax.stripe',
+    'paypal.standard.ipn',
 ]
 
 MIDDLEWARE = [
@@ -172,6 +173,9 @@ PINAX_STRIPE_SECRET_KEY = config('STRIPE_TEST_SECRET')
 PINAX_STRIPE_API_VERSION = "2018-05-21"
 PINAX_STRIPE_INVOICE_FROM_EMAIL = "braden@bradenmars.me"
 STRIPE_LIVE_MODE = False
+
+# Paypal Settings
+PAYPAL_TEST = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
