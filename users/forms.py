@@ -16,9 +16,6 @@ class ExtSignupForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(ExtSignupForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
-        #self.helper.form_action = "/account/signup/"
-        self.helper.add_input(
-            Submit('submit', 'Sign Up', css_class="button is-info is-rounded"))
         self.helper.form_class = 'form'
         self.helper.form_method = "post"
         self.helper.form_id = 'auth_signupform'
@@ -27,8 +24,6 @@ class ExtSignupForm(forms.Form):
                 "{% csrf_token %}"
             ),
             Div(
-                HTML(
-                    "<a id='signupform_loader' class='button is-text is-loading is-hidden'></a>"),
                 Field('email', css_class='input', type="email"),
                 HTML("<p id='email_errors' class='help is-danger'></p >"),
                 css_class="field"
@@ -44,7 +39,8 @@ class ExtSignupForm(forms.Form):
                 css_class="field"
             ),
             Div(
-                Field('phone', css_class="input"),
+                Field('phone', css_class="input",
+                      placeholder="Your Phone Number"),
                 HTML("<p id='phone_errors' class='help is-danger'></p>"),
                 css_class="field"
             ),
@@ -58,6 +54,13 @@ class ExtSignupForm(forms.Form):
                 HTML("<p id='password2_errors' class='help is-danger'></p>"),
                 css_class="field"
             ),
+            Div(
+                HTML(
+                    "<a id='signupform_loader' class='button is-text is-loading is-hidden'></a>"),
+                Submit('submit', 'Sign Up',
+                       css_class="button is-info is-rounded"),
+                css_class="field"
+            )
 
         )
 

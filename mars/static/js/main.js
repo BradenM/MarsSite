@@ -126,19 +126,23 @@ $('#auth_loginform').submit(function (event) {
             var loader = $('#form_loader');
             errors.html('');
             loader.removeClass('is-hidden');
+            // Short timeout to signify that request went through
             setTimeout(function () {
                 loader.addClass('is-hidden');
                 errors.html(resp.form.errors);
-            }, 500)
+            }, 250)
         },
     })
 });
 
 // Auth Signup Ajax
 var signup = $('#auth_signupform')
-$('#auth_signupform').submit(function (event) {
+var submit_button = $('#submit-id-submit')
+var loader = $('#signupform_loader')
+signup.submit(function (event) {
     event.preventDefault();
-    console.log('Ajax Signup');
+    submit_button.addClass('is-hidden');
+    loader.removeClass('is-hidden');
     $.ajax({
         url: "/accounts/signup/",
         data: $(this).serialize(),
@@ -148,11 +152,15 @@ $('#auth_signupform').submit(function (event) {
             location.reload();
         },
         error: function (data) {
-            $.each(data.responseJSON.form.fields, function (key, element) {
-                var field = $('#' + key + "_errors");
-                console.log(field);
-                field.html(element.errors);
-            });
+            // Short timeout to signify that request went through
+            setTimeout(function () {
+                $.each(data.responseJSON.form.fields, function (key, element) {
+                    loader.addClass('is-hidden');
+                    submit_button.removeClass('is-hidden');
+                    var field = $('#' + key + "_errors");
+                    field.html(element.errors);
+                });
+            }, 250)
         }
     })
 });
