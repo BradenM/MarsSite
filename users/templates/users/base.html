@@ -1,33 +1,34 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% include 'snippets/header.html' %}
-<div class="columns">
+{% include 'nav.html' %}
 
-    <div class="column is-one-quarter">
-        <div class="block box is-radiusless is-marginless">
-            <aside class="menu is-fullheight-menu">
+
+<div class="container context">
+    <div class="columns is-fullwidth">
+        <div class="column is-3">
+            <aside class="menu">
                 <p class="menu-label">
                     General
                 </p>
                 <ul class="menu-list">
-                    <li><a>Setting One</a></li>
-                    <li><a>Setting Two</a></li>
+                    <li><a load-account="home" class="is-active">My Account</a></li>
+                    <li><a load-account="settings" >Settings</a></li>
+                    <li><a load-account="contact" >Contact</a></li>
                 </ul>
                 <p class="menu-label">
-                    Orders
+                    Purchases
                 </p>
                 <ul class="menu-list">
-                    <li><a href="{% url 'users:my_invoices' %}">My Invoices</a></li>
-                    <li><a href="{% url 'users:my_orders' %}">My Orders</a></li>
+                    <li><a>My Devices</a></li>
+                    <li><a load-account="orders">Orders</a></li>
+                    <li><a>Invoices</a></li>
                 </ul>
             </aside>
         </div>
-    </div>
+        <div id="account-view" class="column">
 
-    <div class="column">
-        {% block info %}
-        {% endblock %}
+        </div>
     </div>
 </div>
 

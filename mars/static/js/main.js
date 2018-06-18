@@ -164,3 +164,28 @@ signup.submit(function (event) {
         }
     })
 });
+
+// Account Settings
+var account_sel = $('a[load-account]')
+var content = $('#account-view')
+account_sel.click(function (e) {
+    var page_url = "/" + $(this).attr('load-account') + "/";
+    var link = $(this);
+    console.log('ive been clicked');
+    account_sel.each(function () {
+        $(this).removeClass('is-active');
+    })
+    link.addClass('is-active');
+    var window = $(".Site-content").height();
+    content.load('orders/', function () {
+        var tiles = $("#order-tiles")
+        var footer = $("footer").height();
+        console.log(window, footer);
+        var max = window - footer * 2;
+        tiles.css('overflow-y', 'scroll');
+        tiles.css('max-height', max);
+        console.log(max);
+    });
+})
+
+// Order Overflow

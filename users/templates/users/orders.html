@@ -1,22 +1,56 @@
-{% extends 'users/base.html' %}
-
-{% block title %}My Orders{% endblock %}
-
-{% block info %}
-<section class="section">
-    <h1 class="title">Your Orders</h1>
-    <div class="is-divider"></div>
-    <div class="tile is-ancestor">
-            <div class="tile is-vertical is-parent">
-                {% for item in orders %}
-                <div class="tile is-child box">
-                    <p class="subtitle">{{ item.product }}</p>
-                    <p>Total: ${{ item.invoice.total }}</p>
-                    <a href="{% url 'tracker:tracker' item.pk %}" class="button is-pulled-right is-info">Review</a>
-                </div>
-                {% endfor %}
-            </div>
+<section class="hero is-light is-small">
+    <div class="hero-body">
+        <div class="container has-text-centered">
+            <h1 class="title">
+                Your Orders
+            </h1>
         </div>
+    </div>
+    <div class="hero-foot">
+        <div class="content">
+            <nav class="level">
+                <div class="level-item has-text-centered">
+                    <div>
+                        <div class="field">
+                            <p class="control has-icons-left">
+                                <input class="input is-rounded is-normal" placeholder="Search">
+                                <span class="icon is-small is-left">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
 </section>
 
-{% endblock %}
+<section id="order-tiles" class="section">
+    <div class="tile is-ancestor">
+        <div class="tile is-9 is-vertical is-parent">
+            {% for i in "x"|rjust:"100" %}
+            <div class="tile is-child">
+                <p class="title">Device Repair</p>
+                <div class="columns">
+                    <div class="column is-3">
+                        <ul>
+                        <li><span class="has-text-weight-semibold">Device: </span>iPhone X</li>
+                        <li><span class="has-text-weight-semibold">Repair: </span>Screen</li>
+                        <li><span class="has-text-weight-semibold">Placed: </span>Feb. 12, 2002</li>
+                        </ul>
+                    </div>
+                    <div class="is-divider-vertical"></div>
+                    <div class="column is-3 has-text-centered">
+                        <p>One</p>
+                        <p>One</p>
+                        <p>One</p>
+                    </div>
+                </div>
+            </div>
+            <div class="is-divider"></div>
+            {% endfor %}
+        </div>
+    </div>
+
+</section>
