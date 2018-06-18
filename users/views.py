@@ -7,14 +7,6 @@ from django.views.generic import View, TemplateView
 from billing.mixins import CustomerMixin
 
 
-# Override invalid form on Signup
-class ExtSignupView(SignupView):
-
-    def form_invalid(self, form):
-        self.request.session['invalid_signup'] = self.request.POST
-        return HttpResponseRedirect('/')
-
-
 class AccountPage(TemplateView):
     template_name = 'users/account.html'
 

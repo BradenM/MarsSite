@@ -108,7 +108,7 @@ $(document).ready(function () {
     $('.is-fullheight-menu').css('height', height);
 });
 
-// Auth Ajax
+// Auth Login Ajax
 $('#auth_loginform').submit(function (event) {
     event.preventDefault();
     console.log('Ajax Login');
@@ -132,4 +132,27 @@ $('#auth_loginform').submit(function (event) {
             }, 500)
         },
     })
-})
+});
+
+// Auth Signup Ajax
+var signup = $('#auth_signupform')
+$('#auth_signupform').submit(function (event) {
+    event.preventDefault();
+    console.log('Ajax Signup');
+    $.ajax({
+        url: "/accounts/signup/",
+        data: $(this).serialize(),
+        dataType: 'json',
+        method: 'POST',
+        success: function (data) {
+            location.reload();
+        },
+        error: function (data) {
+            $.each(data.responseJSON.form.fields, function (key, element) {
+                var field = $('#' + key + "_errors");
+                console.log(field);
+                field.html(element.errors);
+            });
+        }
+    })
+});
