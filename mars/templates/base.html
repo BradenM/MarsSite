@@ -10,12 +10,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.3.1/css/hover-min.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" />
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="/static/js/main.js"></script>
-    <script src="/static/js/scroll.js"></script>
-    <script src="/static/js/accordion.js"></script>
-    <script src="/static/js/bulma.js"></script>
     {% block head %}
     {% endblock %}
 </head>
@@ -34,4 +28,11 @@
             <p class="subtitle has-text-light">&copy; 2018 | Braden Mars</h1>
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="/static/js/main.js"></script>
+    <script src="/static/js/scroll.js"></script>
+    <script src="/static/js/accordion.js"></script>
+    <script src="/static/js/bulma.js"></script>
+    {% block scripts %}
+    {% endblock %}
 </footer>

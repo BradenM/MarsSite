@@ -107,3 +107,60 @@ $(document).ready(function () {
     var height = res + 'vh';
     $('.is-fullheight-menu').css('height', height);
 });
+
+// Auth Login Ajax
+$('#auth_loginform').submit(function (event) {
+    event.preventDefault();
+    console.log('Ajax Login');
+    $.ajax({
+        url: "/accounts/login/",
+        data: $(this).serialize(),
+        dataType: 'json',
+        method: 'POST',
+        success: function (data) {
+            location.reload();
+        },
+        error: function (data) {
+            var resp = data.responseJSON
+            var errors = $('#form_errors');
+            var loader = $('#form_loader');
+            errors.html('');
+            loader.removeClass('is-hidden');
+            // Short timeout to signify that request went through
+            setTimeout(function () {
+                loader.addClass('is-hidden');
+                errors.html(resp.form.errors);
+            }, 250)
+        },
+    })
+});
+
+// Auth Signup Ajax
+var signup = $('#auth_signupform')
+var submit_button = $('#submit-id-submit')
+var loader = $('#signupform_loader')
+signup.submit(function (event) {
+    event.preventDefault();
+    submit_button.addClass('is-hidden');
+    loader.removeClass('is-hidden');
+    $.ajax({
+        url: "/accounts/signup/",
+        data: $(this).serialize(),
+        dataType: 'json',
+        method: 'POST',
+        success: function (data) {
+            location.reload();
+        },
+        error: function (data) {
+            // Short timeout to signify that request went through
+            setTimeout(function () {
+                $.each(data.responseJSON.form.fields, function (key, element) {
+                    loader.addClass('is-hidden');
+                    submit_button.removeClass('is-hidden');
+                    var field = $('#' + key + "_errors");
+                    field.html(element.errors);
+                });
+            }, 250)
+        }
+    })
+});
