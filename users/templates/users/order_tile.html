@@ -1,0 +1,47 @@
+{% load tracker_tags %}
+
+{% for order in orders %}
+<div class="tile is-child">
+    <nav class="level">
+        <div class="level-left">
+            <div class="level-item">
+                <h1 class="subtitle is-4">{{ order.device_type }}</h1>
+            </div>
+            <div class="level-item">
+                <div class="tags has-addons">
+                    <span class="tag is-small">Status</span>
+                    {% get_tracker order as tracker %}
+                    <span class="tag is-small is-success">{{ tracker.updates.last.status }}</span>
+                </div>
+            </div> 
+        </div>
+    </nav>
+    <div class="columns is-gapless is-marginless">
+        <div class="column is-3">
+            <ul class="has-text-justified">
+            <li><span class="has-text-weight-semibold">Device: </span>{{ order.device }}</li>
+            <li><span class="has-text-weight-semibold">Repair: </span>{{ order.repair }}</li>
+            <li><span class="has-text-weight-semibold">Placed: </span>{{ order.order_date }}</li>
+            </ul>
+        </div>
+        <div class="is-divider-vertical" data-content="&#9900;"></div>
+        <div class="column">
+            <ul>
+                <li><a>View Invoice</a></li>
+                <li><a>Payment Details</a></li>
+                <li><a>Cancel Order</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="container is-fluid">
+        <a class="button is-outlined is-link is-pulled-right">Track</a>
+    </div>
+</div>
+<hr>
+{% empty %}
+<div class="container has-text-centered">
+    <h1 class="title has-text-weight-light">
+        {{ empty_msg }}
+    </h1>
+</div>
+{% endfor %}

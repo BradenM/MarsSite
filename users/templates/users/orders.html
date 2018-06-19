@@ -1,4 +1,4 @@
-<section class="hero is-light is-small">
+<section class="hero is-dark is-small">
     <div class="hero-body">
         <div class="container">
             <nav class="level">
@@ -13,7 +13,7 @@
                     <div class="level-item">
                         <div class="field has-addons">
                             <p class="control has-icons-left">
-                                <input class="input is-normal" type="text" placeholder="Search">
+                                <input name="search_query" search-data="orders" class="input is-normal" type="text" placeholder="Search">
                                 <span class="icon is-small is-left">
                                     <i class="fas fa-search"></i>
                                 </span>
@@ -38,28 +38,8 @@
 
 <section id="order-tiles" class="section">
     <div class="tile is-ancestor">
-        <div class="tile is-9 is-vertical is-parent">
-            {% for i in "x"|rjust:"100" %}
-            <div class="tile is-child">
-                <h1 class="subtitle is-4">Device Repair</h1>
-                <div class="columns">
-                    <div class="column is-3">
-                        <ul>
-                        <li><span class="has-text-weight-semibold">Device: </span>iPhone X</li>
-                        <li><span class="has-text-weight-semibold">Repair: </span>Screen</li>
-                        <li><span class="has-text-weight-semibold">Placed: </span>Feb. 12, 2002</li>
-                        </ul>
-                    </div>
-                    <div class="is-divider-vertical"></div>
-                    <div class="column is-3 has-text-centered">
-                        <p>One</p>
-                        <p>One</p>
-                        <p>One</p>
-                    </div>
-                </div>
-            </div>
-            <div class="is-divider"></div>
-            {% endfor %}
+        <div id="order-list" class="tile is-9 is-vertical is-parent">
+            {% include 'users/order_tile.html' %}
         </div>
     </div>
 

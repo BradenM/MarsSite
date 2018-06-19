@@ -171,7 +171,6 @@ var content = $('#account-view')
 account_sel.click(function (e) {
     var page_url = "/" + $(this).attr('load-account') + "/";
     var link = $(this);
-    console.log('ive been clicked');
     account_sel.each(function () {
         $(this).removeClass('is-active');
     })
@@ -184,8 +183,25 @@ account_sel.click(function (e) {
         var max = window - footer * 2;
         tiles.css('overflow-y', 'auto');
         tiles.css('max-height', max);
-        console.log(max);
+        loadOrderSearch();
     });
 })
 
-// Order Overflow
+// Order Searching
+function loadOrderSearch() {
+    console.log('Order Search loaded')
+    var search = $('input[search-data]')
+    search.on('change paste keyup', function () {
+        $.ajax({
+            url: "orders/search/",
+            data: $(this).serialize(),
+            method: 'GET',
+            success: function (data) {
+                $('#order-list').html(data);
+            },
+            error: function (data) {
+                account_sel.click(); // Temp solution
+            }
+        })
+    })
+}

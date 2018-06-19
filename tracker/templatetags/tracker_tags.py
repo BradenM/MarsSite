@@ -1,8 +1,14 @@
 from django import template
 from django.conf import settings
-from tracker.models import STATUS_CHOICES
+from tracker.models import Tracker, STATUS_CHOICES
 
 register = template.Library()
+
+
+@register.simple_tag(name="get_tracker")
+def get_tracker(order):
+    track = Tracker.objects.get(order=order)
+    return track
 
 
 @register.inclusion_tag('tracker/step.html', name="get_status")
