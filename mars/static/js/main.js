@@ -182,7 +182,7 @@ account_sel.click(function (e) {
         var footer = $("footer").height();
         console.log(window, footer);
         var max = window - footer * 2;
-        tiles.css('overflow-y', 'scroll');
+        tiles.css('overflow-y', 'auto');
         tiles.css('max-height', max);
         console.log(max);
     });

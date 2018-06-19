@@ -1,21 +1,30 @@
 <section class="hero is-light is-small">
     <div class="hero-body">
-        <div class="container has-text-centered">
-            <h1 class="title">
-                Your Orders
-            </h1>
-        </div>
-    </div>
-    <div class="hero-foot">
-        <div class="content">
+        <div class="container">
             <nav class="level">
-                <div class="level-item has-text-centered">
-                    <div>
-                        <div class="field">
+                <div class="level-left">
+                    <div class="level-item">
+                        <h3 class="title has-text-weight-light">
+                            Your Orders
+                        </h3>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <div class="field has-addons">
                             <p class="control has-icons-left">
-                                <input class="input is-rounded is-normal" placeholder="Search">
+                                <input class="input is-normal" type="text" placeholder="Search">
                                 <span class="icon is-small is-left">
                                     <i class="fas fa-search"></i>
+                                </span>
+                            </p>
+                            <p class="control">
+                                <span class="select">
+                                    <select>
+                                        <option>All Orders</option>
+                                        <option>Computers</option>
+                                        <option>Repairs</option>
+                                    </select>
                                 </span>
                             </p>
                         </div>
@@ -26,12 +35,13 @@
     </div>
 </section>
 
+
 <section id="order-tiles" class="section">
     <div class="tile is-ancestor">
         <div class="tile is-9 is-vertical is-parent">
             {% for i in "x"|rjust:"100" %}
             <div class="tile is-child">
-                <p class="title">Device Repair</p>
+                <h1 class="subtitle is-4">Device Repair</h1>
                 <div class="columns">
                     <div class="column is-3">
                         <ul>
