@@ -165,43 +165,81 @@ signup.submit(function (event) {
     })
 });
 
-// Account Settings
-var account_sel = $('a[load-account]')
-var content = $('#account-view')
-account_sel.click(function (e) {
-    var page_url = "/" + $(this).attr('load-account') + "/";
-    var link = $(this);
-    account_sel.each(function () {
-        $(this).removeClass('is-active');
+
+var accountPage = (function () {
+
+    // Vars
+    var content = $('#account-view')
+    var account_sel = $('a[load-account]')
+    var contentWindow = $('.Site-content').height();
+    var track_links = $('a[load-tracker]');
+
+    // Init
+    account_sel.click(function (e) {
+        loadPage($(this));
     })
-    link.addClass('is-active');
-    var window = $(".Site-content").height();
-    content.load('orders/', function () {
-        var tiles = $("#order-tiles")
+
+    // Page Selection
+    var loadPage = function (sel) {
+        console.log('clicked');
+        console.log($(this))
+        // Select Link
+        var link = $(sel);
+        account_sel.each(function () {
+            $(this).removeClass('is-active');
+        })
+        link.addClass('is-active')
+        // Load Page
+        var page_url = sel.attr('load-account') + "/";
+        content.load(page_url, function () {
+            adjustScroll();
+            Search($('input[search-data]'));
+            loadTracker(track_links);
+        })
+    }
+
+    // Adjust Scroll for lists
+    var adjustScroll = function () {
+        var el = $('section[data-scroll-adjust]')
         var footer = $("footer").height();
-        console.log(window, footer);
-        var max = window - footer * 2;
-        tiles.css('overflow-y', 'auto');
-        tiles.css('max-height', max);
-        loadOrderSearch();
-    });
+        var adjust = contentWindow - footer * 2;
+        console.log(contentWindow, footer, adjust);
+        el.css('overflow-y', 'auto');
+        el.css('max-height', adjust);
+    }
+
+    // Get Tracker info for orders
+    var loadTracker = function () {
+        $(this).on('click', function (e) {
+            var track = $(e.target).attr('load-tracker');
+            var url = "tracker/" + track;
+            content.load(url, function () {
+                accountPage();
+            });
+        })
+    }
+
 })
 
-// Order Searching
-function loadOrderSearch() {
-    console.log('Order Search loaded')
-    var search = $('input[search-data]')
-    search.on('change paste keyup', function () {
+var Search = function (sel) {
+    var input = $(sel)
+    var target = $('#' + input.attr('search-target'))
+    var baseHTML = target.html();
+    input.on('change, paste, keyup', function () {
         $.ajax({
-            url: "orders/search/",
+            url: input.attr('search-data'),
             data: $(this).serialize(),
             method: 'GET',
             success: function (data) {
-                $('#order-list').html(data);
+                target.html(data);
             },
             error: function (data) {
-                account_sel.click(); // Temp solution
+                target.html(baseHTML);
             }
         })
     })
 }
+
+$(document).ready(function () {
+    accountPage();
+});

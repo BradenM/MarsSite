@@ -64,6 +64,10 @@
     max-width: 50px;
 }
 
+.image.has-max-256 img {
+    max-width: 256px;
+}
+
 @media screen and (max-width:769px) {
     hr {
         margin-top: 3rem;

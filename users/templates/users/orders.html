@@ -13,7 +13,7 @@
                     <div class="level-item">
                         <div class="field has-addons">
                             <p class="control has-icons-left">
-                                <input name="search_query" search-data="orders" class="input is-normal" type="text" placeholder="Search">
+                                <input name="search_query" search-target="order-list" search-data="orders/search/" class="input is-normal" type="text" placeholder="Search">
                                 <span class="icon is-small is-left">
                                     <i class="fas fa-search"></i>
                                 </span>
@@ -36,7 +36,7 @@
 </section>
 
 
-<section id="order-tiles" class="section">
+<section data-scroll-adjust="resize" class="section">
     <div class="tile is-ancestor">
         <div id="order-list" class="tile is-9 is-vertical is-parent">
             {% include 'users/order_tile.html' %}
