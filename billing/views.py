@@ -40,10 +40,10 @@ class ChargeCustomer(View, CustomerMixin, CartMixin):
             source = source_obj.stripe_id
             # Get Cart Total
             charge_amnt = self.cart.total
-            # Create Orders
-            self.create_order(self.cart)
             # Charge
-            self.charge_customer(charge_amnt, source)
+            created_charge = self.charge_customer(charge_amnt, source)
+            # Create Orders
+            self.create_order(self.cart, created_charge)
             # Clear Cart
             self.clear_cart()
             return redirect('store:checkout_thanks')
