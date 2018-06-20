@@ -1,5 +1,5 @@
 import stripe
-from .models import Invoice, Order
+from .models import Invoice, Order, ORDER_TYPE
 from tracker.models import Tracker, TrackerUpdate
 from django.conf import settings
 from django.shortcuts import HttpResponse, redirect, render
@@ -37,7 +37,8 @@ class CustomerMixin(mixins.CustomerMixin):
             order = Order.objects.create(
                 user=self.user,
                 product=item.product,
-                invoice=invoice
+                invoice=invoice,
+                order_type=ORDER_TYPE[item.type]
             )
             # Create Tracker if needed
             if tracker:
