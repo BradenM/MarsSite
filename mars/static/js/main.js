@@ -164,3 +164,82 @@ signup.submit(function (event) {
         }
     })
 });
+
+
+var accountPage = (function () {
+
+    // Vars
+    var content = $('#account-view')
+    var account_sel = $('a[load-account]')
+    var contentWindow = $('.Site-content').height();
+    var track_links = $('a[load-tracker]');
+
+    // Init
+    account_sel.click(function (e) {
+        loadPage($(this));
+    })
+
+    // Page Selection
+    var loadPage = function (sel) {
+        console.log('clicked');
+        console.log($(this))
+        // Select Link
+        var link = $(sel);
+        account_sel.each(function () {
+            $(this).removeClass('is-active');
+        })
+        link.addClass('is-active')
+        // Load Page
+        var page_url = sel.attr('load-account') + "/";
+        content.load(page_url, function () {
+            adjustScroll();
+            Search($('input[search-data]'));
+            loadTracker(track_links);
+        })
+    }
+
+    // Adjust Scroll for lists
+    var adjustScroll = function () {
+        var el = $('section[data-scroll-adjust]')
+        var footer = $("footer").height();
+        var adjust = contentWindow - footer * 2;
+        console.log(contentWindow, footer, adjust);
+        el.css('overflow-y', 'auto');
+        el.css('max-height', adjust);
+    }
+
+    // Get Tracker info for orders
+    var loadTracker = function () {
+        $(this).on('click', function (e) {
+            var track = $(e.target).attr('load-tracker');
+            var url = "tracker/" + track;
+            content.load(url, function () {
+                accountPage();
+            });
+        })
+    }
+
+})
+
+var Search = function (sel) {
+    var input = $(sel)
+    var target = $('#' + input.attr('search-target'))
+    var baseHTML = target.html();
+    input.on('change, paste, keyup', function () {
+        $.ajax({
+            url: input.attr('search-data'),
+            data: $(this).serialize(),
+            method: 'GET',
+            success: function (data) {
+                target.html(data);
+            },
+            error: function (data) {
+                target.html(baseHTML);
+            }
+        })
+    })
+}
+
+$(document).ready(function () {
+    accountPage();
+});

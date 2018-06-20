@@ -1,44 +1,74 @@
-{% extends 'base.html' %}
-
-{% block title %}Tracker{% endblock %}
-
-{% block content %}
-{% include 'snippets/header.html' %}
 {% load tracker_tags %}
+<section class="hero is-dark is-small">
+    <div class="hero-body">
+        <div class="container">
+            <nav class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <h3 class="title has-text-weight-light">
+                            {{ order.device_type }}
+                        </h3>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <p>Order Number</p>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</section>
 
-<section class="section">
+<section class="container context">
     <div class="container">
-    <nav class="level">
-        <div class="level-item">
-            <figure class="image">
-                <img style="width:128px;" src="/media/{{ tracker.order.product.device.image }}"/>
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+            <ul>
+                <li><a load-account="orders" href="#">
+                    <span class="icon is-small">
+                        <i class="fa fa-arrow-alt-circle-left"></i>
+                    </span>
+                    <span>Back to Orders</span>
+                </a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="columns is-centered">
+        <div class="column is-3">
+            <figure class="image has-max-256">
+                <img src="/media/{{ tracker.order.product.device.image }}">
             </figure>
         </div>
-        <div class="level-item">
+        <div class="column is-4">
             <div class="card">
-                <header class="card-header has-background-dark">
-                    <p class="card-header-title has-text-light is-centered">
-                        Your Order
-                    </p>
-                </header>
+                <div class="card-header">
+                    <p class="card-header-title">Order Summary</p>
+                </div>
                 <div class="card-content">
-                    <div class="content">
-                        {% get_order_summary tracker as order_summary%}
-                        <table class="table is-fullwidth">
-                            <tbody>
-                                {% for title, value in order_summary.items %}
-                                <tr>
-                                    <th>{{ title }}</th>
-                                    <td>{{ value }}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                    <ul class="has-text-justified">
+                        {% get_tracker order as tracker %}
+                        <li><span class="has-text-weight-semibold">Ordered On: </span>{{ order.order_date }}</li>
+                        <li><span class="has-text-weight-semibold">Invoice: </span><a>#A1-12384</a></li>
+                        <li><span class="has-text-weight-semibold">Device: </span>{{ order.device }}</li>
+                        <li><span class="has-text-weight-semibold">Repair: </span>{{ order.repair }}</li>
+                        <li><span class="has-text-weight-semibold">Latest Update: </span>{{ tracker.updates.last.update_date }}</li>
+                    </ul>
+                </div>
+            </div>
+            <br>
+            <div class="card">
+                <div class="card-header">
+                    <p class="card-header-title">Payment Information</p>
+                </div>
+                <div class="card-content">
+                    <ul class="has-text-justified">
+                        <li><span class="has-text-weight-semibold">Method: </span>Visa ending in 4242</li>
+                        <li><span class="has-text-weight-semibold">Status: </span>Approved</li>
+                        <li><span class="has-text-weight-semibold">Amount: </span>${{ order.invoice.total }}</li>
+                    </ul>
                 </div>
             </div>
         </div>
-    </nav>
     </div>
 </section>
 
@@ -47,5 +77,3 @@
         {% include 'tracker/timeline.html' %}
     </div>
 </section>
-
-{% endblock %}

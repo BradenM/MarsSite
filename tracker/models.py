@@ -61,6 +61,9 @@ class TrackerUpdate(models.Model):
         choices=PRIORITY_CHOICES, default=PRIORITY_LOW)
     date = models.DateTimeField(auto_now=True)
 
+    def update_date(self):
+        return self.date.strftime("%B %d, %Y")
+
     def save(self, *args, **kwargs):
         desc = STATUS_DESC[self.status]
         self.description = desc

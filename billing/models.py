@@ -20,5 +20,18 @@ class Order(models.Model):
     invoice = models.ForeignKey(
         Invoice, related_name='orders', on_delete=models.CASCADE)
 
+    def device_type(self):
+        dev = self.product.device.device_type
+        return f"{dev} Repair"
+
+    def device(self):
+        return self.product.device.name
+
+    def repair(self):
+        return self.product.repair.name
+
+    def order_date(self):
+        return self.invoice.date.strftime("%B %d, %Y")
+
     def __str__(self):
         return f"{self.user.email}'s order of {self.product}"
