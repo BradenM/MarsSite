@@ -68,8 +68,15 @@
     max-width: 256px;
 }
 
+.is-horizontal-center {
+    justify-content: center;
+}
+
 @media screen and (max-width:769px) {
     hr {
         margin-top: 3rem;
+    }
+    .image.has-max-256 {
+        max-width: 192px;
     }
 }

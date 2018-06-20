@@ -42,7 +42,7 @@ PRIORITY_CHOICES = (
 class Tracker(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     order = models.ForeignKey(
-        Order, related_name='order', on_delete=models.CASCADE)
+        Order, related_name='tracker', on_delete=models.CASCADE)
     start_date = models.DateTimeField(auto_now=True)
     notes = models.CharField(max_length=256)
 
