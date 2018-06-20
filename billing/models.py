@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from repair.models import DeviceRepair
 from datetime import datetime
 from store.models import REPAIR, COMPUTER
+from pinax.stripe.models import Charge
 
 ORDER_TYPE = {
     REPAIR: 'REP',
@@ -15,6 +16,8 @@ class Invoice(models.Model):
     invoice_no = models.CharField(
         max_length=512, blank=True, null=True)
     date = models.DateTimeField(default=datetime.now, blank=True)
+    charge = models.ForeignKey(
+        Charge, on_delete=models.PROTECT, related_name='stripe_charge', null=True)
     total = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
 
     def get_invoice_no(self):

@@ -19,18 +19,20 @@ class CustomerMixin(mixins.CustomerMixin):
         sources.delete_card(self.customer, stripe_id)
 
     def charge_customer(self, amount, source):
-        charges.create(
+        charge = charges.create(
             amount=amount,
             customer=self.customer,
             source=source,
             send_receipt=False
         )
+        return charge
 
-    def create_order(self, cart, tracker=True):
+    def create_order(self, cart, charge, tracker=True):
         # Create Invoice
         invoice = Invoice.objects.create(
             user=self.user,
             total=self.cart.total,
+            charge=charge
         )
         # Create Orders
         for item in cart.entries.all():
