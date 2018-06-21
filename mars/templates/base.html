@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load user_tags %}
 
 <head>
     <meta charset="utf-8">
@@ -16,6 +17,8 @@
 
 <body class="Site">
     <main class="Site-content">
+    {% get_login as login_form %}
+    {% get_signup as signup_form %}
     {% include 'user_modal.html' %}
     {% block content %}
     {% endblock %}

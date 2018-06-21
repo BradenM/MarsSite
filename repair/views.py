@@ -2,8 +2,6 @@ from django.http import HttpResponse
 from django.shortcuts import HttpResponseRedirect, redirect, get_object_or_404, render, render_to_response, reverse, resolve_url
 from django.views import generic
 from .models import Device, Family, Repair, DeviceRepair, LAP, PHONE, TAB
-from allauth.account.forms import SignupForm
-from users.forms import ExtLoginForm
 
 
 class IndexView(generic.ListView):
@@ -20,8 +18,6 @@ class IndexView(generic.ListView):
         context['phone_families'] = Family.objects.filter(device_type=PHONE)
         context['tablets'] = Device.objects.filter(device_type=TAB)
         context['laptops'] = Device.objects.filter(device_type=LAP)
-        context['login_form'] = ExtLoginForm()
-        context['signup_form'] = SignupForm()
 
         return context
 
