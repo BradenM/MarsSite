@@ -12,7 +12,7 @@
                 </div>
                 <div class="level-right">
                     <div class="level-item">
-                        <p>Order Number</p>
+                        <p class="subtitle has-text-grey has-text-weight-bold">Order #{{ order.order_no }}</p>
                     </div>
                 </div>
             </nav>
@@ -24,7 +24,7 @@
     <div class="container">
         <nav class="breadcrumb" aria-label="breadcrumbs">
             <ul>
-                <li><a load-account="orders" href="#">
+                <li><a load-account="orders">
                     <span class="icon is-small">
                         <i class="fa fa-arrow-alt-circle-left"></i>
                     </span>
@@ -34,7 +34,7 @@
         </nav>
     </div>
     <div class="columns is-centered">
-        <div class="column is-3">
+        <div class="column is-3 is-flex is-horizontal-center">
             <figure class="image has-max-256">
                 <img src="/media/{{ tracker.order.product.device.image }}">
             </figure>
@@ -46,12 +46,11 @@
                 </div>
                 <div class="card-content">
                     <ul class="has-text-justified">
-                        {% get_tracker order as tracker %}
                         <li><span class="has-text-weight-semibold">Ordered On: </span>{{ order.order_date }}</li>
-                        <li><span class="has-text-weight-semibold">Invoice: </span><a>#A1-12384</a></li>
+                        <li><span class="has-text-weight-semibold">Invoice: </span><a>#{{ order.invoice.invoice_no }}</a></li>
                         <li><span class="has-text-weight-semibold">Device: </span>{{ order.device }}</li>
                         <li><span class="has-text-weight-semibold">Repair: </span>{{ order.repair }}</li>
-                        <li><span class="has-text-weight-semibold">Latest Update: </span>{{ tracker.updates.last.update_date }}</li>
+                        <li><span class="has-text-weight-semibold">Latest Update: </span>{{ order.tracker.get.updates.last.update_date }}</li>
                     </ul>
                 </div>
             </div>
@@ -62,8 +61,14 @@
                 </div>
                 <div class="card-content">
                     <ul class="has-text-justified">
-                        <li><span class="has-text-weight-semibold">Method: </span>Visa ending in 4242</li>
+                        {% with order.invoice.charge.card as card %}
+                        <li><span class="has-text-weight-semibold">Method: </span>{{ card.brand }} ending in {{ card.last4 }}</li>
+                        {% endwith %}
+                        {% if order.invoice.charge.paid %}
                         <li><span class="has-text-weight-semibold">Status: </span>Approved</li>
+                        {% else %}
+                        <li><span class="has-text-weight-semibold">Status: </span>Failed</li>
+                        {% endif %}
                         <li><span class="has-text-weight-semibold">Amount: </span>${{ order.invoice.total }}</li>
                     </ul>
                 </div>

@@ -181,8 +181,6 @@ var accountPage = (function () {
 
     // Page Selection
     var loadPage = function (sel) {
-        console.log('clicked');
-        console.log($(this))
         // Select Link
         var link = $(sel);
         account_sel.each(function () {
@@ -190,7 +188,7 @@ var accountPage = (function () {
         })
         link.addClass('is-active')
         // Load Page
-        var page_url = sel.attr('load-account') + "/";
+        var page_url = link.attr('load-account') + "/";
         content.load(page_url, function () {
             adjustScroll();
             Search($('input[search-data]'));
