@@ -1,0 +1,16 @@
+{% extends 'users/page.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Login &amp; Security{% endblock %}
+
+{% block content %}
+
+<section data-scroll-adjust="resize" class="section">
+    <div class="container">
+        <h1 class="title has-text-weight-light">Settings</h1>
+        <hr>
+        {% include '/allauth/account/email.html' %}
+    </div>
+</section>
+
+{% endblock %}

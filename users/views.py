@@ -7,10 +7,20 @@ from django.views.generic import View, TemplateView
 from billing.mixins import CustomerMixin
 from billing.models import Order
 from django.http import JsonResponse
+from allauth.account.forms import AddEmailForm
 
 
 class AccountPage(TemplateView):
     template_name = 'users/account.html'
+
+
+class SettingsPage(TemplateView, CustomerMixin):
+    template_name = 'users/settings.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SettingsPage, self).get_context_data(**kwargs)
+        context['form'] = AddEmailForm()
+        return context
 
 
 class ListInvoices(TemplateView, CustomerMixin):

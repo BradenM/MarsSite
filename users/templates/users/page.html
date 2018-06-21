@@ -1,0 +1,22 @@
+<section class="hero is-dark is-small">
+    <div class="hero-body">
+        <div class="container">
+            <nav class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <h3 class="title has-text-weight-light">
+                            {% block title %}{% endblock %}
+                        </h3>
+                    </div>
+                </div>
+                <div class="level-right">
+                    {% block title-right %}{% endblock %}
+                </div>
+            </nav>
+        </div>
+    </div>
+</section>
+
+
+{% block content %}
+{% endblock %}
