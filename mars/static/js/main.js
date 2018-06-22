@@ -174,6 +174,7 @@ var accountPage = (function () {
     var contentWindow = $('.Site-content').height();
     var track_links = $('a[load-tracker]');
 
+
     // Init
     account_sel.click(function (e) {
         loadPage($(this));
@@ -193,6 +194,7 @@ var accountPage = (function () {
             adjustScroll();
             Search($('input[search-data]'));
             loadTracker(track_links);
+            loadChangePassword();
         })
     }
 
@@ -207,13 +209,48 @@ var accountPage = (function () {
     }
 
     // Get Tracker info for orders
-    var loadTracker = function () {
-        $(this).on('click', function (e) {
+    var loadTracker = function (links) {
+        links.on('click', function (e) {
             var track = $(e.target).attr('load-tracker');
             var url = "tracker/" + track;
             content.load(url, function () {
                 accountPage();
             });
+        })
+    }
+
+    // Change Password Ajax
+    var loadChangePassword = function () {
+        var change_passform = $('#auth_changepass');
+        var loader = $('#pc_loader');
+        var submit_button = $('#pcsubmit');
+        change_passform.on('submit', function (e) {
+            e.preventDefault();
+            submit_button.addClass('is-hidden');
+            loader.removeClass('is-hidden');
+            $.ajax({
+                url: change_passform.attr('action'),
+                type: "POST",
+                dataType: 'json',
+                data: change_passform.serialize(),
+                success: function (data) {
+                    location.reload();
+                },
+                error: function (data) {
+                    console.log(data.responseJSON.form.fields);
+                    // Short timeout to signify that request went through
+                    setTimeout(function () {
+                        $.each(data.responseJSON.form.fields, function (key, element) {
+                            loader.addClass('is-hidden');
+                            submit_button.removeClass('is-hidden');
+                            var field = $('#pc_' + key + "_errors");
+                            console.log(field);
+                            field.html(element.errors);
+                            console.log(element.errors);
+                        });
+                    }, 250)
+                }
+            })
         })
     }
 

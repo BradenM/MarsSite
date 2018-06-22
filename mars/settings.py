@@ -158,7 +158,8 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.ExtSignupForm'
 ACCOUNT_FORMS = {
-    'login': 'users.forms.ExtLoginForm'
+    'login': 'users.forms.ExtLoginForm',
+    'change_password': 'users.user_forms.ExtChangePasswordForm',
 }
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 ACCOUNT_LOGOUT_ON_GET = True

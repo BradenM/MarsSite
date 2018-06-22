@@ -6,11 +6,63 @@
 {% block content %}
 
 <section data-scroll-adjust="resize" class="section">
-    <div class="container">
-        <h1 class="title has-text-weight-light">Settings</h1>
-        <hr>
-        {% include '/allauth/account/email.html' %}
+
+    <h1 class="title has-text-weight-light">Settings</h1>
+    <hr>
+
+    <div class="columns">
+        <div class="column is-9" style="margin-bottom: 50px;">
+
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">Email Address: </label>
+                </div>
+                <div class="field-body">
+                    <div class="field has-addons">
+                        <p class="control">
+                            <input class="input" type="email" value="{{ user.emailaddress_set.first.email }}" readonly>
+                        </p>
+                        <p class="control">
+                            <a class="button is-link">
+                                Change
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label class="label">Phone Address: </label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field has-addons">
+                            <p class="control">
+                                <input class="input" type="email" value="{{ user.profile.phone }}" readonly>
+                            </p>
+                            <p class="control">
+                                <a class="button is-link">
+                                    Change
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="help"></p>
+                </div>
+
+        </div>
+
+    </div>
+
+    <h1 class="title has-text-weight-light">Change Password</h1>
+    <hr>
+
+    <div class="columns">
+        <div class="column is-3">
+            {% crispy form %}
+        </div>
     </div>
 </section>
+
 
 {% endblock %}
