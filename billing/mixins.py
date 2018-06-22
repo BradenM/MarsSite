@@ -1,5 +1,5 @@
 import stripe
-from .models import Invoice, Order
+from .models import Invoice, Order, ORDER_TYPE
 from tracker.models import Tracker, TrackerUpdate
 from django.conf import settings
 from django.shortcuts import HttpResponse, redirect, render
@@ -19,25 +19,28 @@ class CustomerMixin(mixins.CustomerMixin):
         sources.delete_card(self.customer, stripe_id)
 
     def charge_customer(self, amount, source):
-        charges.create(
+        charge = charges.create(
             amount=amount,
             customer=self.customer,
             source=source,
             send_receipt=False
         )
+        return charge
 
-    def create_order(self, cart, tracker=True):
+    def create_order(self, cart, charge, tracker=True):
         # Create Invoice
         invoice = Invoice.objects.create(
             user=self.user,
             total=self.cart.total,
+            charge=charge
         )
         # Create Orders
         for item in cart.entries.all():
             order = Order.objects.create(
                 user=self.user,
                 product=item.product,
-                invoice=invoice
+                invoice=invoice,
+                order_type=ORDER_TYPE[item.type]
             )
             # Create Tracker if needed
             if tracker:

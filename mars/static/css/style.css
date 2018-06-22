@@ -47,3 +47,36 @@
 .card-level {
     padding-left: 0px !important;
 }
+
+.container.context {
+    padding-top: 2rem;
+}
+
+.container.has-top-space {
+    padding-top: 6px;
+}
+
+.menu.has-padding {
+    padding: 10px 0px 0px 10px;
+}
+
+.is-divider-vertical {
+    max-width: 50px;
+}
+
+.image.has-max-256 img {
+    max-width: 256px;
+}
+
+.is-horizontal-center {
+    justify-content: center;
+}
+
+@media screen and (max-width:769px) {
+    hr {
+        margin-top: 3rem;
+    }
+    .image.has-max-256 {
+        max-width: 192px;
+    }
+}

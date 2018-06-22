@@ -107,3 +107,137 @@ $(document).ready(function () {
     var height = res + 'vh';
     $('.is-fullheight-menu').css('height', height);
 });
+
+// Auth Login Ajax
+$('#auth_loginform').submit(function (event) {
+    event.preventDefault();
+    console.log('Ajax Login');
+    $.ajax({
+        url: "/accounts/login/",
+        data: $(this).serialize(),
+        dataType: 'json',
+        method: 'POST',
+        success: function (data) {
+            location.reload();
+        },
+        error: function (data) {
+            var resp = data.responseJSON
+            var errors = $('#form_errors');
+            var loader = $('#form_loader');
+            errors.html('');
+            loader.removeClass('is-hidden');
+            // Short timeout to signify that request went through
+            setTimeout(function () {
+                loader.addClass('is-hidden');
+                errors.html(resp.form.errors);
+            }, 250)
+        },
+    })
+});
+
+// Auth Signup Ajax
+var signup = $('#auth_signupform')
+var submit_button = $('#submit-id-submit')
+var loader = $('#signupform_loader')
+signup.submit(function (event) {
+    event.preventDefault();
+    submit_button.addClass('is-hidden');
+    loader.removeClass('is-hidden');
+    $.ajax({
+        url: "/accounts/signup/",
+        data: $(this).serialize(),
+        dataType: 'json',
+        method: 'POST',
+        success: function (data) {
+            location.reload();
+        },
+        error: function (data) {
+            // Short timeout to signify that request went through
+            setTimeout(function () {
+                $.each(data.responseJSON.form.fields, function (key, element) {
+                    loader.addClass('is-hidden');
+                    submit_button.removeClass('is-hidden');
+                    var field = $('#' + key + "_errors");
+                    field.html(element.errors);
+                });
+            }, 250)
+        }
+    })
+});
+
+
+var accountPage = (function () {
+
+    // Vars
+    var content = $('#account-view')
+    var account_sel = $('a[load-account]')
+    var contentWindow = $('.Site-content').height();
+    var track_links = $('a[load-tracker]');
+
+    // Init
+    account_sel.click(function (e) {
+        loadPage($(this));
+    })
+
+    // Page Selection
+    var loadPage = function (sel) {
+        // Select Link
+        var link = $(sel);
+        account_sel.each(function () {
+            $(this).removeClass('is-active');
+        })
+        link.addClass('is-active')
+        // Load Page
+        var page_url = link.attr('load-account') + "/";
+        content.load(page_url, function () {
+            adjustScroll();
+            Search($('input[search-data]'));
+            loadTracker(track_links);
+        })
+    }
+
+    // Adjust Scroll for lists
+    var adjustScroll = function () {
+        var el = $('section[data-scroll-adjust]')
+        var footer = $("footer").height();
+        var adjust = contentWindow - footer * 2;
+        console.log(contentWindow, footer, adjust);
+        el.css('overflow-y', 'auto');
+        el.css('max-height', adjust);
+    }
+
+    // Get Tracker info for orders
+    var loadTracker = function () {
+        $(this).on('click', function (e) {
+            var track = $(e.target).attr('load-tracker');
+            var url = "tracker/" + track;
+            content.load(url, function () {
+                accountPage();
+            });
+        })
+    }
+
+})
+
+var Search = function (sel) {
+    var input = $(sel)
+    var target = $('#' + input.attr('search-target'))
+    var baseHTML = target.html();
+    input.on('change, paste, keyup', function () {
+        $.ajax({
+            url: input.attr('search-data'),
+            data: $(this).serialize(),
+            method: 'GET',
+            success: function (data) {
+                target.html(data);
+            },
+            error: function (data) {
+                target.html(baseHTML);
+            }
+        })
+    })
+}
+
+$(document).ready(function () {
+    accountPage();
+});

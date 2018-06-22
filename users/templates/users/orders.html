@@ -1,22 +1,36 @@
-{% extends 'users/base.html' %}
+{% extends 'users/page.html' %}
 
-{% block title %}My Orders{% endblock %}
+{% block title %}Your Orders{% endblock %}
 
-{% block info %}
-<section class="section">
-    <h1 class="title">Your Orders</h1>
-    <div class="is-divider"></div>
-    <div class="tile is-ancestor">
-            <div class="tile is-vertical is-parent">
-                {% for item in orders %}
-                <div class="tile is-child box">
-                    <p class="subtitle">{{ item.product }}</p>
-                    <p>Total: ${{ item.invoice.total }}</p>
-                    <a href="{% url 'tracker:tracker' item.pk %}" class="button is-pulled-right is-info">Review</a>
-                </div>
-                {% endfor %}
-            </div>
+{% block title-right %}
+<div class="level-item">
+        <div class="field has-addons">
+            <p class="control has-icons-left">
+                <input name="search_query" search-target="order-list" search-data="orders/search/" class="input is-normal" type="text" placeholder="Search">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-search"></i>
+                </span>
+            </p>
+            <p class="control">
+                <span class="select">
+                    <select>
+                        <option>All Orders</option>
+                        <option>Computers</option>
+                        <option>Repairs</option>
+                    </select>
+                </span>
+            </p>
         </div>
-</section>
+    </div>
+{% endblock %}
 
+{% block content %}
+<section data-scroll-adjust="resize" class="section">
+    <div class="tile is-ancestor">
+        <div id="order-list" class="tile is-9 is-vertical is-parent">
+            {% include 'users/order_tile.html' %}
+        </div>
+    </div>
+
+</section>
 {% endblock %}

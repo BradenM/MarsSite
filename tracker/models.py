@@ -42,7 +42,7 @@ PRIORITY_CHOICES = (
 class Tracker(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     order = models.ForeignKey(
-        Order, related_name='order', on_delete=models.CASCADE)
+        Order, related_name='tracker', on_delete=models.CASCADE)
     start_date = models.DateTimeField(auto_now=True)
     notes = models.CharField(max_length=256)
 
@@ -60,6 +60,9 @@ class TrackerUpdate(models.Model):
     priority = models.IntegerField(
         choices=PRIORITY_CHOICES, default=PRIORITY_LOW)
     date = models.DateTimeField(auto_now=True)
+
+    def update_date(self):
+        return self.date.strftime("%B %d, %Y")
 
     def save(self, *args, **kwargs):
         desc = STATUS_DESC[self.status]
