@@ -20,10 +20,10 @@
                 <div class="field-body">
                     <div class="field has-addons">
                         <p class="control">
-                            <input class="input" type="email" value="{{ user.emailaddress_set.first.email }}" readonly>
+                            <input class="input" id="setting_email" type="email" value="{{ user.emailaddress_set.first.email }}" readonly>
                         </p>
                         <p class="control">
-                            <a class="button is-link">
+                            <a data-unlock="setting_email" class="button is-link">
                                 Change
                             </a>
                         </p>
@@ -38,10 +38,10 @@
                     <div class="field-body">
                         <div class="field has-addons">
                             <p class="control">
-                                <input class="input" type="email" value="{{ user.profile.phone }}" readonly>
+                                <input id="setting_phone" class="input" type="email" value="{{ user.profile.phone }}" readonly>
                             </p>
                             <p class="control">
-                                <a class="button is-link">
+                                <a data-unlock="setting_phone" class="button is-link">
                                     Change
                                 </a>
                             </p>

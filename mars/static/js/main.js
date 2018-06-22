@@ -194,7 +194,7 @@ var accountPage = (function () {
             adjustScroll();
             Search($('input[search-data]'));
             loadTracker(track_links);
-            loadChangePassword();
+            AccountSettings();
         })
     }
 
@@ -216,6 +216,68 @@ var accountPage = (function () {
             content.load(url, function () {
                 accountPage();
             });
+        })
+    }
+})
+
+var Search = function (sel) {
+    var input = $(sel)
+    var target = $('#' + input.attr('search-target'))
+    var baseHTML = target.html();
+    input.on('change, paste, keyup', function () {
+        $.ajax({
+            url: input.attr('search-data'),
+            data: $(this).serialize(),
+            method: 'GET',
+            success: function (data) {
+                target.html(data);
+            },
+            error: function (data) {
+                target.html(baseHTML);
+            }
+        })
+    })
+}
+
+var AccountSettings = (function () {
+    // Init
+
+    // Unlock Input
+    $('a[data-unlock]').click(function (e) {
+        unlockInput($(this));
+    });
+
+    // Variables 
+
+    // Allow Input Modify
+    var unlockInput = function (trig) {
+        var target_sel = trig.attr("data-unlock");
+        var target_inp = $('#' + target_sel);
+        // Allow Edit
+        target_inp.removeAttr('readonly');
+        //trig.removeAttr('data-unlock');
+        // Change Trigger to 'save' and rebind
+        trig.html('Save');
+        // Unbind
+        trig.off();
+        // Bind to save
+        trig.click(function (e) {
+            saveInput(trig);
+        })
+    }
+
+    // Save Input via Ajax
+    var saveInput = function (trig) {
+        var target_sel = trig.attr('data-unlock');
+        var target_inp = $('#' + target_sel);
+        // Disallow Edit while verifying
+        target_inp.attr('readonly', '');
+        // on ajax success
+        trig.html('Change');
+        // rebind
+        trig.off();
+        trig.click(function (e) {
+            unlockInput(trig);
         })
     }
 
@@ -255,25 +317,6 @@ var accountPage = (function () {
     }
 
 })
-
-var Search = function (sel) {
-    var input = $(sel)
-    var target = $('#' + input.attr('search-target'))
-    var baseHTML = target.html();
-    input.on('change, paste, keyup', function () {
-        $.ajax({
-            url: input.attr('search-data'),
-            data: $(this).serialize(),
-            method: 'GET',
-            success: function (data) {
-                target.html(data);
-            },
-            error: function (data) {
-                target.html(baseHTML);
-            }
-        })
-    })
-}
 
 $(document).ready(function () {
     accountPage();

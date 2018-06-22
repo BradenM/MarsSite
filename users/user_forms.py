@@ -22,19 +22,19 @@ class ExtChangePasswordForm(ChangePasswordForm):
             HTML(" {% csrf_token %} "),
             Div(
                 Field('oldpassword', css_class="input",
-                      placeholder="Current Password"),
+                      placeholder="Current Password", autocomplete=False),
                 HTML("<p id='pc_oldpassword_errors' class='help is-danger'></p >"),
                 css_class="field"
             ),
             Div(
                 Field('password1', css_class="input",
-                      placeholder="New Password"),
+                      placeholder="New Password", autocomplete=False),
                 HTML("<p id='pc_password1_errors' class='help is-danger'></p >"),
                 css_class="field"
             ),
             Div(
                 Field('password2', css_class="input",
-                      placeholder="New Password (again)"),
+                      placeholder="New Password (again)", autocomplete=False),
                 HTML("<p id='pc_password2_errors' class='help is-danger'></p >"),
                 css_class="field"
             ),
