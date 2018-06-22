@@ -8,7 +8,7 @@ from django.views.generic import View, TemplateView
 from billing.mixins import CustomerMixin
 from billing.models import Order
 from django.http import JsonResponse
-from .user_forms import ExtChangePasswordForm
+from .user_forms import ExtChangePasswordForm, ExtAddEmailForm
 from crispy_forms.utils import render_crispy_form
 from django.template.context_processors import csrf
 from allauth.account.views import _ajax_response
@@ -24,6 +24,7 @@ class SettingsPage(CustomerMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(SettingsPage, self).get_context_data(**kwargs)
         context['form'] = ExtChangePasswordForm()
+        context['email_form'] = ExtAddEmailForm()
         return context
 
 

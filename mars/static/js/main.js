@@ -239,6 +239,32 @@ var Search = function (sel) {
     })
 }
 
+var errorNotify = function (msg) {
+    n = new Noty({
+        text: "<p class='subtitle is-5 has-text-light'>We have a problem...</p><p>" + msg + "</p>",
+        theme: 'metroui',
+        type: 'error',
+        layout: 'topRight',
+        closeWith: ['click', 'button'],
+        timeout: 6000,
+        killer: true,
+    })
+    return n
+}
+
+var infoNotify = function (title, msg) {
+    n = new Noty({
+        text: "<p class='subtitle is-5 has-text-light'>" + title + "</p><p>" + msg + "</p>",
+        theme: 'metroui',
+        type: 'info',
+        layout: 'topRight',
+        closeWith: ['click', 'button'],
+        timeout: 6000,
+        killer: true,
+    })
+    return n
+}
+
 var AccountSettings = (function () {
     // Init
 
@@ -246,8 +272,6 @@ var AccountSettings = (function () {
     $('a[data-unlock]').click(function (e) {
         unlockInput($(this));
     });
-
-    // Variables 
 
     // Allow Input Modify
     var unlockInput = function (trig) {
@@ -270,15 +294,46 @@ var AccountSettings = (function () {
     var saveInput = function (trig) {
         var target_sel = trig.attr('data-unlock');
         var target_inp = $('#' + target_sel);
-        // Disallow Edit while verifying
-        target_inp.attr('readonly', '');
-        // on ajax success
-        trig.html('Change');
-        // rebind
-        trig.off();
-        trig.click(function (e) {
-            unlockInput(trig);
+        // Get Form info
+        var form = $('#' + target_inp.attr('form'))
+        var form_data = form.find('#id_email');
+
+        // Catch form post
+        form.on('submit', function (e) {
+            e.preventDefault();
+            form_data.val(target_inp.val()); // Set email input to new val
+            var ajax_data = form.serializeArray();
+            ajax_data.push({
+                name: 'action_add',
+                value: ''
+            })
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: ajax_data,
+                dataType: 'json',
+                success: function (data) {
+                    target_inp.attr('readonly', '');
+                    trig.html('Change');
+                    // rebind
+                    trig.off();
+                    trig.click(function (e) {
+                        unlockInput(trig);
+                    })
+                    n = infoNotify('Success!', 'Once you verify your new email address you may begin using it to login and remove your old one.')
+                    n.show();
+                },
+                error: function (data) {
+                    var json_fields = data.responseJSON.form.fields
+                    n = errorNotify(json_fields.email.errors);
+                    n.show();
+                }
+            })
         })
+
+        // Submit
+        form.submit();
+
     }
 
     // Change Password Ajax

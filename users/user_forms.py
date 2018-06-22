@@ -1,4 +1,4 @@
-from allauth.account.forms import ChangePasswordForm
+from allauth.account.forms import ChangePasswordForm, AddEmailForm
 from django import forms
 from crispy_forms.helper import FormHelper
 from phonenumber_field.formfields import PhoneNumberField
@@ -46,8 +46,22 @@ class ExtChangePasswordForm(ChangePasswordForm):
             )
         )
 
-    # def save(self):
-    #     get_adapter().set_password(self.user, self.cleaned_data["password1"])
-
     def save(self):
         super(ExtChangePasswordForm, self).save()
+
+
+class ExtAddEmailForm(AddEmailForm):
+    def __init__(self, *args, **kwargs):
+        super(ExtAddEmailForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_action = "/accounts/email/"
+        self.helper.form_method = "POST"
+        self.helper.form_id = "auth_addemailform"
+        self.helper.layout = Layout(
+            Field('email', type="hidden")
+        )
+
+        def save(self):
+            email_address_obj = super(ExtAddEmailForm, self).save()
+
+            return email_address_obj

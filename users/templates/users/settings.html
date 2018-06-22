@@ -12,7 +12,7 @@
 
     <div class="columns">
         <div class="column is-9" style="margin-bottom: 50px;">
-
+            {% crispy email_form %}
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
                     <label class="label">Email Address: </label>
@@ -20,7 +20,7 @@
                 <div class="field-body">
                     <div class="field has-addons">
                         <p class="control">
-                            <input class="input" id="setting_email" type="email" value="{{ user.emailaddress_set.first.email }}" readonly>
+                            <input form="auth_addemailform" class="input" id="setting_email" type="email" value="{{ user.emailaddress_set.first.email }}" readonly>
                         </p>
                         <p class="control">
                             <a data-unlock="setting_email" class="button is-link">

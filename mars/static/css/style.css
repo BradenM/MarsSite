@@ -80,3 +80,7 @@
         max-width: 192px;
     }
 }
+
+#auth_addemailform {
+    margin: 0px;
+}
