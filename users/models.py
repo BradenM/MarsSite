@@ -12,6 +12,10 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone = PhoneNumberField(blank=True)
 
+    def change_phone(self, request, user, phone):
+        self.phone = phone
+        self.save()
+
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

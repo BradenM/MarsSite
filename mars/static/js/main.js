@@ -165,6 +165,23 @@ signup.submit(function (event) {
     })
 });
 
+// using jQuery
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
 
 var accountPage = (function () {
 
@@ -173,6 +190,7 @@ var accountPage = (function () {
     var account_sel = $('a[load-account]')
     var contentWindow = $('.Site-content').height();
     var track_links = $('a[load-tracker]');
+
 
     // Init
     account_sel.click(function (e) {
@@ -193,6 +211,7 @@ var accountPage = (function () {
             adjustScroll();
             Search($('input[search-data]'));
             loadTracker(track_links);
+            AccountSettings();
         })
     }
 
@@ -200,15 +219,15 @@ var accountPage = (function () {
     var adjustScroll = function () {
         var el = $('section[data-scroll-adjust]')
         var footer = $("footer").height();
-        var adjust = contentWindow - footer * 2;
+        var adjust = contentWindow + footer;
         console.log(contentWindow, footer, adjust);
         el.css('overflow-y', 'auto');
         el.css('max-height', adjust);
     }
 
     // Get Tracker info for orders
-    var loadTracker = function () {
-        $(this).on('click', function (e) {
+    var loadTracker = function (links) {
+        links.on('click', function (e) {
             var track = $(e.target).attr('load-tracker');
             var url = "tracker/" + track;
             content.load(url, function () {
@@ -216,7 +235,6 @@ var accountPage = (function () {
             });
         })
     }
-
 })
 
 var Search = function (sel) {
@@ -237,6 +255,153 @@ var Search = function (sel) {
         })
     })
 }
+
+var errorNotify = function (msg) {
+    n = new Noty({
+        text: "<p class='subtitle is-5 has-text-light'>We have a problem...</p><p>" + msg + "</p>",
+        theme: 'metroui',
+        type: 'error',
+        layout: 'topRight',
+        closeWith: ['click', 'button'],
+        timeout: 6000,
+        killer: true,
+    })
+    return n
+}
+
+var infoNotify = function (title, msg) {
+    n = new Noty({
+        text: "<p class='subtitle is-5 has-text-light'>" + title + "</p><p>" + msg + "</p>",
+        theme: 'metroui',
+        type: 'info',
+        layout: 'topRight',
+        closeWith: ['click', 'button'],
+        timeout: 6000,
+        killer: true,
+    })
+    return n
+}
+
+var AccountSettings = (function () {
+    // Init
+
+    // Unlock Input
+    $('a[data-unlock]').click(function (e) {
+        unlockInput($(this));
+    });
+
+    // Allow Input Modify
+    var unlockInput = function (trig) {
+        var target_sel = trig.attr("data-unlock");
+        var target_inp = $('#' + target_sel);
+        // Allow Edit
+        target_inp.removeAttr('readonly');
+        // Change Trigger to 'save' and rebind
+        trig.html('Save');
+        // Unbind
+        trig.off();
+        // Bind to save
+        trig.click(function (e) {
+            saveInput(trig);
+        })
+    }
+
+    // Save Input via Ajax
+    var saveInput = function (trig) {
+        var target_sel = trig.attr('data-unlock');
+        var target_inp = $('#' + target_sel);
+        // Get Form info
+        var form = $('#' + target_inp.attr('form'))
+        var form_data = form.find('input');
+        var form_success = form.find('input[id=submit-id-submit]').attr('value');
+        console.log(form_success)
+
+        // Catch form post
+        form.on('submit', function (e) {
+            e.preventDefault();
+            form_data.val(target_inp.val()); // Set new input to form val
+            var ajax_data = form.serializeArray();
+            // Append add action data for adding email
+            ajax_data.push({
+                name: 'action_add',
+                value: ''
+            })
+            // Append CSRF token cookie
+            ajax_data.push({
+                name: 'csrfmiddlewaretoken',
+                value: getCookie('csrftoken')
+            })
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: ajax_data,
+                dataType: 'json',
+                success: function (data) {
+                    target_inp.attr('readonly', '');
+                    trig.html('Change');
+                    // rebind
+                    trig.off();
+                    trig.click(function (e) {
+                        unlockInput(trig);
+                    })
+                    n = infoNotify('Success!', form_success)
+                    n.show();
+                },
+                error: function (data) {
+                    console.log(data);
+                    var json_fields = data.responseJSON.form.fields
+                    //n = errorNotify(json_fields.email.errors);
+                    var error_msg = []
+                    $.each(json_fields, function (key, field) {
+                        error_msg.push(field.errors);
+                    })
+                    n = errorNotify(error_msg);
+                    n.show();
+                }
+            })
+        })
+
+        // Submit
+        form.submit();
+
+    }
+
+    // Change Password Ajax
+    var loadChangePassword = function () {
+        var change_passform = $('#auth_changepass');
+        var loader = $('#pc_loader');
+        var submit_button = $('#pcsubmit');
+        change_passform.on('submit', function (e) {
+            e.preventDefault();
+            submit_button.addClass('is-hidden');
+            loader.removeClass('is-hidden');
+            $.ajax({
+                url: change_passform.attr('action'),
+                type: "POST",
+                dataType: 'json',
+                data: change_passform.serialize(),
+                success: function (data) {
+                    location.reload();
+                },
+                error: function (data) {
+                    console.log(data.responseJSON.form.fields);
+                    // Short timeout to signify that request went through
+                    setTimeout(function () {
+                        $.each(data.responseJSON.form.fields, function (key, element) {
+                            loader.addClass('is-hidden');
+                            submit_button.removeClass('is-hidden');
+                            var field = $('#pc_' + key + "_errors");
+                            console.log(field);
+                            field.html(element.errors);
+                            console.log(element.errors);
+                        });
+                    }, 250)
+                }
+            })
+        })
+    }
+
+})
 
 $(document).ready(function () {
     accountPage();

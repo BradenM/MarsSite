@@ -1,25 +1,31 @@
 from django.shortcuts import render
-from allauth.account.views import SignupView, LoginView
+from allauth.account.views import PasswordChangeView
 from django.shortcuts import HttpResponseRedirect, reverse, redirect, HttpResponse, render
+from django.urls import reverse_lazy
 from django.contrib import messages
 from allauth.account.forms import SignupForm
-from django.views.generic import View, TemplateView
+from django.views.generic import View, TemplateView, FormView
 from billing.mixins import CustomerMixin
 from billing.models import Order
 from django.http import JsonResponse
-from allauth.account.forms import AddEmailForm
+from .user_forms import ExtChangePasswordForm, ExtAddEmailForm, ChangePhoneForm
+from crispy_forms.utils import render_crispy_form
+from django.template.context_processors import csrf
+from allauth.account.views import _ajax_response, AjaxCapableProcessFormViewMixin
 
 
 class AccountPage(TemplateView):
     template_name = 'users/account.html'
 
 
-class SettingsPage(TemplateView, CustomerMixin):
+class SettingsPage(CustomerMixin, TemplateView):
     template_name = 'users/settings.html'
 
     def get_context_data(self, **kwargs):
         context = super(SettingsPage, self).get_context_data(**kwargs)
-        context['form'] = AddEmailForm()
+        context['form'] = ExtChangePasswordForm()
+        context['email_form'] = ExtAddEmailForm()
+        context['phone_form'] = ChangePhoneForm()
         return context
 
 
@@ -59,3 +65,22 @@ class SearchOrders(CustomerMixin, View):
                 results.append(x)
         return render(
             request, 'users/order_tile.html', context={'orders': results, 'empty_msg': "No orders match your search query."})
+
+
+class ChangePhone(AjaxCapableProcessFormViewMixin, FormView):
+    template_name = "users/forms/form.html"
+    form_class = ChangePhoneForm
+    success_url = reverse_lazy('users:my_account')
+
+    def get_form_kwargs(self):
+        kwargs = super(ChangePhone, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        phone = form.save(self.request)
+        return super(ChangePhone, self).form_valid(form)
+
+    def post(self, request, *args, **kwargs):
+        res = super(ChangePhone, self).post(request, *args, **kwargs)
+        return res

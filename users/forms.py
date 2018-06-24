@@ -2,8 +2,9 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from phonenumber_field.formfields import PhoneNumberField
 from crispy_forms.layout import Layout, Submit, Fieldset, Field, MultiField, HTML, Div
-from allauth.account.forms import LoginForm
+from allauth.account.forms import LoginForm, PasswordField, SetPasswordField
 from .models import Profile
+from allauth.account.adapter import get_adapter
 
 
 class ExtSignupForm(forms.Form):
@@ -101,3 +102,5 @@ class ExtLoginForm(LoginForm):
 
     def login(self, *args, **kwargs):
         return super(ExtLoginForm, self).login(*args, **kwargs)
+
+
