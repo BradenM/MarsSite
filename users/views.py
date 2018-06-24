@@ -4,14 +4,14 @@ from django.shortcuts import HttpResponseRedirect, reverse, redirect, HttpRespon
 from django.urls import reverse_lazy
 from django.contrib import messages
 from allauth.account.forms import SignupForm
-from django.views.generic import View, TemplateView
+from django.views.generic import View, TemplateView, FormView
 from billing.mixins import CustomerMixin
 from billing.models import Order
 from django.http import JsonResponse
-from .user_forms import ExtChangePasswordForm, ExtAddEmailForm
+from .user_forms import ExtChangePasswordForm, ExtAddEmailForm, ChangePhoneForm
 from crispy_forms.utils import render_crispy_form
 from django.template.context_processors import csrf
-from allauth.account.views import _ajax_response
+from allauth.account.views import _ajax_response, AjaxCapableProcessFormViewMixin
 
 
 class AccountPage(TemplateView):
@@ -25,6 +25,7 @@ class SettingsPage(CustomerMixin, TemplateView):
         context = super(SettingsPage, self).get_context_data(**kwargs)
         context['form'] = ExtChangePasswordForm()
         context['email_form'] = ExtAddEmailForm()
+        context['phone_form'] = ChangePhoneForm()
         return context
 
 
@@ -64,3 +65,22 @@ class SearchOrders(CustomerMixin, View):
                 results.append(x)
         return render(
             request, 'users/order_tile.html', context={'orders': results, 'empty_msg': "No orders match your search query."})
+
+
+class ChangePhone(AjaxCapableProcessFormViewMixin, FormView):
+    template_name = "users/forms/form.html"
+    form_class = ChangePhoneForm
+    success_url = reverse_lazy('users:my_account')
+
+    def get_form_kwargs(self):
+        kwargs = super(ChangePhone, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        phone = form.save(self.request)
+        return super(ChangePhone, self).form_valid(form)
+
+    def post(self, request, *args, **kwargs):
+        res = super(ChangePhone, self).post(request, *args, **kwargs)
+        return res

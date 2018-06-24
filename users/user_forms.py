@@ -1,9 +1,10 @@
-from allauth.account.forms import ChangePasswordForm, AddEmailForm
+from allauth.account.forms import ChangePasswordForm, AddEmailForm, UserForm
 from django import forms
 from crispy_forms.helper import FormHelper
 from phonenumber_field.formfields import PhoneNumberField
 from crispy_forms.layout import Layout, Submit, Fieldset, Field, MultiField, HTML, Div
 from allauth.account.forms import LoginForm, PasswordField, SetPasswordField
+from .models import Profile
 
 
 class ExtChangePasswordForm(ChangePasswordForm):
@@ -57,11 +58,33 @@ class ExtAddEmailForm(AddEmailForm):
         self.helper.form_action = "/accounts/email/"
         self.helper.form_method = "POST"
         self.helper.form_id = "auth_addemailform"
+        self.helper.form_class = "is-hidden"
         self.helper.layout = Layout(
-            Field('email', type="hidden")
+            Field('email', type="hidden"),
+            Submit('Submit', 'Once you verify your new email address you may begin using it to login and remove your old one.', type="hidden")
         )
 
         def save(self):
             email_address_obj = super(ExtAddEmailForm, self).save()
 
             return email_address_obj
+
+
+class ChangePhoneForm(UserForm):
+    phone = PhoneNumberField()
+
+    def __init__(self, *args, **kwargs):
+        super(ChangePhoneForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_action = '/account/change_phone/'
+        self.helper.form_method = "POST"
+        self.helper.form_class = "is-hidden"
+        self.helper.form_id = "auth_changephoneform"
+        self.helper.layout = Layout(
+            Field('phone', type="hidden", required=True),
+            Submit('Submit', 'Phone number successfully changed.', type="hidden")
+        )
+
+    def save(self, request):
+        prof = self.user.profile
+        return prof.change_phone(request, self.user, self.cleaned_data['phone'])

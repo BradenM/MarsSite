@@ -13,6 +13,7 @@
     <div class="columns">
         <div class="column is-9" style="margin-bottom: 50px;">
             {% crispy email_form %}
+            {% crispy phone_form %}
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
                     <label class="label">Email Address: </label>
@@ -38,7 +39,7 @@
                     <div class="field-body">
                         <div class="field has-addons">
                             <p class="control">
-                                <input id="setting_phone" class="input" type="email" value="{{ user.profile.phone }}" readonly>
+                                <input form="auth_changephoneform" id="setting_phone" class="input" type="email" value="{{ user.profile.phone }}" readonly>
                             </p>
                             <p class="control">
                                 <a data-unlock="setting_phone" class="button is-link">

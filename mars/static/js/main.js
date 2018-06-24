@@ -165,6 +165,23 @@ signup.submit(function (event) {
     })
 });
 
+// using jQuery
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
 
 var accountPage = (function () {
 
@@ -279,7 +296,6 @@ var AccountSettings = (function () {
         var target_inp = $('#' + target_sel);
         // Allow Edit
         target_inp.removeAttr('readonly');
-        //trig.removeAttr('data-unlock');
         // Change Trigger to 'save' and rebind
         trig.html('Save');
         // Unbind
@@ -296,16 +312,24 @@ var AccountSettings = (function () {
         var target_inp = $('#' + target_sel);
         // Get Form info
         var form = $('#' + target_inp.attr('form'))
-        var form_data = form.find('#id_email');
+        var form_data = form.find('input');
+        var form_success = form.find('input[id=submit-id-submit]').attr('value');
+        console.log(form_success)
 
         // Catch form post
         form.on('submit', function (e) {
             e.preventDefault();
-            form_data.val(target_inp.val()); // Set email input to new val
+            form_data.val(target_inp.val()); // Set new input to form val
             var ajax_data = form.serializeArray();
+            // Append add action data for adding email
             ajax_data.push({
                 name: 'action_add',
                 value: ''
+            })
+            // Append CSRF token cookie
+            ajax_data.push({
+                name: 'csrfmiddlewaretoken',
+                value: getCookie('csrftoken')
             })
             $.ajax({
                 url: form.attr('action'),
@@ -320,12 +344,18 @@ var AccountSettings = (function () {
                     trig.click(function (e) {
                         unlockInput(trig);
                     })
-                    n = infoNotify('Success!', 'Once you verify your new email address you may begin using it to login and remove your old one.')
+                    n = infoNotify('Success!', form_success)
                     n.show();
                 },
                 error: function (data) {
+                    console.log(data);
                     var json_fields = data.responseJSON.form.fields
-                    n = errorNotify(json_fields.email.errors);
+                    //n = errorNotify(json_fields.email.errors);
+                    var error_msg = []
+                    $.each(json_fields, function (key, field) {
+                        error_msg.push(field.errors);
+                    })
+                    n = errorNotify(error_msg);
                     n.show();
                 }
             })

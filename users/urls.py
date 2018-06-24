@@ -11,5 +11,8 @@ urlpatterns = [
     path('orders/', views.ListOrders.as_view(), name="my_orders"),
 
     # Functions
+    # Order Search
     path('orders/search/', views.SearchOrders.as_view(), name="search_orders"),
+    # Change Phone
+    path('change_phone/', views.ChangePhone.as_view(), name="change_phone"),
 ]
