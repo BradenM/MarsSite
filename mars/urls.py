@@ -28,6 +28,7 @@ urlpatterns = [
     path('', include('repair.urls', namespace="repair")),
 
     # Accounts
+
     path('accounts/', include('allauth.urls')),
     path('account/tracker/', include('tracker.urls', namespace="tracker")),
     path('account/', include('users.urls', namespace="users")),

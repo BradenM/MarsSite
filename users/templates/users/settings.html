@@ -6,11 +6,68 @@
 {% block content %}
 
 <section data-scroll-adjust="resize" class="section">
-    <div class="container">
-        <h1 class="title has-text-weight-light">Settings</h1>
-        <hr>
-        {% include '/allauth/account/email.html' %}
+
+    <h1 class="title has-text-weight-light">Settings</h1>
+    <hr>
+
+    <div class="columns">
+        <div class="column is-9" style="margin-bottom: 50px;">
+            {% crispy email_form %}
+            {% crispy phone_form %}
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">Email Address: </label>
+                </div>
+                <div class="field-body">
+                    <div class="field has-addons">
+                        <p class="control">
+                            {% for email in user.emailaddress_set.all %}
+                            {% if email.primary %}
+                            <input form="auth_addemailform" class="input" id="setting_email" type="email" value="{{ email.email }}" readonly>
+                            {% endif %}
+                            {% endfor %}
+                        </p>
+                        <p class="control">
+                            <a data-unlock="setting_email" class="button is-link">
+                                Change
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label class="label">Phone Address: </label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field has-addons">
+                            <p class="control">
+                                <input form="auth_changephoneform" id="setting_phone" class="input" type="tel" value="{{ user.profile.phone }}" readonly>
+                            </p>
+                            <p class="control">
+                                <a data-unlock="setting_phone" class="button is-link">
+                                    Change
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="help"></p>
+                </div>
+
+        </div>
+
+    </div>
+
+    <h1 class="title has-text-weight-light">Change Password</h1>
+    <hr>
+
+    <div class="columns">
+        <div class="column is-3">
+            {% crispy form %}
+        </div>
     </div>
 </section>
+
 
 {% endblock %}
