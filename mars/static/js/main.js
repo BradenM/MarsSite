@@ -219,7 +219,7 @@ var accountPage = (function () {
     var adjustScroll = function () {
         var el = $('section[data-scroll-adjust]')
         var footer = $("footer").height();
-        var adjust = contentWindow - footer * 2;
+        var adjust = contentWindow + footer;
         console.log(contentWindow, footer, adjust);
         el.css('overflow-y', 'auto');
         el.css('max-height', adjust);

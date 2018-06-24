@@ -21,7 +21,11 @@
                 <div class="field-body">
                     <div class="field has-addons">
                         <p class="control">
-                            <input form="auth_addemailform" class="input" id="setting_email" type="email" value="{{ user.emailaddress_set.first.email }}" readonly>
+                            {% for email in user.emailaddress_set.all %}
+                            {% if email.primary %}
+                            <input form="auth_addemailform" class="input" id="setting_email" type="email" value="{{ email.email }}" readonly>
+                            {% endif %}
+                            {% endfor %}
                         </p>
                         <p class="control">
                             <a data-unlock="setting_email" class="button is-link">
@@ -39,7 +43,7 @@
                     <div class="field-body">
                         <div class="field has-addons">
                             <p class="control">
-                                <input form="auth_changephoneform" id="setting_phone" class="input" type="email" value="{{ user.profile.phone }}" readonly>
+                                <input form="auth_changephoneform" id="setting_phone" class="input" type="tel" value="{{ user.profile.phone }}" readonly>
                             </p>
                             <p class="control">
                                 <a data-unlock="setting_phone" class="button is-link">

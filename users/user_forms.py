@@ -4,6 +4,7 @@ from crispy_forms.helper import FormHelper
 from phonenumber_field.formfields import PhoneNumberField
 from crispy_forms.layout import Layout, Submit, Fieldset, Field, MultiField, HTML, Div
 from allauth.account.forms import LoginForm, PasswordField, SetPasswordField
+from allauth.account.models import EmailAddress
 from .models import Profile
 
 
@@ -64,10 +65,10 @@ class ExtAddEmailForm(AddEmailForm):
             Submit('Submit', 'Once you verify your new email address you may begin using it to login and remove your old one.', type="hidden")
         )
 
-        def save(self):
-            email_address_obj = super(ExtAddEmailForm, self).save()
-
-            return email_address_obj
+        def save(self, request):
+            user_email = EmailAddress.objects.first(
+                user=self.user, primary=True)
+            return user_email.change(request, self.cleaned_data['email'], confirm=True)
 
 
 class ChangePhoneForm(UserForm):
