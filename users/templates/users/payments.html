@@ -1,0 +1,63 @@
+{% extends 'users/page.html' %}
+{% load crispy_forms_tags %}
+{% load store_tags %}
+
+{% block title %}Payments Methods {% endblock %}
+
+{% block content %}
+
+<section data-scroll-adjust="resize" class="section">
+    <h1 class="title has-text-weight-light">Your Cards</h1>
+    <hr>
+
+    <div class="columns">
+        <div class="column is-9">
+            {% comment %} <div class="tile is-ancestor">
+                {% for source in view.sources %}
+                <div class="tile is-3 is-parent">
+                    <div class="tile is-paddingless">
+                        <article class="tile is-child is-paddingless">
+                            <figure class="image is-card-img has-max-120">
+                                    <img src="{% get_card_image source %}" border='0' />
+                                </figure>
+                        </article>
+                    </div>
+                </div>
+                {% if forloop.counter|divisibleby:4 %}
+            </div>
+            <div class="tile is-ancestor">
+                {% endif %}
+                {% endfor %}
+            </div> {% endcomment %}
+
+            <div class="columns">
+            {% for source in view.sources %}
+            <div class="column is-3">
+                <div class="card">
+                    <div class="card-content">
+                      <div class="media">
+                        <div class="media-left">
+                          <figure class="image" style="max-width:96px;">
+                            <img src="{% get_card_image source %}" alt="Placeholder image">
+                          </figure>
+                        </div>
+                        <div class="media-content">
+                          <p class="title is-4">{{ source.last4 }}</p>
+                          <p class="subtitle is-6">{{ source.exp_month }}/{{ source.exp_year }}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="content">
+                            <p> Set Default </p>
+                        </div>
+                  </div>
+                </div>
+                  {% endfor %}
+                </div>
+        </div>
+    </div>
+
+</section>
+
+
+{% endblock %}
