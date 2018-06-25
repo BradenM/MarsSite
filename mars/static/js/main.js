@@ -165,6 +165,34 @@ signup.submit(function (event) {
     })
 });
 
+// Animate.css Function
+$.fn.extend({
+    animateCss: function (animationName, callback) {
+        var animationEnd = (function (el) {
+            var animations = {
+                animation: 'animationend',
+                OAnimation: 'oAnimationEnd',
+                MozAnimation: 'mozAnimationEnd',
+                WebkitAnimation: 'webkitAnimationEnd',
+            };
+
+            for (var t in animations) {
+                if (el.style[t] !== undefined) {
+                    return animations[t];
+                }
+            }
+        })(document.createElement('div'));
+
+        this.addClass('animated ' + animationName).one(animationEnd, function () {
+            $(this).removeClass('animated ' + animationName);
+
+            if (typeof callback === 'function') callback();
+        });
+
+        return this;
+    },
+});
+
 // using jQuery
 function getCookie(name) {
     var cookieValue = null;
@@ -212,6 +240,7 @@ var accountPage = (function () {
             Search($('input[search-data]'));
             loadTracker(track_links);
             AccountSettings();
+            AccountPayments();
         })
     }
 
@@ -399,6 +428,26 @@ var AccountSettings = (function () {
                 }
             })
         })
+    }
+
+})
+
+var AccountPayments = (function () {
+    // Init
+
+    // Bind Card Expansion
+    $('a.is-card-expand').click(function (e) {
+        e.preventDefault();
+        expandCard($(this));
+    })
+
+    // Card Expand
+    var expandCard = function (trig) {
+        var target = $('#' + trig.attr('data-expand'))
+        target.slideToggle('fast');
+        target.toggleClass('is-active');
+        var icon = trig.find($('.icon'));
+        icon.toggleClass('fa-rotate-180');
     }
 
 })
