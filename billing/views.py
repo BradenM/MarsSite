@@ -14,7 +14,7 @@ class SaveCard(View, CustomerMixin):
     def post(self, request, *args, **kwargs):
         next = request.GET.get('next')
         try:
-            self.create_card(request.POST.get("stripeToken"))
+            self.create_card(request)
             return redirect(next)
         except stripe.CardError as e:
             print(e)

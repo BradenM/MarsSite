@@ -1,5 +1,11 @@
 <form class="form" action="{% url 'billing:add_card' %}?next={{ request.path|urlencode }}" method="post" id="payment-form">
     {% csrf_token %}
+    <div class="field">
+        <label class="label">Name on Card</label>
+        <div class="control">
+            <input class="input" type="text" name="card_holder" placeholder="John Smith">
+        </div>
+    </div>
     <div class="field form-row">
         <label class="label" for="card-element">
             Credit or debit card
