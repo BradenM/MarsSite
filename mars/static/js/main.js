@@ -433,12 +433,17 @@ var AccountSettings = (function () {
 })
 
 var AccountPayments = (function () {
-    // Init
 
     // Bind Card Expansion
     $('a.is-card-expand').click(function (e) {
         e.preventDefault();
         expandCard($(this));
+    })
+
+    // Bind Card Edit
+    $('span[card-edit]').click(function (e) {
+        e.preventDefault();
+        editCard($(this));
     })
 
     // Card Expand
@@ -448,6 +453,35 @@ var AccountPayments = (function () {
         target.toggleClass('is-active');
         var icon = trig.find($('.icon'));
         icon.toggleClass('fa-rotate-180');
+    }
+
+    // Edit Card
+    var editCard = function (trig) {
+        // Vars
+        var target = $('#' + trig.attr('card-edit'));
+        // Hide Other Buttons
+        var siblingButtons = trig.parent().find($('span'));
+        $.each(siblingButtons, function (i, el) {
+
+            $(el).not(trig).fadeTo(200, 0, function () {
+                $(el).css('visibility', 'hidden');
+            });
+        });
+        // Change Edit button to 'save'
+        trig.html('Save');
+        trig.addClass('is-primary');
+        // Get Inputs
+        var inputs = target.find($('input'));
+        // Hide Infos
+        $.each(inputs, function (i, el) {
+            var info = $(this).siblings('p');
+            info.fadeTo(200, 0, function () {
+                info.css('display', 'none');
+                $(el).attr('type', 'text');
+            })
+        })
+
+
     }
 
 })

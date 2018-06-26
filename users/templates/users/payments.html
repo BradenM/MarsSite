@@ -22,12 +22,12 @@
                                 </figure>
                             </div>
                             <div class="media-content">
-                                <p class="title is-5">{{ source.last4 }}</p>
-                                <p class="subtitle">Card Name
-                                    {% if source.stripe_id == source.customer.default_source %}
-                                    <span class="tag is-primary">Default</span>
-                                    {% endif %}
+                                <p class="title is-5">{{ source.last4 }}
+                                        {% if source.stripe_id == source.customer.default_source %}
+                                        <span class="tag is-small is-primary is-rounded has-text-weight-normal">Default</span>
+                                        {% endif %}
                                 </p>
+                                <p class="subtitle">Card Name</p>
                                 <a href="#" data-expand="{{ forloop.counter }}_content" class="card-header-icon is-unselectable is-overlay is-card-expand" aria-label="more options">
                                     <span class="icon">
                                         <i class="fa fa-angle-down"></i>
@@ -38,20 +38,30 @@
                     </header>
                     <div id="{{ forloop.counter }}_content" class="card-content has-background-grey-lighter is-expandable" style="display:none">
                         <div class="columns">
-                            <div class="column">
-                                <ul>
-                                    <li class="has-text-weight-semibold">Braden Mars</li>
-                                    <li class="has-text-weight-semibold">{{ source.exp_month }}/{{ source.exp_year }}</li>
-                                </ul>
+                            <div id="card-data_{{ forloop.counter }}" class="column">
+                                <div class="field">
+                                    <label class="label">Name:</label>
+                                    <div class="control">
+                                        <input class="input has-background-grey-lighter is-hovered" type="hidden" placeholder="Braden Mars">
+                                        <p class="has-text-weight-semibold">Braden Mars</p>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Expiration: </label>
+                                    <div class="control">
+                                        <input class="input has-background-grey-lighter is-hovered" type="hidden" placeholder="{{ source.exp_month }}/{{ source.exp_year }}">
+                                        <p class="has-text-weight-semibold">{{ source.exp_month }}/{{ source.exp_year }}</p>
+                                    </div>
+                                </div>
                             </div>
                             <div class="column">
                                 <div class="buttons is-left">
-                                    <span class="button is-small is-rounded">Edit Card</span>
-                                    <span class="button is-small is-rounded is-danger">Remove Card</span>
+                                    <span card-edit='card-data_{{ forloop.counter }}' class="button is-small is-rounded">Edit Card</span>
+                                    <span class="button is-small is-rounded is-danger" onclick="javascript:location.href='{% url 'billing:remove_card' source.pk %}?next={{ request.path|urlencode }}'" >Remove Card</span>
                                     {% if source.stripe_id == source.customer.default_source %}
                                     <span class="button is-small is-rounded is-link" disabled>Current Default</span>
                                     {% else %}
-                                    <span class="button is-small is-rounded is-link">Make Default</span>
+                                    <span class="button is-small is-rounded is-link" onclick="javascript:location.href='{% url 'billing:set_default_card' source.pk %}?next={{ request.path|urlencode }}'">Make Default</span>
                                     {% endif %}
                                 </div>
                             </div>
@@ -64,5 +74,15 @@
 
 </section>
 
+<section data-scroll-adjust="resize" class="section">
+    <h1 class="title has-text-weight-light">Add Card</h1>
+    <hr>
+
+    <div class="columns">
+        <div class="column is-one-third">
+            {% include 'store/stripe_card.html' %}
+        </div>
+    </div>
+</section>
 
 {% endblock %}

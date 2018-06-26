@@ -1,4 +1,4 @@
-<form class="form" action="{% url 'billing:add_card' %}" method="post" id="payment-form">
+<form class="form" action="{% url 'billing:add_card' %}?next={{ request.path|urlencode }}" method="post" id="payment-form">
     {% csrf_token %}
     <div class="field form-row">
         <label class="label" for="card-element">
@@ -21,3 +21,4 @@
       </p>
     </div>
 </form>
+<script src="/static/js/stripe.js"></script>

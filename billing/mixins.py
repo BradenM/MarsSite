@@ -18,6 +18,9 @@ class CustomerMixin(mixins.CustomerMixin):
     def delete_card(self, stripe_id):
         sources.delete_card(self.customer, stripe_id)
 
+    def set_default_card(self, stripe_id):
+        customers.set_default_source(self.customer, stripe_id)
+
     def charge_customer(self, amount, source):
         charge = charges.create(
             amount=amount,

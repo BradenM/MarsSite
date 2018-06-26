@@ -12,23 +12,36 @@ from store.mixins import CartMixin
 
 class SaveCard(View, CustomerMixin):
     def post(self, request, *args, **kwargs):
+        next = request.GET.get('next')
         try:
             self.create_card(request.POST.get("stripeToken"))
-            return redirect("store:checkout")
+            return redirect(next)
         except stripe.CardError as e:
             print(e)
-            return redirect("store:checkout")
+            return redirect(next)
 
 
 class RemoveCard(View, CustomerMixin):
     def get(self, request, pk):
+        next = request.GET.get('next')
         try:
             source = Card.objects.get(pk=pk)
             self.delete_card(source.stripe_id)
-            return redirect("store:checkout")
+            return redirect(next)
         except stripe.CardError as e:
             print(e)
-            return redirect("store:checkout")
+            return redirect(next)
+
+class SetDefaultCard(CustomerMixin, View):
+    def get(self, request, pk):
+        next = request.GET.get('next')
+        try:
+            source = Card.objects.get(pk=pk)
+            self.set_default_card(source.stripe_id)
+            return redirect(next)
+        except stripe.CardError as e:
+            print(e)
+            return redirect(next)
 
 
 class ChargeCustomer(View, CustomerMixin, CartMixin):
