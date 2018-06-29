@@ -27,7 +27,7 @@
                                         <span class="tag is-small is-primary is-rounded has-text-weight-normal">Default</span>
                                         {% endif %}
                                 </p>
-                                <p class="subtitle">Card Name</p>
+                                <p class="subtitle">{{ source.brand }}</p>
                                 <a href="#" data-expand="{{ forloop.counter }}_content" class="card-header-icon is-unselectable is-overlay is-card-expand" aria-label="more options">
                                     <span class="icon">
                                         <i class="fa fa-angle-down"></i>
@@ -39,20 +39,24 @@
                     <div id="{{ forloop.counter }}_content" class="card-content has-background-grey-lighter is-expandable" style="display:none">
                         <div class="columns">
                             <div id="card-data_{{ forloop.counter }}" class="column">
-                                <div class="field">
-                                    <label class="label">Name:</label>
-                                    <div class="control">
-                                        <input class="input has-background-grey-lighter is-hovered" type="hidden" placeholder="Braden Mars">
-                                        <p class="has-text-weight-semibold">Braden Mars</p>
+                                <form id="card-form_{{ forloop.counter }}" class="is-marginless" method="POST" action="{% url 'billing:edit_card'%}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="source_id" value="{{ source.stripe_id }}"/>
+                                    <div class="field">
+                                        <label class="label">Name:</label>
+                                        <div class="control">
+                                            <input class="input has-background-grey-lighter is-hovered" name="card_new_holder" type="hidden" value="{{ source.name }}">
+                                            <p class="has-text-weight-semibold">{{ source.name }}</p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="field">
-                                    <label class="label">Expiration: </label>
-                                    <div class="control">
-                                        <input class="input has-background-grey-lighter is-hovered" type="hidden" placeholder="{{ source.exp_month }}/{{ source.exp_year }}">
-                                        <p class="has-text-weight-semibold">{{ source.exp_month }}/{{ source.exp_year }}</p>
+                                    <div class="field">
+                                        <label class="label">Expiration: </label>
+                                        <div class="control">
+                                            <input class="input has-background-grey-lighter is-hovered" name="card_new_exp" type="hidden" value="{{ source.exp_month }}/{{ source.exp_year }}">
+                                            <p class="has-text-weight-semibold">{{ source.exp_month }}/{{ source.exp_year }}</p>
+                                        </div>
                                     </div>
-                                </div>
+                            </form>
                             </div>
                             <div class="column">
                                 <div class="buttons is-left">

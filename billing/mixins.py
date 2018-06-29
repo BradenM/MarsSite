@@ -24,6 +24,10 @@ class CustomerMixin(mixins.CustomerMixin):
     def set_default_card(self, stripe_id):
         customers.set_default_source(self.customer, stripe_id)
 
+    def edit_card(self, stripe_id, date=None, name=None):
+        sources.update_card(self.customer, stripe_id,
+                            exp_month=date.month, exp_year=date.year, name=name)
+
     def charge_customer(self, amount, source):
         charge = charges.create(
             amount=amount,
