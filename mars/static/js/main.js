@@ -311,6 +311,39 @@ var infoNotify = function (title, msg) {
     return n
 }
 
+// WIP function to handle the multiple ajax requests
+var handleAjax = (function () {
+
+    // Serialize form data and append CSRF token
+    var prepareData = function (el) {
+        var data = el.serializeArray();
+        data.push({
+            name: 'csrfmiddlewaretoken',
+            value: getCookie('csrftoken')
+        })
+        return data
+    };
+
+    // Submit Request
+    var submitRequest = function (el, data, success, error) {
+        $.ajax({
+            url: el.attr('action'),
+            type: el.attr('method'),
+            data: data,
+            dataType: 'json',
+            success: success,
+            error: error,
+        })
+    }
+
+    // Publicize
+    return {
+        prepareData: prepareData,
+        submitRequest: submitRequest
+    };
+
+})
+
 var AccountSettings = (function () {
     // Init
 
@@ -459,6 +492,7 @@ var AccountPayments = (function () {
     var editCard = function (trig) {
         // Vars
         var target = $('#' + trig.attr('card-edit'));
+        var tar_form = target.find($('form'));
         // Hide Other Buttons
         var siblingButtons = trig.parent().find($('span'));
         $.each(siblingButtons, function (i, el) {
@@ -480,8 +514,33 @@ var AccountPayments = (function () {
                 $(el).attr('type', 'text');
             })
         })
+        // Rebind save to form submit
+        trig.off();
+        trig.click(function (e) {
+            e.preventDefault();
+            tar_form.submit();
+        })
+        // Bind target form to saveCard
+        tar_form.on('submit', function (e) {
+            e.preventDefault();
+            saveCard(tar_form);
+        })
+    }
 
-
+    // Save Card After Editing (w/ Ajax)
+    var saveCard = function (targ) {
+        var name_error = $('#' + targ.attr('id') + '_name_error')
+        var date_error = $('#' + targ.attr('id') + '_date_error')
+        var ajax_data = handleAjax().prepareData(targ);
+        var success = function (data) {
+            console.log('')
+            location.reload();
+        }
+        var error = function (data) {
+            var errors = data.responseJSON
+            date_error.html(errors['date_errors']);
+        }
+        handleAjax().submitRequest(targ, ajax_data, success, error)
     }
 
 })

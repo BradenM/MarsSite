@@ -48,6 +48,7 @@
                                             <input class="input has-background-grey-lighter is-hovered" name="card_new_holder" type="hidden" value="{{ source.name }}">
                                             <p class="has-text-weight-semibold">{{ source.name }}</p>
                                         </div>
+                                        <p class="help is-danger" id="card-form_{{ forloop.counter }}_name_error"></p>
                                     </div>
                                     <div class="field">
                                         <label class="label">Expiration: </label>
@@ -55,12 +56,13 @@
                                             <input class="input has-background-grey-lighter is-hovered" name="card_new_exp" type="hidden" value="{{ source.exp_month }}/{{ source.exp_year }}">
                                             <p class="has-text-weight-semibold">{{ source.exp_month }}/{{ source.exp_year }}</p>
                                         </div>
+                                        <p class="help is-danger" id="card-form_{{ forloop.counter }}_date_error"></p>
                                     </div>
                             </form>
                             </div>
                             <div class="column">
                                 <div class="buttons is-left">
-                                    <span card-edit='card-data_{{ forloop.counter }}' class="button is-small is-rounded">Edit Card</span>
+                                    <span card-edit='card-data_{{ forloop.counter }}' class="button is-small is-rounded ">Edit Card</span>
                                     <span class="button is-small is-rounded is-danger" onclick="javascript:location.href='{% url 'billing:remove_card' source.pk %}?next={{ request.path|urlencode }}'" >Remove Card</span>
                                     {% if source.stripe_id == source.customer.default_source %}
                                     <span class="button is-small is-rounded is-link" disabled>Current Default</span>

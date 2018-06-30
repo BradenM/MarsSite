@@ -52,7 +52,7 @@ class EditCard(CustomerMixin, View):
         holder = request.POST.get('card_new_holder')
         new_exp = request.POST.get('card_new_exp')
         source = request.POST.get('source_id')
-        resp = {'success': False, 'errors': ''}
+        resp = {'success': False, 'date_errors': ''}
         # Temporary date validation, needs to be better
         exp = validate_date(new_exp, "%m/%Y")
         if exp is False:
@@ -60,12 +60,10 @@ class EditCard(CustomerMixin, View):
         if exp is not False:
             resp['success'] = True
             self.edit_card(source, date=exp, name=holder)
-            print(exp.month)
-            print(exp.year)
             return JsonResponse(resp)
-        resp = JsonResponse(resp)
-        resp.status = 403
-        return resp
+
+        resp['date_errors'] = "Incorrect format, should read: 'mm/yy' or 'mm/yyyy'"
+        return JsonResponse(resp, status=406)
 
 
 class ChargeCustomer(View, CustomerMixin, CartMixin):
