@@ -75,6 +75,12 @@
                     </div>
                 </div>
             </div>
+            {% empty %}
+            <div class="column">
+                <div class="container">
+                    <p class="subtitle">You have no payment methods on this account. You may add one below.</p>
+                </div>
+            </div>
             {% endfor %}
     </div>
 

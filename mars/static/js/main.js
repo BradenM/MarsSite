@@ -470,13 +470,13 @@ var AccountPayments = (function () {
     // Bind Card Expansion
     $('a.is-card-expand').click(function (e) {
         e.preventDefault();
-        expandCard($(this));
+        expandCard($(this))
     })
 
     // Bind Card Edit
     $('span[card-edit]').click(function (e) {
         e.preventDefault();
-        editCard($(this));
+        editCard($(this)).hide();
     })
 
     // Card Expand
@@ -493,50 +493,93 @@ var AccountPayments = (function () {
         // Vars
         var target = $('#' + trig.attr('card-edit'));
         var tar_form = target.find($('form'));
-        // Hide Other Buttons
-        var siblingButtons = trig.parent().find($('span'));
-        $.each(siblingButtons, function (i, el) {
-
-            $(el).not(trig).fadeTo(200, 0, function () {
-                $(el).css('visibility', 'hidden');
-            });
-        });
-        // Change Edit button to 'save'
-        trig.html('Save');
-        trig.addClass('is-primary');
         // Get Inputs
         var inputs = target.find($('input'));
-        // Hide Infos
-        $.each(inputs, function (i, el) {
-            var info = $(this).siblings('p');
-            info.fadeTo(200, 0, function () {
-                info.css('display', 'none');
-                $(el).attr('type', 'text');
+        // Get button siblings
+        var siblingButtons = trig.parent().find($('span'));
+        var cancel_edit = $(siblingButtons[1]);
+        var cancel_default = cancel_edit.attr('onclick');
+
+        // Toggle last button
+        var displayLast = function (visibility, fade) {
+            // Hide Last Button
+            $(siblingButtons.last()).fadeTo(fade[0], fade[1], function () {
+                $(siblingButtons.last()).css('visibility', visibility);
             })
-        })
-        // Rebind save to form submit
-        trig.off();
-        trig.click(function (e) {
-            e.preventDefault();
-            tar_form.submit();
-        })
-        // Bind target form to saveCard
-        tar_form.on('submit', function (e) {
-            e.preventDefault();
-            saveCard(tar_form);
-        })
+        }
+
+        // Toggle form transition
+        var transitionForm = function (status, input_display, input_type, fade) {
+            // Change Edit button to 'save'
+            trig.html(status[0]);
+            cancel_edit.html(status[1])
+            trig.toggleClass('is-primary');
+            // Hide Infos
+            $.each(inputs, function (i, el) {
+                var info = $(this).siblings('p');
+                info.fadeTo(fade[0], fade[1], function () {
+                    info.css('display', input_display);
+                    $(el).attr('type', input_type);
+                })
+            })
+        }
+
+        var hide = function () {
+            // Trans to Edit view
+            displayLast('hidden', [200, 0]);
+            transitionForm(['Save', 'Cancel'], 'none', 'text', [200, 0])
+            // Rebind save to form submit
+            trig.off();
+            trig.click(function (e) {
+                e.preventDefault();
+                tar_form.submit();
+            })
+            // Bind target form to saveCard
+            tar_form.on('submit', function (e) {
+                e.preventDefault();
+                saveCard(trig, tar_form);
+            })
+            // Bind cancel edit
+            cancel_edit.attr('onclick', '');
+            cancel_edit.on('click', function (e) {
+                e.preventDefault();
+                show();
+            })
+        }
+
+        var show = function () {
+            // Trans to normal view
+            displayLast('visible', [0, 200]);
+            transitionForm(['Edit Card', 'Remove Card'], 'flex', 'hidden', [0, 200])
+            // Unbind cancel edit
+            cancel_edit.off();
+            cancel_edit.attr('onclick', cancel_default);
+            // Rebind edit card
+            trig.off();
+            trig.click(function (e) {
+                e.preventDefault();
+                hide();
+            })
+        }
+
+        return {
+            hide: hide
+        }
+
     }
 
     // Save Card After Editing (w/ Ajax)
-    var saveCard = function (targ) {
+    var saveCard = function (source, targ) {
+        source.addClass('is-loading');
         var name_error = $('#' + targ.attr('id') + '_name_error')
         var date_error = $('#' + targ.attr('id') + '_date_error')
         var ajax_data = handleAjax().prepareData(targ);
         var success = function (data) {
-            console.log('')
+            source.removeClass('is-loading');
             location.reload();
         }
         var error = function (data) {
+            source.removeClass('is-loading');
             var errors = data.responseJSON
             date_error.html(errors['date_errors']);
         }
