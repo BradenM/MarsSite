@@ -29,6 +29,27 @@ class SettingsPage(CustomerMixin, TemplateView):
         return context
 
 
+# User Settings
+class ChangePhone(AjaxCapableProcessFormViewMixin, FormView):
+    template_name = "users/forms/form.html"
+    form_class = ChangePhoneForm
+    success_url = reverse_lazy('users:my_account')
+
+    def get_form_kwargs(self):
+        kwargs = super(ChangePhone, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        phone = form.save(self.request)
+        return super(ChangePhone, self).form_valid(form)
+
+    def post(self, request, *args, **kwargs):
+        res = super(ChangePhone, self).post(request, *args, **kwargs)
+        return res
+
+
+# Orders Page
 class ListInvoices(TemplateView, CustomerMixin):
     template_name = 'users/invoices.html'
 
@@ -67,20 +88,6 @@ class SearchOrders(CustomerMixin, View):
             request, 'users/order_tile.html', context={'orders': results, 'empty_msg': "No orders match your search query."})
 
 
-class ChangePhone(AjaxCapableProcessFormViewMixin, FormView):
-    template_name = "users/forms/form.html"
-    form_class = ChangePhoneForm
-    success_url = reverse_lazy('users:my_account')
-
-    def get_form_kwargs(self):
-        kwargs = super(ChangePhone, self).get_form_kwargs()
-        kwargs['user'] = self.request.user
-        return kwargs
-
-    def form_valid(self, form):
-        phone = form.save(self.request)
-        return super(ChangePhone, self).form_valid(form)
-
-    def post(self, request, *args, **kwargs):
-        res = super(ChangePhone, self).post(request, *args, **kwargs)
-        return res
+# Payment Methods
+class PaymentsPage(CustomerMixin, TemplateView):
+    template_name = "users/payments.html"

@@ -3,32 +3,64 @@ from .mixins import CustomerMixin
 from .models import Invoice, Order
 from django.conf import settings
 from django.shortcuts import HttpResponse, redirect, render
+from django.http import JsonResponse
 from django.views.generic import View
 from pinax.stripe import mixins
 from pinax.stripe.actions import charges, customers, sources
 from pinax.stripe.models import Card
 from store.mixins import CartMixin
+from .validators import validate_date
 
 
 class SaveCard(View, CustomerMixin):
     def post(self, request, *args, **kwargs):
+        next = request.GET.get('next')
         try:
-            self.create_card(request.POST.get("stripeToken"))
-            return redirect("store:checkout")
+            self.create_card(request)
+            return redirect(next)
         except stripe.CardError as e:
             print(e)
-            return redirect("store:checkout")
+            return redirect(next)
 
 
 class RemoveCard(View, CustomerMixin):
     def get(self, request, pk):
+        next = request.GET.get('next')
         try:
             source = Card.objects.get(pk=pk)
             self.delete_card(source.stripe_id)
-            return redirect("store:checkout")
+            return redirect(next)
         except stripe.CardError as e:
             print(e)
-            return redirect("store:checkout")
+            return redirect(next)
+
+
+class SetDefaultCard(CustomerMixin, View):
+    def get(self, request, pk):
+        next = request.GET.get('next')
+        try:
+            source = Card.objects.get(pk=pk)
+            self.set_default_card(source.stripe_id)
+            return redirect(next)
+        except stripe.CardError as e:
+            print(e)
+            return redirect(next)
+
+
+class EditCard(CustomerMixin, View):
+    def post(self, request):
+        holder = request.POST.get('card_new_holder')
+        new_exp = request.POST.get('card_new_exp')
+        source = request.POST.get('source_id')
+        resp = {'success': False, 'date_errors': ''}
+        exp_status, exp = validate_date(new_exp)
+        if exp_status is True:
+            resp['success'] = True
+            self.edit_card(source, date=exp, name=holder)
+            return JsonResponse(resp)
+
+        resp['date_errors'] = exp
+        return JsonResponse(resp, status=406)
 
 
 class ChargeCustomer(View, CustomerMixin, CartMixin):
