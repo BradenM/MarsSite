@@ -217,7 +217,6 @@ var accountPage = (function () {
     var content = $('#account-view')
     var account_sel = $('a[load-account]')
     var contentWindow = $('.Site-content').height();
-    var track_links = $('a[load-tracker]');
 
 
     // Init
@@ -238,7 +237,7 @@ var accountPage = (function () {
         content.load(page_url, function () {
             adjustScroll();
             Search($('input[search-data]'));
-            loadTracker(track_links);
+            loadTracker();
             AccountSettings();
             AccountPayments();
         })
@@ -255,12 +254,17 @@ var accountPage = (function () {
     }
 
     // Get Tracker info for orders
-    var loadTracker = function (links) {
+    var loadTracker = function () {
+        var links = $('a[load-tracker]');
         links.on('click', function (e) {
+            e.preventDefault();
+            console.log('hi');
             var track = $(e.target).attr('load-tracker');
             var url = "tracker/" + track;
+            console.log(url);
             content.load(url, function () {
-                accountPage();
+                console.log('loaded');
+                accountPage(); // Temp solution
             });
         })
     }
