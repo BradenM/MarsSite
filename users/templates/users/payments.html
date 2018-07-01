@@ -1,0 +1,100 @@
+{% extends 'users/page.html' %}
+{% load crispy_forms_tags %}
+{% load store_tags %}
+
+{% block title %}Payments Methods {% endblock %}
+
+{% block content %}
+
+<section data-scroll-adjust="resize" class="section">
+    <h1 class="title has-text-weight-light">Your Cards</h1>
+    <hr>
+
+    <div class="columns">
+            {% for source in view.sources %}
+            <div class="column is-3">
+                <div class="card">
+                    <header class="card-header">
+                        <div class="media">
+                            <div class="media-left">
+                                <figure class="image has-max-120">
+                                    <img src="{% get_card_image source %}">
+                                </figure>
+                            </div>
+                            <div class="media-content">
+                                <p class="title is-5">{{ source.last4 }}
+                                        {% if source.stripe_id == source.customer.default_source %}
+                                        <span class="tag is-small is-primary is-rounded has-text-weight-normal">Default</span>
+                                        {% endif %}
+                                </p>
+                                <p class="subtitle">{{ source.brand }}</p>
+                                <a href="#" data-expand="{{ forloop.counter }}_content" class="card-header-icon is-unselectable is-overlay is-card-expand" aria-label="more options">
+                                    <span class="icon">
+                                        <i class="fa fa-angle-down"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </header>
+                    <div id="{{ forloop.counter }}_content" class="card-content has-background-grey-lighter is-expandable" style="display:none">
+                        <div class="columns">
+                            <div id="card-data_{{ forloop.counter }}" class="column">
+                                <form id="card-form_{{ forloop.counter }}" class="is-marginless" method="POST" action="{% url 'billing:edit_card'%}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="source_id" value="{{ source.stripe_id }}"/>
+                                    <div class="field">
+                                        <label class="label">Name:</label>
+                                        <div class="control">
+                                            <input class="input has-background-grey-lighter is-hovered" name="card_new_holder" type="hidden" value="{{ source.name }}">
+                                            <p class="has-text-weight-semibold">{{ source.name }}</p>
+                                        </div>
+                                        <p class="help is-danger" id="card-form_{{ forloop.counter }}_name_error"></p>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label">Expiration: </label>
+                                        <div class="control">
+                                            <input class="input has-background-grey-lighter is-hovered" name="card_new_exp" type="hidden" value="{{ source.exp_month }}/{{ source.exp_year }}">
+                                            <p class="has-text-weight-semibold">{{ source.exp_month }}/{{ source.exp_year }}</p>
+                                        </div>
+                                        <p class="help is-danger" id="card-form_{{ forloop.counter }}_date_error"></p>
+                                    </div>
+                            </form>
+                            </div>
+                            <div class="column">
+                                <div class="buttons is-left">
+                                    <span card-edit='card-data_{{ forloop.counter }}' class="button is-small is-rounded ">Edit Card</span>
+                                    <span class="button is-small is-rounded is-danger" onclick="javascript:location.href='{% url 'billing:remove_card' source.pk %}?next={{ request.path|urlencode }}'" >Remove Card</span>
+                                    {% if source.stripe_id == source.customer.default_source %}
+                                    <span class="button is-small is-rounded is-link" disabled>Current Default</span>
+                                    {% else %}
+                                    <span class="button is-small is-rounded is-link" onclick="javascript:location.href='{% url 'billing:set_default_card' source.pk %}?next={{ request.path|urlencode }}'">Make Default</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="column">
+                <div class="container">
+                    <p class="subtitle">You have no payment methods on this account. You may add one below.</p>
+                </div>
+            </div>
+            {% endfor %}
+    </div>
+
+</section>
+
+<section data-scroll-adjust="resize" class="section">
+    <h1 class="title has-text-weight-light">Add Card</h1>
+    <hr>
+
+    <div class="columns">
+        <div class="column is-one-third">
+            {% include 'store/stripe_card.html' %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

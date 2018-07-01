@@ -12,11 +12,21 @@ from store.mixins import CartMixin
 
 class CustomerMixin(mixins.CustomerMixin):
 
-    def create_card(self, stripe_token):
-        sources.create_card(self.customer, token=stripe_token)
+    def create_card(self, request):
+        token = request.POST.get('stripeToken')
+        holder = request.POST.get('card_holder')
+        card = sources.create_card(self.customer, token=token)
+        sources.update_card(self.customer, card.stripe_id, name=holder)
 
     def delete_card(self, stripe_id):
         sources.delete_card(self.customer, stripe_id)
+
+    def set_default_card(self, stripe_id):
+        customers.set_default_source(self.customer, stripe_id)
+
+    def edit_card(self, stripe_id, date=None, name=None):
+        sources.update_card(self.customer, stripe_id,
+                            exp_month=date.month, exp_year=date.year, name=name)
 
     def charge_customer(self, amount, source):
         charge = charges.create(

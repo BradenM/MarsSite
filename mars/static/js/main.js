@@ -165,6 +165,34 @@ signup.submit(function (event) {
     })
 });
 
+// Animate.css Function
+$.fn.extend({
+    animateCss: function (animationName, callback) {
+        var animationEnd = (function (el) {
+            var animations = {
+                animation: 'animationend',
+                OAnimation: 'oAnimationEnd',
+                MozAnimation: 'mozAnimationEnd',
+                WebkitAnimation: 'webkitAnimationEnd',
+            };
+
+            for (var t in animations) {
+                if (el.style[t] !== undefined) {
+                    return animations[t];
+                }
+            }
+        })(document.createElement('div'));
+
+        this.addClass('animated ' + animationName).one(animationEnd, function () {
+            $(this).removeClass('animated ' + animationName);
+
+            if (typeof callback === 'function') callback();
+        });
+
+        return this;
+    },
+});
+
 // using jQuery
 function getCookie(name) {
     var cookieValue = null;
@@ -212,6 +240,7 @@ var accountPage = (function () {
             Search($('input[search-data]'));
             loadTracker(track_links);
             AccountSettings();
+            AccountPayments();
         })
     }
 
@@ -281,6 +310,39 @@ var infoNotify = function (title, msg) {
     })
     return n
 }
+
+// WIP function to handle the multiple ajax requests
+var handleAjax = (function () {
+
+    // Serialize form data and append CSRF token
+    var prepareData = function (el) {
+        var data = el.serializeArray();
+        data.push({
+            name: 'csrfmiddlewaretoken',
+            value: getCookie('csrftoken')
+        })
+        return data
+    };
+
+    // Submit Request
+    var submitRequest = function (el, data, success, error) {
+        $.ajax({
+            url: el.attr('action'),
+            type: el.attr('method'),
+            data: data,
+            dataType: 'json',
+            success: success,
+            error: error,
+        })
+    }
+
+    // Publicize
+    return {
+        prepareData: prepareData,
+        submitRequest: submitRequest
+    };
+
+})
 
 var AccountSettings = (function () {
     // Init
@@ -399,6 +461,129 @@ var AccountSettings = (function () {
                 }
             })
         })
+    }
+
+})
+
+var AccountPayments = (function () {
+
+    // Bind Card Expansion
+    $('a.is-card-expand').click(function (e) {
+        e.preventDefault();
+        expandCard($(this))
+    })
+
+    // Bind Card Edit
+    $('span[card-edit]').click(function (e) {
+        e.preventDefault();
+        editCard($(this)).hide();
+    })
+
+    // Card Expand
+    var expandCard = function (trig) {
+        var target = $('#' + trig.attr('data-expand'))
+        target.slideToggle('fast');
+        target.toggleClass('is-active');
+        var icon = trig.find($('.icon'));
+        icon.toggleClass('fa-rotate-180');
+    }
+
+    // Edit Card
+    var editCard = function (trig) {
+        // Vars
+        var target = $('#' + trig.attr('card-edit'));
+        var tar_form = target.find($('form'));
+        // Get Inputs
+        var inputs = target.find($('input'));
+        // Get button siblings
+        var siblingButtons = trig.parent().find($('span'));
+        var cancel_edit = $(siblingButtons[1]);
+        var cancel_default = cancel_edit.attr('onclick');
+
+        // Toggle last button
+        var displayLast = function (visibility, fade) {
+            // Hide Last Button
+            $(siblingButtons.last()).fadeTo(fade[0], fade[1], function () {
+                $(siblingButtons.last()).css('visibility', visibility);
+            })
+        }
+
+        // Toggle form transition
+        var transitionForm = function (status, input_display, input_type, fade) {
+            // Change Edit button to 'save'
+            trig.html(status[0]);
+            cancel_edit.html(status[1])
+            trig.toggleClass('is-primary');
+            // Hide Infos
+            $.each(inputs, function (i, el) {
+                var info = $(this).siblings('p');
+                info.fadeTo(fade[0], fade[1], function () {
+                    info.css('display', input_display);
+                    $(el).attr('type', input_type);
+                })
+            })
+        }
+
+        var hide = function () {
+            // Trans to Edit view
+            displayLast('hidden', [200, 0]);
+            transitionForm(['Save', 'Cancel'], 'none', 'text', [200, 0])
+            // Rebind save to form submit
+            trig.off();
+            trig.click(function (e) {
+                e.preventDefault();
+                tar_form.submit();
+            })
+            // Bind target form to saveCard
+            tar_form.on('submit', function (e) {
+                e.preventDefault();
+                saveCard(trig, tar_form);
+            })
+            // Bind cancel edit
+            cancel_edit.attr('onclick', '');
+            cancel_edit.on('click', function (e) {
+                e.preventDefault();
+                show();
+            })
+        }
+
+        var show = function () {
+            // Trans to normal view
+            displayLast('visible', [0, 200]);
+            transitionForm(['Edit Card', 'Remove Card'], 'flex', 'hidden', [0, 200])
+            // Unbind cancel edit
+            cancel_edit.off();
+            cancel_edit.attr('onclick', cancel_default);
+            // Rebind edit card
+            trig.off();
+            trig.click(function (e) {
+                e.preventDefault();
+                hide();
+            })
+        }
+
+        return {
+            hide: hide
+        }
+
+    }
+
+    // Save Card After Editing (w/ Ajax)
+    var saveCard = function (source, targ) {
+        source.addClass('is-loading');
+        var name_error = $('#' + targ.attr('id') + '_name_error')
+        var date_error = $('#' + targ.attr('id') + '_date_error')
+        var ajax_data = handleAjax().prepareData(targ);
+        var success = function (data) {
+            source.removeClass('is-loading');
+            location.reload();
+        }
+        var error = function (data) {
+            source.removeClass('is-loading');
+            var errors = data.responseJSON
+            date_error.html(errors['date_errors']);
+        }
+        handleAjax().submitRequest(targ, ajax_data, success, error)
     }
 
 })
