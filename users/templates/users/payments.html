@@ -53,7 +53,7 @@
                                     <div class="field">
                                         <label class="label">Expiration: </label>
                                         <div class="control">
-                                            <input class="input has-background-grey-lighter is-hovered" name="card_new_exp" type="hidden" value="{{ source.exp_month }}/{{ source.exp_year }}">
+                                            <input class="input has-background-grey-lighter is-hovered js-date-input" name="card_new_exp" type="hidden" placeholder="{{ source.exp_month }}/{{ source.exp_year }}">
                                             <p class="has-text-weight-semibold">{{ source.exp_month }}/{{ source.exp_year }}</p>
                                         </div>
                                         <p class="help is-danger" id="card-form_{{ forloop.counter }}_date_error"></p>

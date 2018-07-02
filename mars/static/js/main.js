@@ -354,6 +354,8 @@ var AccountSettings = (function () {
     // Unlock Input
     $('a[data-unlock]').click(function (e) {
         unlockInput($(this));
+        // Load Cleave
+        loadCleave().phone();
     });
 
     // Allow Input Modify
@@ -475,6 +477,7 @@ var AccountPayments = (function () {
     $('a.is-card-expand').click(function (e) {
         e.preventDefault();
         expandCard($(this))
+        loadCleave().date();
     })
 
     // Bind Card Edit
@@ -592,6 +595,32 @@ var AccountPayments = (function () {
 
 })
 
+var loadCleave = function () {
+    console.log('cleave called');
+
+    // Phone Input
+    var phone = function () {
+        var cleave = new Cleave('.js-phone-input', {
+            phone: true,
+            phoneRegionCode: 'US'
+        });
+    }
+
+    // Date Input (month/year)
+    var date = function () {
+        var cleave_date = new Cleave('.js-date-input', {
+            date: true,
+            datePattern: ['m', 'y']
+        });
+    }
+
+    return {
+        date: date,
+        phone: phone
+    }
+}
+
 $(document).ready(function () {
     accountPage();
+
 });
