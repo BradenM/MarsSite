@@ -1,10 +1,10 @@
-{% extends 'users/page.html' %}
+{% extends 'users/base.html' %}
 {% load crispy_forms_tags %}
 {% load store_tags %}
 
 {% block title %}Payments Methods {% endblock %}
 
-{% block content %}
+{% block page %}
 
 <section data-scroll-adjust="resize" class="section">
     <h1 class="title has-text-weight-light">Your Cards</h1>
@@ -97,4 +97,10 @@
     </div>
 </section>
 
+
+<script>
+    $(window).bind('load', function(){
+        UserAccounts().paymentsPage();
+    })
+</script>
 {% endblock %}

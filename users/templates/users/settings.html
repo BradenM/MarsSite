@@ -1,9 +1,9 @@
-{% extends 'users/page.html' %}
+{% extends 'users/base.html' %}
 {% load crispy_forms_tags %}
 
 {% block title %}Login &amp; Security{% endblock %}
 
-{% block content %}
+{% block page %}
 
 <section data-scroll-adjust="resize" class="section">
 
@@ -69,5 +69,9 @@
     </div>
 </section>
 
-
+<script>
+    $(window).bind('load', function(){
+        UserAccounts().settingsPage();
+    })
+</script>
 {% endblock %}
