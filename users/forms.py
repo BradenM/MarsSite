@@ -40,7 +40,7 @@ class ExtSignupForm(forms.Form):
                 css_class="field"
             ),
             Div(
-                Field('phone', css_class="input",
+                Field('phone', css_class="input js-phone-input",
                       placeholder="Your Phone Number"),
                 HTML("<p id='phone_errors' class='help is-danger'></p>"),
                 css_class="field"
@@ -102,5 +102,3 @@ class ExtLoginForm(LoginForm):
 
     def login(self, *args, **kwargs):
         return super(ExtLoginForm, self).login(*args, **kwargs)
-
-

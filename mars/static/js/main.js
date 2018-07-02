@@ -217,7 +217,6 @@ var accountPage = (function () {
     var content = $('#account-view')
     var account_sel = $('a[load-account]')
     var contentWindow = $('.Site-content').height();
-    var track_links = $('a[load-tracker]');
 
 
     // Init
@@ -238,7 +237,7 @@ var accountPage = (function () {
         content.load(page_url, function () {
             adjustScroll();
             Search($('input[search-data]'));
-            loadTracker(track_links);
+            loadTracker();
             AccountSettings();
             AccountPayments();
         })
@@ -255,12 +254,17 @@ var accountPage = (function () {
     }
 
     // Get Tracker info for orders
-    var loadTracker = function (links) {
+    var loadTracker = function () {
+        var links = $('a[load-tracker]');
         links.on('click', function (e) {
+            e.preventDefault();
+            console.log('hi');
             var track = $(e.target).attr('load-tracker');
             var url = "tracker/" + track;
+            console.log(url);
             content.load(url, function () {
-                accountPage();
+                console.log('loaded');
+                accountPage(); // Temp solution
             });
         })
     }
@@ -350,6 +354,8 @@ var AccountSettings = (function () {
     // Unlock Input
     $('a[data-unlock]').click(function (e) {
         unlockInput($(this));
+        // Load Cleave
+        loadCleave().phone();
     });
 
     // Allow Input Modify
@@ -471,6 +477,7 @@ var AccountPayments = (function () {
     $('a.is-card-expand').click(function (e) {
         e.preventDefault();
         expandCard($(this))
+        loadCleave().date();
     })
 
     // Bind Card Edit
@@ -588,6 +595,32 @@ var AccountPayments = (function () {
 
 })
 
+var loadCleave = function () {
+    console.log('cleave called');
+
+    // Phone Input
+    var phone = function () {
+        var cleave = new Cleave('.js-phone-input', {
+            phone: true,
+            phoneRegionCode: 'US'
+        });
+    }
+
+    // Date Input (month/year)
+    var date = function () {
+        var cleave_date = new Cleave('.js-date-input', {
+            date: true,
+            datePattern: ['m', 'y']
+        });
+    }
+
+    return {
+        date: date,
+        phone: phone
+    }
+}
+
 $(document).ready(function () {
     accountPage();
+
 });
