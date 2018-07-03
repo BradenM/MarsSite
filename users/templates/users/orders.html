@@ -1,4 +1,4 @@
-{% extends 'users/page.html' %}
+{% extends 'users/base.html' %}
 
 {% block title %}Your Orders{% endblock %}
 
@@ -6,7 +6,7 @@
 <div class="level-item">
         <div class="field has-addons">
             <p class="control has-icons-left">
-                <input name="search_query" search-target="order-list" search-data="orders/search/" class="input is-normal" type="text" placeholder="Search">
+                <input name="search_query" search-target="order-list" action="{% url 'users:search_orders' %}" method="GET" class="input is-normal" type="text" placeholder="Search">
                 <span class="icon is-small is-left">
                     <i class="fas fa-search"></i>
                 </span>
@@ -24,7 +24,7 @@
     </div>
 {% endblock %}
 
-{% block content %}
+{% block page %}
 <section data-scroll-adjust="resize" class="section">
     <div class="tile is-ancestor">
         <div id="order-list" class="tile is-9 is-vertical is-parent">
@@ -33,4 +33,11 @@
     </div>
 
 </section>
+
+<script>
+    $(window).bind('load', function(){
+        UserAccounts().ordersPage();
+    })
+</script>
+
 {% endblock %}
