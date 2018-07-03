@@ -34,7 +34,7 @@
         </div>
     </div>
     <div class="container is-fluid">
-        <a load-tracker="{{ order.pk }}" class="button is-outlined is-link is-pulled-right">Track</a>
+        <a href="{% url 'tracker:tracker' order.pk %}" class="button is-outlined is-link is-pulled-right">Track</a>
     </div>
 </div>
 <hr>

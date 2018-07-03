@@ -6,8 +6,6 @@
 
 {% block content %}
 {% include 'nav.html' %}
-
-
     <div class="columns is-gapless">
         <div class="column is-3">
             <aside class="menu has-padding">
@@ -15,22 +13,41 @@
                     My Account
                 </p>
                 <ul class="menu-list">
-                    <li><a load-account="settings" class="is-active">Login &amp; Security</a></li>
-                    <li><a load-account="payments" >Payment Methods</a></li>
-                    <li><a load-account="contact" >Notification Settings</a></li>
+                    <li><a href="{% url 'users:my_settings' %}">Login &amp; Security</a></li>
+                    <li><a href="{% url 'users:my_payments' %}">Payment Methods</a></li>
+                    <li><a href="{% url 'users:my_payments' %}" >Notification Settings</a></li>
                 </ul>
                 <p class="menu-label">
-                    Purchases
+                    Purchases   
                 </p>
                 <ul class="menu-list">
                     <li><a>My Devices</a></li>
-                    <li><a load-account="orders">Orders</a></li>
+                    <li><a href="{% url 'users:my_orders' %}">Orders</a></li>
                     <li><a>Invoices</a></li>
                 </ul>
             </aside>
         </div>
-        <div id="account-view" class="column">
-
+        <div id="account-view" class="column is-9">
+            <section class="hero is-dark is-small">
+                    <div class="hero-body">
+                        
+                            <nav class="level">
+                                <div class="level-left">
+                                    <div class="level-item">
+                                        <h3 class="title has-text-weight-light">
+                                            {% block title %}{% endblock %}
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="level-right">
+                                    {% block title-right %}{% endblock %}
+                                </div>
+                            </nav>
+                        
+                    </div>
+                </section>
+                {% block page %}
+                {% endblock %}
         </div>
     </div>
 
