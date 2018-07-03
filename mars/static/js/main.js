@@ -280,3 +280,40 @@ var handleAjax = (function () {
     };
 
 })
+
+// Load Cleave
+var loadCleave = function () {
+    // Detect
+    var load = function () {
+        var phone = $('.js-phone-input');
+        var date = $('.js-date-input');
+        $.each(phone, function () {
+            phone();
+        })
+        $.each(date, function () {
+            date();
+        })
+    }
+
+    // Phone Input
+    var phone = function () {
+        var cleave = new Cleave('.js-phone-input', {
+            phone: true,
+            phoneRegionCode: 'US'
+        });
+    }
+
+    // Date Input (month/year)
+    var date = function () {
+        var cleave_date = new Cleave('.js-date-input', {
+            date: true,
+            datePattern: ['m', 'y']
+        });
+    }
+
+    return {
+        load: load,
+        date: date,
+        phone: phone
+    }
+}

@@ -229,6 +229,8 @@ var UserAccounts = (function () {
                     e.preventDefault();
                     show();
                 })
+                // Load Cleave
+                loadCleave().date();
             }
 
             var show = function () {
@@ -298,6 +300,8 @@ var UserAccounts = (function () {
 
 
     updateMenu();
+    adjustScroll();
+    loadCleave().load();
     return {
         settingsPage: settingsPage,
         paymentsPage: paymentsPage,
