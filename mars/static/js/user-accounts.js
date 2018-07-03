@@ -12,6 +12,18 @@ var UserAccounts = (function () {
         el.css('overflow-y', 'auto');
         el.css('max-height', adjust);
     }
+
+    // Set Active Menu 
+    var updateMenu = function () {
+        var path = location.pathname
+        var selectors = $('.menu li a')
+        $.each(selectors, function () {
+            if (path == $(this).attr('href')) {
+                $(this).addClass('is-active');
+                return false;
+            }
+        })
+    }
     // ====== END UserAccounts Functions END =======
 
     // ====== Login & Security (Settings) ======
@@ -138,6 +150,7 @@ var UserAccounts = (function () {
 
     // ====== Payment Methods  ======
     var paymentsPage = function () {
+
         // Bind Card Expansion
         $('a.is-card-expand').click(function (e) {
             e.preventDefault();
@@ -254,7 +267,7 @@ var UserAccounts = (function () {
                 var errors = data.responseJSON
                 date_error.html(errors['date_errors']);
             }
-            handleAjax().submitRequest(targ, ajax_data, success, error)
+            handleAjax().submitForm(targ, ajax_data, success, error)
         }
 
     }
@@ -265,27 +278,26 @@ var UserAccounts = (function () {
         // Init
         var search_input = $('input[search-target]')
 
+        // Search Bar Ajax
         var search = function (sel) {
             var input = $(sel)
             var target = $('#' + input.attr('search-target'))
             var baseHTML = target.html();
+            var success = function (data) {
+                target.html(data);
+            }
+            var error = function (data) {
+                target.html(baseHTML);
+            }
             input.on('change, paste, keyup', function () {
-                $.ajax({
-                    url: input.attr('action'),
-                    data: $(this).serialize(),
-                    method: 'GET',
-                    success: function (data) {
-                        target.html(data);
-                    },
-                    error: function (data) {
-                        target.html(baseHTML);
-                    }
-                })
+                handleAjax().submitRequest($(this), $(this).serialize(), success, error)
             })
         }
         search(search_input)
     }
 
+
+    updateMenu();
     return {
         settingsPage: settingsPage,
         paymentsPage: paymentsPage,

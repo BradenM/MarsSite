@@ -210,52 +210,6 @@ function getCookie(name) {
     return cookieValue;
 }
 
-
-var accountPage = (function () {
-
-    // Vars
-    var content = $('#account-view')
-    var account_sel = $('a[load-account]')
-    var contentWindow = $('.Site-content').height();
-    var track_links = $('a[load-tracker]');
-
-
-    // Init
-    account_sel.click(function (e) {
-        loadPage($(this));
-    })
-
-    // Page Selection
-    var loadPage = function (sel) {
-        // Select Link
-        var link = $(sel);
-        account_sel.each(function () {
-            $(this).removeClass('is-active');
-        })
-        link.addClass('is-active')
-        // Load Page
-        var page_url = link.attr('load-account') + "/";
-        content.load(page_url, function () {
-            adjustScroll();
-            Search($('input[search-data]'));
-            loadTracker(track_links);
-            AccountSettings();
-            AccountPayments();
-        })
-    }
-
-    // Get Tracker info for orders
-    var loadTracker = function (links) {
-        links.on('click', function (e) {
-            var track = $(e.target).attr('load-tracker');
-            var url = "tracker/" + track;
-            content.load(url, function () {
-                accountPage();
-            });
-        })
-    }
-})
-
 var errorNotify = function (msg) {
     n = new Noty({
         text: "<p class='subtitle is-5 has-text-light'>We have a problem...</p><p>" + msg + "</p>",
@@ -295,27 +249,34 @@ var handleAjax = (function () {
         return data
     };
 
+    // Submit Form Request
+    var submitForm = function (el, data, success, error) {
+        $.ajax({
+            url: el.attr('action'),
+            type: el.attr('method'),
+            data: data,
+            dataType: 'json',
+            success: success,
+            error: error,
+        })
+    }
+
     // Submit Request
     var submitRequest = function (el, data, success, error) {
         $.ajax({
             url: el.attr('action'),
             type: el.attr('method'),
             data: data,
-
             success: success,
-            error: error,
+            error: error
         })
     }
 
     // Publicize
     return {
         prepareData: prepareData,
+        submitForm: submitForm,
         submitRequest: submitRequest
     };
 
 })
-
-
-$(document).ready(function () {
-    accountPage();
-});

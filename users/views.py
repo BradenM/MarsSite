@@ -87,7 +87,8 @@ class SearchOrders(CustomerMixin, View):
         return render(
             request, 'users/order_tile.html', context={'orders': results, 'empty_msg': "No orders match your search query."})
 
-
 # Payment Methods
+
+
 class PaymentsPage(CustomerMixin, TemplateView):
     template_name = "users/payments.html"

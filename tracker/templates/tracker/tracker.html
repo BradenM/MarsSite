@@ -1,30 +1,19 @@
+{% extends 'users/base.html'%}
 {% load tracker_tags %}
-<section class="hero is-dark is-small">
-    <div class="hero-body">
-        <div class="container">
-            <nav class="level">
-                <div class="level-left">
-                    <div class="level-item">
-                        <h3 class="title has-text-weight-light">
-                            {{ order.device_type }}
-                        </h3>
-                    </div>
-                </div>
-                <div class="level-right">
-                    <div class="level-item">
-                        <p class="subtitle has-text-grey has-text-weight-bold">Order #{{ order.order_no }}</p>
-                    </div>
-                </div>
-            </nav>
-        </div>
-    </div>
-</section>
 
+{% block title %}{{ order.device_type }}{% endblock %}
+{% block title-right %}
+<div class="level-item">
+    <p class="subtitle has-text-grey has-text-weight-bold">Order #{{ order.order_no }}</p>
+</div>
+{% endblock %}
+
+{% block page %}
 <section class="container context">
     <div class="container">
         <nav class="breadcrumb" aria-label="breadcrumbs">
             <ul>
-                <li><a load-account="orders">
+                <li><a href="{% url 'users:my_orders' %}">
                     <span class="icon is-small">
                         <i class="fa fa-arrow-alt-circle-left"></i>
                     </span>
@@ -78,7 +67,6 @@
 </section>
 
 <section class="section">
-    <div class="container">
-        {% include 'tracker/timeline.html' %}
-    </div>
+    {% include 'tracker/timeline.html' %}
 </section>
+{% endblock %}
