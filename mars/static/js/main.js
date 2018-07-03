@@ -278,5 +278,3 @@ var handleAjax = (function () {
         submitForm: submitForm,
         submitRequest: submitRequest
     };
-
-})

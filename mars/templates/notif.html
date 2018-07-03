@@ -2,24 +2,33 @@
 {% for msg in messages %}
 
 {% if 'user_alert_info' in msg.tags %}
-<div data-bulma="notification" class="notification notif-dismiss is-link has-text-centered animated fadeIn">
-    <button class="delete"></button>
-    {{ msg }}
+
+<script>
+    $(window).bind("load", function() {
+        n = infoNotify('Heads up...', '{{ msg }}');
+        n.show();
+    });
+ </script>
+
 </div>
 {% endif %}
 
 {% if 'user_alert_important' in msg.tags %}
-<div data-bulma="notification" class="notification is-link has-text-centered">
-    <button class="delete"></button>
-    {{ msg }}
-</div>
+<script>
+    $(window).bind("load", function() {
+        n = infoNotify('Important!', '{{ msg }}');
+        n.show();
+        });
+</script>
 {% endif %}
 
 {% if 'user_alert_error' in msg.tags %}
-<div data-bulma="notification" class="notification is-danger has-text-centered">
-    <button class="delete"></button>
-    {{ msg }}
-</div>
+<script>
+    $(window).bind("load", function() {
+        n = errorNotify('{{ msg }}');
+        n.show();
+    });
+</script>
 {% endif %}
 
 {% endfor %}
