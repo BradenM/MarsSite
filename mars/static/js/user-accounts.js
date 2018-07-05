@@ -2,15 +2,14 @@ var UserAccounts = (function () {
 
     // ====== UserAccounts Functions =======
 
-    // Adjust Scroll for lists
+    // Adjust Scrollable Div
     var adjustScroll = function () {
-        var contentWindow = $('.Site-content').height();
-        var el = $('section[data-scroll-adjust]')
-        var footer = $("footer").height();
-        var adjust = contentWindow + footer;
-        console.log(contentWindow, footer, adjust);
-        el.css('overflow-y', 'auto');
-        el.css('max-height', adjust);
+        var scrollDiv = $('section[data-scroll-adjust]');
+        var tile = scrollDiv.find($('.is-child')).height();
+        var tileNum = Math.ceil(scrollDiv.height() / tile)
+        var tileAdjust = scrollDiv.height() - (tile * (tileNum - 4))
+        scrollDiv.css('height', tileAdjust);
+        scrollDiv.css('overflow-y', 'auto');
     }
 
     // Set Active Menu 
@@ -297,6 +296,27 @@ var UserAccounts = (function () {
         }
         search(search_input)
     }
+    // ====== END Payment Methods END  ======
+
+    // ====== Invoice Page ======
+    var invoicePage = function () {
+        // Order Scroll
+        var orderScroll = function () {
+            var scrollDivs = $(".is-scrollable")
+            $.each(scrollDivs, function () {
+                var orderTiles = $(this).find('.order-tile')
+                var tileHeight = orderTiles.first().height();
+                var adjust = (orderTiles.length - 4) * tileHeight;
+                // Ignore anything that doesnt need to be resized
+                if (adjust > 0) {
+                    $(this).css('height', adjust)
+                    $(this).css('overflow-y', 'auto')
+                }
+            })
+        }
+        orderScroll();
+    }
+    // ====== END Invoice Page ======
 
 
     updateMenu();
@@ -305,7 +325,8 @@ var UserAccounts = (function () {
     return {
         settingsPage: settingsPage,
         paymentsPage: paymentsPage,
-        ordersPage: ordersPage
+        ordersPage: ordersPage,
+        invoicePage: invoicePage
     }
 
 
