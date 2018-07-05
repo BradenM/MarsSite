@@ -1,11 +1,17 @@
 {% load tracker_tags %}
 
 {% for order in orders %}
-<div class="tile is-child">
+<div id="{{ order.order_no }}" class="tile is-child">
     <nav class="level">
         <div class="level-left">
             <div class="level-item">
                 <h1 class="subtitle is-4">{{ order.device_type }}</h1>
+            </div>
+            <div class="level-item">
+                <div class="tags has-addons">
+                    <span class="tag is-small">Order #</span>
+                    <span class="tag is-small is-info">{{ order.order_no }}</span>
+                </div>
             </div>
             <div class="level-item">
                 <div class="tags has-addons">

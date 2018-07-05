@@ -19,8 +19,10 @@
         <div class="column is-3">
             <ul class="has-text-justified">
             <li><span class="has-text-weight-semibold">Date: </span>{{ invoice.get_date }}</li>
-            <li><span class="has-text-weight-semibold">Repair: </span>{{ order.repair }}</li>
-            <li><span class="has-text-weight-semibold">Placed: </span>{{ order.order_date }}</li>
+            <li><span class="has-text-weight-semibold">Total: </span>${{ invoice.total }}</li>
+            {% with invoice.charge.card as card %}
+            <li><span class="has-text-weight-semibold">Payment Method: </span>{{ card.brand }} ending in {{ card.last4 }}</li>
+            {% endwith %}
             </ul>
         </div>
         <div class="is-divider-vertical" ></div>
@@ -32,9 +34,22 @@
                     </p>
                 </header>
                 <div class="card-content is-paddingless is-scrollable">
-                    <div class="content has-background-grey-lighter">
+                    <div class="content">
                         {% for order in invoice.orders.all %}
-                        <div class="order-tile"><p>Example</p></div>
+                        <div class="order-tile {% cycle 'has-background-grey-lighter' 'has-background-light'%}">
+                            <nav class="level">
+                                <div class="level-left">
+                                    <div class="level-item">
+                                        <p>{{ order.device }} - {{ order.repair }}</p>
+                                    </div>
+                                </div>
+                                <div class="level-right">
+                                    <div class="level-item">
+                                        <a href="{% url 'users:my_orders' %}#{{ order.order_no }}" class="button is-small is-link is-outlined">View</a>
+                                    </div>
+                                </div>
+                            </nav>
+                        </div>
                         {% endfor %}
                     </div>
                 </div>
