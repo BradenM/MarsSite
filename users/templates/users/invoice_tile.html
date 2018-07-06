@@ -1,7 +1,7 @@
 {% load tracker_tags %}
 
 {% for invoice in view.invoices reversed %}
-<div class="tile is-child">
+<div id="{{ invoice.invoice_no }}" class="tile is-child">
     <nav class="level">
         <div class="level-left">
             <div class="level-item">
