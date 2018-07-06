@@ -285,12 +285,12 @@ var handleAjax = (function () {
 var loadCleave = function () {
     // Detect
     var load = function () {
-        var phone = $('.js-phone-input');
-        var date = $('.js-date-input');
-        $.each(phone, function () {
+        var phone_sel = $('.js-phone-input');
+        var date_sel = $('.js-date-input');
+        $.each(phone_sel, function () {
             phone();
         })
-        $.each(date, function () {
+        $.each(date_sel, function () {
             date();
         })
     }
