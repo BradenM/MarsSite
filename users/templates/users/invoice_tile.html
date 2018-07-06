@@ -21,8 +21,9 @@
             <li><span class="has-text-weight-semibold">Date: </span>{{ invoice.get_date }}</li>
             <li><span class="has-text-weight-semibold">Total: </span>${{ invoice.total }}</li>
             {% with invoice.charge.card as card %}
-            <li><span class="has-text-weight-semibold">Payment Method: </span>{{ card.brand }} ending in {{ card.last4 }}</li>
+            <li><span class="has-text-weight-semibold">Payment Method:</span> {{ card.brand }} ending in {{ card.last4 }}</li>
             {% endwith %}
+            <li><a href="{% url 'billing:view_invoice' invoice.invoice_no %}">View PDF</a></li>
             </ul>
         </div>
         <div class="is-divider-vertical" ></div>

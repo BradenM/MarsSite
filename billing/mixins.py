@@ -8,6 +8,8 @@ from pinax.stripe import mixins
 from pinax.stripe.actions import charges, customers, sources
 from pinax.stripe.models import Card
 from store.mixins import CartMixin
+from billing.models import Invoice
+from .render import InvoiceFile
 
 
 class CustomerMixin(mixins.CustomerMixin):
@@ -61,6 +63,12 @@ class CustomerMixin(mixins.CustomerMixin):
                 TrackerUpdate.objects.create(
                     tracker=new_track
                 )
+        # Generate PDF
+        InvoiceFile().generate(invoice)
+
+    def get_invoice(self, number):
+        invoice = Invoice.objects.get(invoice_no=number)
+        return InvoiceFile().get_pdf(invoice.invoice_no)
 
     @property
     def sources(self):

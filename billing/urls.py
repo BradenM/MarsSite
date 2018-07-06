@@ -13,4 +13,8 @@ urlpatterns = [
 
     # Charge
     path('order/', views.ChargeCustomer.as_view(), name="complete_order"),
+
+    # Invoices
+    path('invoice/view/<str:invoice_no>',
+         views.ViewInvoice.as_view(), name="view_invoice"),
 ]
