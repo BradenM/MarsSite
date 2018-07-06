@@ -33,11 +33,11 @@ class InvoiceFile:
     # Get Invoice Path
     def get_pdf(self, number):
         for f in os.listdir(self.pdf_path):
-            if os.path.splitext(os.path.basename(f))[0] == number:
+            file = os.path.splitext(os.path.basename(f))[0]
+            if file == number:
                 pdf = os.path.join(self.pdf_path, f)
                 return pdf
-            else:
-                raise FileNotFoundError
+        raise FileNotFoundError
 
     # Generate
     def generate(self, invoice):
