@@ -2,7 +2,7 @@ import stripe
 from .mixins import CustomerMixin
 from .models import Invoice, Order
 from django.conf import settings
-from django.shortcuts import HttpResponse, redirect, render
+from django.shortcuts import HttpResponse, redirect, render, Http404
 from django.http import JsonResponse
 from django.views.generic import View
 from pinax.stripe import mixins
@@ -10,6 +10,7 @@ from pinax.stripe.actions import charges, customers, sources
 from pinax.stripe.models import Card
 from store.mixins import CartMixin
 from .validators import validate_date
+from .render import InvoiceFile
 
 
 class SaveCard(View, CustomerMixin):
@@ -82,3 +83,15 @@ class ChargeCustomer(View, CustomerMixin, CartMixin):
         except stripe.CardError as e:
             print(e)
             return HttpResponse(f"Card Error: {e}")
+
+
+class ViewInvoice(CustomerMixin, View):
+    def get(self, request, invoice_no):
+        try:
+            path = self.get_invoice(invoice_no)
+        except FileNotFoundError:
+            raise Http404
+        file = open(path, 'rb')
+        response = HttpResponse(content=file)
+        response['Content-Type'] = 'application/pdf'
+        return response

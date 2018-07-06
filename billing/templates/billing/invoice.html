@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Braden Mars - Invoice #{{ invoice.invoice_no }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-extensions@2.2.1/dist/css/bulma-extensions.min.css">
+</head>
+<body class="Site">
+    <style>
+            .Site {
+                display: flex;
+                min-height: 100vh;
+                flex-direction: column;
+            }
+            
+            .Site-content {
+                flex: 1;
+            }
+
+            .level{
+                padding:10px !important;
+            }
+    </style>
+    <main class="Site-content">
+            <nav class="level has-background-dark">
+                <div class="level-left">
+                    <div class="level-item">
+                        <h1 class="title has-text-light ">Braden Mars</h1>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <h1 class="title has-text-light is-4">Invoice #{{ invoice.invoice_no }}</h1>
+                    </div>
+                </div>
+            </nav>
+            <section class="section">
+                <div class="columns">
+                    <div class="column is-one-third">
+                        <p class="title has-text-weight-light">Information</p>
+                        <ul class="has-text-justified">
+                            <li><span class="has-text-weight-semibold">Invoice: </span>#{{ invoice.invoice_no }}</li>
+                            <li><span class="has-text-weight-semibold">Date: </span>{{ invoice.get_date }}</li>
+                            <li><span class="has-text-weight-semibold">Total: </span>${{ invoice.total }}</li>
+                        </ul>
+                    </div>
+                    <div class="column is-one-third"></div>
+                    <div class="column is-one-third">
+                        <p class="title has-text-weight-light">Payment Details</p>
+                        <ul class="has-text-justified">
+                            {% with invoice.charge.card as card %}
+                            <li><span class="has-text-weight-semibold">Name: </span>{{ card.name }}</li>
+                            <li><span class="has-text-weight-semibold">Brand: </span>{{ card.brand }}</li>
+                            <li><span class="has-text-weight-semibold">Ending In: </span>{{ card.last4 }}</li>
+                            {% endwith %}
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="section">
+                <div class="columns is-centered">
+                    <div class="column is-three-quarters">
+                        <h1 class="title">Orders</h1>
+                        <div class="is-divider"></div>
+                        <table class="table is-fullwidth is-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Order #</th>
+                                        <th>Type</th>
+                                        <th>Device</th>
+                                        <th>Price</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th>Total: ${{ invoice.total }}</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    {% for order in invoice.orders.all %}
+                                    <tr>
+                                        <td>{{ order.order_no }}</td>
+                                        <td>{{ order.device_type }}</td>
+                                        <td>{{ order.device }}</td>
+                                        <td>${{ order.product.price }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                    </div>
+                </div>
+            </section>
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>
+                        Braden Mars &copy; 2018
+                        <br>
+                        Generated on {% now "jS F Y H:i" %}
+                    </p>
+                </div>
+            </footer>
+        </main>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bulma-extensions@2.2.1/dist/js/bulma-extensions.min.js"></script>
+</body>
+</html>

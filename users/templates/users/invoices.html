@@ -2,24 +2,18 @@
 
 {% block title %}My Invoices{% endblock %}
 
-{% block info %}
-<section class="section">
-    <h1 class="title">Your Invoices</h1>
-    <div class="is-divider"></div>
+{% block page %}
+<section data-scroll-adjust="resize" class="section">
     <div class="tile is-ancestor">
-            <div class="tile is-vertical is-parent">
-                {% for item in invoices %}
-                <div class="tile is-child box">
-                    <p class="subtitle">{{ item.date }}</p>
-                    <p>{% for order in item.orders.all %}
-                        {{ order.product.repair }}
-                        {% endfor %}
-                    </p>
-                    <p>Total: ${{ item.total }}</p>
-                    <a class="button is-pulled-right is-info">Details</a>
-                </div>
-                {% endfor %}
-            </div>
+        <div id="order-list" class="tile is-9 is-vertical is-parent">
+            {% include 'users/invoice_tile.html' %}
         </div>
+    </div>
+
 </section>
+<script>
+    $(window).bind('load', function(){
+        UserAccounts().invoicePage();
+    })
+</script>
 {% endblock %}

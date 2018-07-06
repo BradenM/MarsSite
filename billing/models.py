@@ -31,6 +31,9 @@ class Invoice(models.Model):
         new_invoice = str(user_id) + f"-{new_no}"
         return new_invoice
 
+    def get_date(self):
+        return self.date.strftime("%B %d, %Y")
+
     def save(self, *args, **kwargs):
         if self.invoice_no is None:
             self.invoice_no = self.get_invoice_no()

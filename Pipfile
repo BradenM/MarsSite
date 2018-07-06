@@ -15,6 +15,7 @@ django-phonenumber-field = "*"
 stripe = "*"
 pinax-stripe = "*"
 django-imagekit = "*"
+pdfkit = "*"
 
 [dev-packages]
 pylint = "*"

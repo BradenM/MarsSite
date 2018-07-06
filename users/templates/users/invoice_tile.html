@@ -1,0 +1,68 @@
+{% load tracker_tags %}
+
+{% for invoice in view.invoices reversed %}
+<div id="{{ invoice.invoice_no }}" class="tile is-child">
+    <nav class="level">
+        <div class="level-left">
+            <div class="level-item">
+                <h1 class="subtitle is-4">Invoice #{{ invoice.invoice_no }}</h1>
+            </div>
+            <div class="level-item">
+                <div class="tags has-addons">
+                    <span class="tag is-small">Status</span>
+                    <span class="tag is-small is-success">Paid</span>
+                </div>
+            </div> 
+        </div>
+    </nav>
+    <div class="columns is-gapless is-marginless">
+        <div class="column is-3">
+            <ul class="has-text-justified">
+            <li><span class="has-text-weight-semibold">Date: </span>{{ invoice.get_date }}</li>
+            <li><span class="has-text-weight-semibold">Total: </span>${{ invoice.total }}</li>
+            {% with invoice.charge.card as card %}
+            <li><span class="has-text-weight-semibold">Payment Method:</span> {{ card.brand }} ending in {{ card.last4 }}</li>
+            {% endwith %}
+            <li><a href="{% url 'billing:view_invoice' invoice.invoice_no %}" target="_blank">View PDF</a></li>
+            </ul>
+        </div>
+        <div class="is-divider-vertical" ></div>
+        <div class="column is-6">
+            <div class="card">
+                <header class="card-header is-paddingless">
+                    <p class="card-header-title is-paddingless">
+                        Orders
+                    </p>
+                </header>
+                <div class="card-content is-paddingless is-scrollable">
+                    <div class="content">
+                        {% for order in invoice.orders.all %}
+                        <div class="order-tile {% cycle 'has-background-grey-lighter' 'has-background-light'%}">
+                            <nav class="level">
+                                <div class="level-left">
+                                    <div class="level-item">
+                                        <p>{{ order.device }} - {{ order.repair }}</p>
+                                    </div>
+                                </div>
+                                <div class="level-right">
+                                    <div class="level-item">
+                                        <a href="{% url 'users:my_orders' %}#{{ order.order_no }}" class="button is-small is-link is-outlined">View</a>
+                                    </div>
+                                </div>
+                            </nav>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+{% empty %}
+<div class="container has-text-centered">
+    <h1 class="title has-text-weight-light">
+        {{ empty_msg }}
+    </h1>
+</div>
+{% endfor %}
