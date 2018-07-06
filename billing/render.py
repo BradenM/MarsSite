@@ -2,6 +2,8 @@ import os
 import pdfkit
 from django.shortcuts import render
 from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
+from django.conf import settings
 
 
 # Invoice Rendering
@@ -42,3 +44,17 @@ class InvoiceFile:
         out_html = self.generate_html(invoice)
         out_pdf = self.convert_pdf(out_html)
         return out_pdf
+
+    # Send Invoice as receipt
+    def send_receipt(self, target):
+        # Prepare email
+        sender = settings.EMAIL_HOST_USER
+        subject = target['subject']
+        body = target['body']
+        receiver = target['receiver']
+        invoice_no = self.get_pdf(target['invoice'])
+        pdf = open(invoice_no, 'rb')
+        # Send email
+        msg = EmailMessage(subject, body, sender, [receiver])
+        msg.attach('invoice.pdf', pdf.read(), 'application/pdf')
+        msg.send()
