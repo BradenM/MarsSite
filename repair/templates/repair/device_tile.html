@@ -1,9 +1,9 @@
 {% for brand, devices in view.get_phones.items %}
-<div class="tile is-ancestor">
+<div class="tile is-ancestor is-wrapping">
     {% for device in devices %}
     <div class="tile is-3 is-parent">
-        <div class="tile is-child hvr-glow" style="border-radius:10px;">
-            <div class="card is-hover-card">
+        <div class="tile is-child" style="border-radius:10px;">
+            <div class="card is-hover-card hvr-glow" style="display:inherit">
                 <div class="card-image is-flex is-horizontal-center">
                     <figure class="image" style="width:96px">
                         <img src="/media/{{ device.image }}">
@@ -16,6 +16,8 @@
                     <p class="subtitle">{{ device.name }}, {{ device.device_names }}</p>
                     {% endif %}
                 </div>
+                <div class="info-block">
+                </div>
             </div>
         </div>
     </div>
@@ -23,4 +25,33 @@
 </div>
 <div class="is-divider is-header title" data-content="{{ brand }}"></div> 
 {% endfor  %}
+
+<script>
+    var hoverCard = function () {
+        $('.is-hover-card').on('click', function (e) {
+            var info_block = $(this).find($('.info-block'))
+            var width = $('.tile.is-ancestor').width() - 100;
+            var info_element = $(`
+                <div class="has-info-triangle">
+                    <div class="section has-background-dark">
+                        <h1>I am test content</h1>
+                    </div>
+                </div>
+            `)
+            $.each($('.is-hover-card'), function(){
+                $(this).css('margin-bottom', '0px')
+            })
+            $.each($('.has-info-triangle'), function(){
+                $(this).remove();
+            })
+            $(this).css('margin-bottom', '300px')
+            info_block.append(info_element);
+            info_element.css('width', width)
+            info_element.toggle();
+            info_element.slideToggle();
+        })
+    }
+    hoverCard();
+</script>
+
 

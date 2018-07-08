@@ -21,7 +21,7 @@
 }
 
 .is-wrapping {
-    flex-wrap: wrap !important;
+    flex-wrap: wrap;
 }
 
 .device-image img {
@@ -124,4 +124,20 @@
 
 .tile.is-uniform {
     flex: 1;
+}
+
+.has-info-triangle {
+    position: absolute;
+    transform: translateY(-25px);
+}
+
+.has-info-triangle:before {
+    content: "";
+    display: inline-block;
+    height: 0;
+    width: 0;
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+    border-bottom: 25px solid hsl(0, 0%, 21%);
+    border-top: 25px solid transparent;
 }
