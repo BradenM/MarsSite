@@ -2,7 +2,7 @@
 <div class="tile is-ancestor is-wrapping">
     {% for device in devices %}
     <div class="tile is-3 is-parent">
-        <div class="tile is-child" style="border-radius:10px;">
+        <div class="tile is-child is-hover-tile" style="border-radius:10px;">
             <div class="card is-hover-card hvr-glow" style="display:inherit">
                 <div class="card-image is-flex is-horizontal-center">
                     <figure class="image" style="width:96px">
@@ -16,8 +16,8 @@
                     <p class="subtitle">{{ device.name }}, {{ device.device_names }}</p>
                     {% endif %}
                 </div>
-                <div class="info-block">
-                </div>
+            </div>
+            <div class="info-block">
             </div>
         </div>
     </div>
@@ -27,31 +27,64 @@
 {% endfor  %}
 
 <script>
-    var hoverCard = function () {
-        $('.is-hover-card').on('click', function (e) {
-            var info_block = $(this).find($('.info-block'))
-            var width = $('.tile.is-ancestor').width() - 100;
-            var info_element = $(`
-                <div class="has-info-triangle">
-                    <div class="section has-background-dark">
-                        <h1>I am test content</h1>
-                    </div>
+    var DeviceTiles = (function(){
+        // Variables 
+        var info_element = $(`
+        <div class="has-info-triangle">
+            <div class="section has-background-dark">
+                <h1>I am test content</h1>
                 </div>
-            `)
-            $.each($('.is-hover-card'), function(){
-                $(this).css('margin-bottom', '0px')
+            </div>
+        `)
+
+        // Repair Tiles
+        var Repair = function(){
+            // Init
+            var hover_card = $('.is-hover-card')
+            // Bind Hover cards to open
+            hover_card.on('click', function(){
+                $.each(hover_card, function(){
+                    close($(this))
+                })
+                open($(this))
             })
-            $.each($('.has-info-triangle'), function(){
-                $(this).remove();
-            })
-            $(this).css('margin-bottom', '300px')
-            info_block.append(info_element);
-            info_element.css('width', width)
-            info_element.toggle();
-            info_element.slideToggle();
-        })
-    }
-    hoverCard();
+
+            // Close Others
+            var close = function(tile){
+                // Vars
+                var def_height = tile.height();
+                // Reset Position
+                tile.parent().removeClass('is-active')
+                tile.css('height', def_height)
+            }
+
+            // Open Tile
+            var open = function(tile){
+                // Vars
+                var info_block = tile.parent().find($('.info-block'))
+                var width = $('#device-tiles').width();
+                // Get Objects
+                var parent = tile.parent();
+                var tri_pos = tile.position().left;
+                // Append Info Element
+                info_block.after(info_element);
+                // Position Indicator
+                parent.addClass('is-active')
+                $('<style>.has-info-triangle:before{left:' + tri_pos + ';}</style>').appendTo('head');
+                info_element.css('left', '0');
+                info_element.css('width', width);
+                // Animate Info Element Open
+                info_element.toggle();
+                info_element.slideToggle();
+            }
+        }
+        return {
+            Repair: Repair
+        }
+    })
+
+    DeviceTiles().Repair();
+    
 </script>
 
 

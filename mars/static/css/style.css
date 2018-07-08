@@ -120,6 +120,7 @@
     border-radius: 10px;
     background: rgba(0, 0, 0, 0);
     cursor: pointer;
+    height: 100%;
 }
 
 .tile.is-uniform {
@@ -131,9 +132,14 @@
     transform: translateY(-25px);
 }
 
+.tile.is-hover-tile.is-active {
+    margin-bottom: 300px !important;
+}
+
 .has-info-triangle:before {
     content: "";
-    display: inline-block;
+    display: block;
+    position: relative;
     height: 0;
     width: 0;
     border-left: 25px solid transparent;
