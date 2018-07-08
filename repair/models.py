@@ -13,6 +13,7 @@ DEV_TYPES = (
     (LAP, "Laptop")
 )
 
+
 class Repair(models.Model):
     name = models.CharField(max_length=200)
     desc = models.CharField(max_length=4012, blank=True)
@@ -25,8 +26,10 @@ class Repair(models.Model):
 
 
 class DeviceRepair(models.Model):
-    device = models.ForeignKey('Device', related_name="repair", on_delete=models.CASCADE)
-    repair = models.ForeignKey(Repair, related_name="repair", on_delete=models.CASCADE)
+    device = models.ForeignKey(
+        'Device', related_name="repair", on_delete=models.CASCADE)
+    repair = models.ForeignKey(
+        Repair, related_name="repair", on_delete=models.CASCADE)
     type = models.CharField(max_length=200, default="screen")
     price = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
 
@@ -37,7 +40,8 @@ class DeviceRepair(models.Model):
 class Family(models.Model):
     name = models.CharField(max_length=200)
     brand = models.CharField(max_length=200)
-    device_type = models.CharField(max_length=200, choices=DEV_TYPES, default=PHONE)
+    device_type = models.CharField(
+        max_length=200, choices=DEV_TYPES, default=PHONE)
     image = models.ImageField()
     devices = models.ManyToManyField('Device', related_name="devices")
 
@@ -57,15 +61,17 @@ class Family(models.Model):
         repair_format += " and more!"
         return repair_format
 
-
     def __str__(self):
         names = self.device_names()
         return f"{self.name} + {names}"
 
+
 class Device(models.Model):
     name = models.CharField(max_length=200)
-    device_type = models.CharField(max_length=200, choices=DEV_TYPES, default=PHONE)
-    repairs = models.ManyToManyField(Repair, through='DeviceRepair', related_name="repairs")
+    device_type = models.CharField(
+        max_length=200, choices=DEV_TYPES, default=PHONE)
+    repairs = models.ManyToManyField(
+        Repair, through='DeviceRepair', related_name="repairs")
     has_family = models.BooleanField(default=False)
     family_identifier = models.CharField(max_length=100, blank=True, null=True)
     brand = models.CharField(max_length=200, blank=True, null=True)
@@ -78,7 +84,7 @@ class Device(models.Model):
             repair_format += f" {r.name},"
         repair_format += " and more!"
         return repair_format
-        
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Device, self).save(*args, **kwargs)

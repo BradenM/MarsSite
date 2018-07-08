@@ -111,3 +111,17 @@
     padding-top: 3px;
     padding-bottom: 3px;
 }
+
+.card.is-hover-card figure {
+    padding-top: 1.5rem;
+}
+
+.card.is-hover-card {
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0);
+    cursor: pointer;
+}
+
+.tile.is-uniform {
+    flex: 1;
+}

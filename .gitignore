@@ -4,6 +4,8 @@ HTML/
 *.sqlite3
 # Invoice Generation Ignores
 billing/static/billing/*
+# Media files
+mars/media*
 
 # Python Boilerplate
 

@@ -1,0 +1,26 @@
+{% for brand, devices in view.get_phones.items %}
+<div class="tile is-ancestor">
+    {% for device in devices %}
+    <div class="tile is-3 is-parent">
+        <div class="tile is-child hvr-glow" style="border-radius:10px;">
+            <div class="card is-hover-card">
+                <div class="card-image is-flex is-horizontal-center">
+                    <figure class="image" style="width:96px">
+                        <img src="/media/{{ device.image }}">
+                    </figure>
+                </div>
+                <div class="card-content has-text-centered">
+                    {% if not device.device_names %}
+                    <p class="subtitle">{{ device.name }}</p>
+                    {% else %}
+                    <p class="subtitle">{{ device.name }}, {{ device.device_names }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div class="is-divider is-header title" data-content="{{ brand }}"></div> 
+{% endfor  %}
+

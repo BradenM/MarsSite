@@ -10,5 +10,8 @@ urlpatterns = [
     # Device View
     path('select/', views.select_device, name="select_device"),
     path('devices/<slug:slug>/', views.DeviceView.as_view(), name="device"),
-    path('devices/<slug:slug>/repair/<int:pk>', views.get_repair, name="get_repair"),
+    path('devices/<slug:slug>/repair/<int:pk>',
+         views.get_repair, name="get_repair"),
+    path('devices/view/<str:device_type>',
+         views.ViewDevices.as_view(), name="view_devices")
 ]

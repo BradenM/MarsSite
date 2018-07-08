@@ -1,10 +1,10 @@
 from django.http import HttpResponse
 from django.shortcuts import HttpResponseRedirect, redirect, get_object_or_404, render, render_to_response, reverse, resolve_url
-from django.views import generic
-from .models import Device, Family, Repair, DeviceRepair, LAP, PHONE, TAB
+from django.views.generic import ListView, TemplateView, View, DetailView
+from .models import Device, Family, Repair, DeviceRepair, LAP, PHONE, TAB, DEV_TYPES
 
 
-class IndexView(generic.ListView):
+class IndexView(ListView):
     template_name = "repair/index.html"
     context_object_name = "devices"
 
@@ -28,7 +28,7 @@ def select_device(request):
     return HttpResponseRedirect(reverse('repair:device', args=[dev.slug]))
 
 
-class DeviceView(generic.DetailView):
+class DeviceView(DetailView):
     model = Device
     template_name = "repair/detail.html"
 
@@ -37,3 +37,33 @@ def get_repair(request, slug, pk):
     repair = get_object_or_404(DeviceRepair, pk=pk)
     print(repair.repair.name)
     return render(request, 'repair/repair_detail.html', {'active_repair': repair})
+
+
+class RepairMixin(object):
+    device_types = DEV_TYPES
+    #devices, families = Device().get_devices()
+
+    def phone_brands(self):
+        brands = []
+        for d in Device.objects.filter(device_type=PHONE):
+            if not d.brand in brands and d.brand is not None:
+                brands.append(d.brand)
+        print(brands)
+        return brands
+
+    def get_phones(self):
+        phones = {}
+        for d in Device.objects.filter(device_type=PHONE):
+            if not d.has_family:
+                if not d.brand in phones.keys():
+                    phones[d.brand] = []
+                phones[d.brand].append(d)
+        for d in Family.objects.filter(device_type=PHONE):
+            if not d.brand in phones.keys():
+                phones[d.brand] = []
+            phones[d.brand].append(d)
+        return phones
+
+
+class ViewDevices(RepairMixin, TemplateView):
+    template_name = "repair/view_devices.html"

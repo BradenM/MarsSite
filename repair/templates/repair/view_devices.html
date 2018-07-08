@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'nav.html' %}
+
+<div class="columns is-gapless">
+  <div class="column is-9 is-multiline">
+    <section class="section">
+      <h3 class="title has-text-weight-light">Phones</h3>
+      {% include 'repair/device_tile.html' %}
+    </section>
+  </div>
+  <div class="column is-3">
+    {% include 'repair/device_filter.html' %}
+  </div>
+</div>
+
+{% endblock %}
