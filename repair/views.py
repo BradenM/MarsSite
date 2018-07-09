@@ -67,3 +67,16 @@ class RepairMixin(object):
 
 class ViewDevices(RepairMixin, TemplateView):
     template_name = "repair/view_devices.html"
+
+
+class GetDeviceInfo(RepairMixin, View):
+    template = "repair/device_info.html"
+
+    def get(self, request):
+        query = request.GET.get('device')
+        fam_query = request.GET.get('family', False)
+        if fam_query:
+            dev_or_fam = Family.objects.get(pk=query)
+        else:
+            dev_or_fam = Device.objects.get(pk=query)
+        return render(request, self.template, context={'device': dev_or_fam})

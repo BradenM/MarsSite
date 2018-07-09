@@ -13,5 +13,6 @@ urlpatterns = [
     path('devices/<slug:slug>/repair/<int:pk>',
          views.get_repair, name="get_repair"),
     path('devices/view/<str:device_type>',
-         views.ViewDevices.as_view(), name="view_devices")
+         views.ViewDevices.as_view(), name="view_devices"),
+    path('devices/ajax/get_info', views.GetDeviceInfo.as_view(), name="device_info"),
 ]

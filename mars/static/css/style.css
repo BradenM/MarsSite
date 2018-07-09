@@ -132,10 +132,6 @@
     transform: translateY(-25px);
 }
 
-.tile.is-hover-tile.is-active {
-    margin-bottom: 300px !important;
-}
-
 .has-info-triangle:before {
     content: "";
     display: block;

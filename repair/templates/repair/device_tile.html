@@ -3,7 +3,7 @@
     {% for device in devices %}
     <div class="tile is-3 is-parent">
         <div class="tile is-child is-hover-tile" style="border-radius:10px;">
-            <div class="card is-hover-card hvr-glow" style="display:inherit">
+            <div class="card is-hover-card hvr-glow" data-device="{{ device.pk }}" data-family="{{ device.devices.first.has_family }}" action="{% url 'repair:device_info' %}" method='GET' style="display:inherit">
                 <div class="card-image is-flex is-horizontal-center">
                     <figure class="image" style="width:96px">
                         <img src="/media/{{ device.image }}">
@@ -27,64 +27,9 @@
 {% endfor  %}
 
 <script>
-    var DeviceTiles = (function(){
-        // Variables 
-        var info_element = $(`
-        <div class="has-info-triangle">
-            <div class="section has-background-dark">
-                <h1>I am test content</h1>
-                </div>
-            </div>
-        `)
-
-        // Repair Tiles
-        var Repair = function(){
-            // Init
-            var hover_card = $('.is-hover-card')
-            // Bind Hover cards to open
-            hover_card.on('click', function(){
-                $.each(hover_card, function(){
-                    close($(this))
-                })
-                open($(this))
-            })
-
-            // Close Others
-            var close = function(tile){
-                // Vars
-                var def_height = tile.height();
-                // Reset Position
-                tile.parent().removeClass('is-active')
-                tile.css('height', def_height)
-            }
-
-            // Open Tile
-            var open = function(tile){
-                // Vars
-                var info_block = tile.parent().find($('.info-block'))
-                var width = $('#device-tiles').width();
-                // Get Objects
-                var parent = tile.parent();
-                var tri_pos = tile.position().left;
-                // Append Info Element
-                info_block.after(info_element);
-                // Position Indicator
-                parent.addClass('is-active')
-                $('<style>.has-info-triangle:before{left:' + tri_pos + ';}</style>').appendTo('head');
-                info_element.css('left', '0');
-                info_element.css('width', width);
-                // Animate Info Element Open
-                info_element.toggle();
-                info_element.slideToggle();
-            }
-        }
-        return {
-            Repair: Repair
-        }
-    })
-
+$(window).bind('load', function(){
     DeviceTiles().Repair();
-    
+})
 </script>
 
 
