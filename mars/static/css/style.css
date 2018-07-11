@@ -132,6 +132,12 @@
     transform: translateY(-25px);
 }
 
+.has-info-triangle .section {
+    -moz-box-shadow: inset 0 0 10px #000000;
+    -webkit-box-shadow: inset 0 0 10px #000000;
+    box-shadow: inset 0 0 10px #000000;
+}
+
 .has-info-triangle:before {
     content: "";
     display: block;
