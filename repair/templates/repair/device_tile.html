@@ -1,35 +1,38 @@
-{% for brand, devices in view.get_phones.items %}
-<div class="tile is-ancestor is-wrapping">
-    {% for device in devices %}
-    <div class="tile is-3 is-parent">
-        <div class="tile is-child is-hover-tile" style="border-radius:10px;">
-            <div class="card is-hover-card hvr-glow" data-device="{{ device.pk }}" data-family="{{ device.devices.first.has_family }}" action="{% url 'repair:device_info' %}" method='GET' style="display:inherit">
-                <div class="card-image is-flex is-horizontal-center">
-                    <figure class="image" style="width:96px">
-                        <img src="/media/{{ device.image }}">
-                    </figure>
+{% for brand, devices in device_list.items %}
+<div id="device_tiles">
+    <div class="tile is-ancestor is-wrapping">
+        {% for device in devices %}
+        <div class="tile is-3 is-parent">
+            <div class="tile is-child is-hover-tile" style="border-radius:10px;">
+                <div class="card is-hover-card hvr-glow" data-device="{{ device.pk }}" data-family="{{ device.devices.first.has_family }}" action="{% url 'repair:device_info' %}" method='GET' style="display:inherit">
+                    <div class="card-image is-flex is-horizontal-center">
+                        <figure class="image" style="width:96px">
+                            <img src="/media/{{ device.image }}">
+                        </figure>
+                    </div>
+                    <div class="card-content has-text-centered">
+                        {% if not device.device_names %}
+                        <p class="subtitle">{{ device.name }}</p>
+                        {% else %}
+                        <p class="subtitle">{{ device.name }}, {{ device.device_names }}</p>
+                        {% endif %}
+                    </div>
                 </div>
-                <div class="card-content has-text-centered">
-                    {% if not device.device_names %}
-                    <p class="subtitle">{{ device.name }}</p>
-                    {% else %}
-                    <p class="subtitle">{{ device.name }}, {{ device.device_names }}</p>
-                    {% endif %}
+                <div class="info-block">
                 </div>
-            </div>
-            <div class="info-block">
             </div>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
+    <div class="is-divider is-header title" data-content="{{ brand }}"></div> 
+    {% empty %}
+    <h3 class="title has-text-weight-light">{{ error }}</h3>
+    {% endfor  %}
 </div>
-<div class="is-divider is-header title" data-content="{{ brand }}"></div> 
-{% endfor  %}
 
 <script>
 $(window).bind('load', function(){
     DeviceTiles().Repair();
 })
 </script>
-
 

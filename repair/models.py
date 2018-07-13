@@ -65,6 +65,13 @@ class Family(models.Model):
         names = self.device_names()
         return f"{self.name} + {names}"
 
+    def save(self, *args, **kwargs):
+        for device in self.devices.all():
+            device.brand = self.brand
+            device.image = self.image
+            device.save()
+        super(Family, self).save(*args, **kwargs)
+
 
 class Device(models.Model):
     name = models.CharField(max_length=200)

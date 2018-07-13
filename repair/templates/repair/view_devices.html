@@ -7,7 +7,7 @@
   <div id="device-tiles" class="column is-9 is-multiline">
     <section class="section">
       <h3 class="title has-text-weight-light">Phones</h3>
-      {% include 'repair/device_tile.html' %}
+      {% include 'repair/device_tile.html' with device_list=view.get_phones %}
     </section>
   </div>
   <div class="column is-3">

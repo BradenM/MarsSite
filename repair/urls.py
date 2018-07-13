@@ -14,5 +14,9 @@ urlpatterns = [
          views.get_repair, name="get_repair"),
     path('devices/view/<str:device_type>',
          views.ViewDevices.as_view(), name="view_devices"),
-    path('devices/ajax/get_info', views.GetDeviceInfo.as_view(), name="device_info"),
+    # Ajax / Info urls
+    path('devices/ajax/get_info/',
+         views.GetDeviceInfo.as_view(), name="device_info"),
+    path('devices/ajax/search_devices/',
+         views.SearchDevices.as_view(), name="search_devices"),
 ]

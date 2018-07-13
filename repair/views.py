@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import HttpResponseRedirect, redirect, get_object_or_404, render, render_to_response, reverse, resolve_url
 from django.views.generic import ListView, TemplateView, View, DetailView
 from .models import Device, Family, Repair, DeviceRepair, LAP, PHONE, TAB, DEV_TYPES
+from django.http import JsonResponse
 
 
 class IndexView(ListView):
@@ -41,7 +42,7 @@ def get_repair(request, slug, pk):
 
 class RepairMixin(object):
     device_types = DEV_TYPES
-    #devices, families = Device().get_devices()
+    # devices, families = Device().get_devices()
 
     def phone_brands(self):
         brands = []
@@ -64,6 +65,10 @@ class RepairMixin(object):
             phones[d.brand].append(d)
         return phones
 
+    @property
+    def devices(self):
+        return Device.objects.all()
+
 
 class ViewDevices(RepairMixin, TemplateView):
     template_name = "repair/view_devices.html"
@@ -80,3 +85,29 @@ class GetDeviceInfo(RepairMixin, View):
         else:
             dev_or_fam = Device.objects.get(pk=query)
         return render(request, self.template, context={'device': dev_or_fam})
+
+
+class SearchDevices(RepairMixin, View):
+    def get(self, request):
+        query = request.GET.get('search_query')
+        # Temporary need to write clean query function
+        if query == "":
+            response = JsonResponse({"error": "there was an error"})
+            response.status_code = 403
+            return response
+        results = {}
+        for x in self.devices:
+            opt = [x.name, x.device_type, x.brand]
+            r = [i for i in opt if query.lower() in i.lower()]
+            if any(r):
+                if not x.brand in results.keys():
+                    results[x.brand] = []
+                if x.has_family:
+                    family = x.devices.first()
+                    if family not in results[x.brand]:
+                        results[x.brand].append(family)
+                else:
+                    results[x.brand].append(x)
+        context = {'device_list': results,
+                   'error': 'No devices match your search query.'}
+        return render(request, "repair/device_tile.html", context=context)

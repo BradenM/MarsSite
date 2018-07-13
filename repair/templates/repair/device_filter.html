@@ -4,7 +4,7 @@
         </p>
         <div class="panel-block">
           <p class="control has-icons-left">
-            <input class="input is-small" type="text" placeholder="search">
+            <input name="search_query" search-target="device_tiles" action="{% url 'repair:search_devices' %}" method="GET" class="input is-small js-search-bar" type="text" placeholder="Search Devices">
             <span class="icon is-small is-left">
               <i class="fas fa-search" aria-hidden="true"></i>
             </span>
