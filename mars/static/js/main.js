@@ -325,13 +325,49 @@ var loadCleave = function () {
     }
 }
 
+// Search Bar Creation
+var timeout;
+var SearchBar = function (el, page_func) {
+    this.element = el || new jQuery();
+    this.reload = page_func
+}
+SearchBar.prototype.bindEvents = function () {
+    var input = $(this.element)
+    var reload = this.reload
+    var target_id = '#' + input.attr('search-target')
+    var target = $(target_id)
+    var baseHTML = target.html();
+    var success = function (data) {
+        target.html(data);
+        reload();
+    }
+    var error = function (data) {
+        target.load(document.URL + ' ' + target_id + ">*", function () {
+            console.log(data)
+        })
+    }
+    input.on('keyup', function () {
+        clearTimeout(timeout);
+        timeout = setTimeout(function () {
+                handleAjax().submitRequest(input, input.serialize(), success, error)
+            },
+            400
+        );
+    })
+}
+
+// Device Tiles
 var DeviceTiles = (function () {
+    var search_input = $('.js-search-bar')
+    var search = new SearchBar(search_input, function () {
+        DeviceTiles().Repair();
+    })
+    search.bindEvents();
 
     // Repair Tiles
     var Repair = function () {
         // Init
         var prev_top = 0;
-        var diff_row = false;
         var hover_card = $('.is-hover-card')
         // Bind Hover cards to open
         hover_card.on('click', function (e) {
