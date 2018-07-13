@@ -344,6 +344,7 @@ SearchBar.prototype.bindEvents = function () {
     var error = function (data) {
         target.load(document.URL + ' ' + target_id + ">*", function () {
             console.log(data)
+            reload();
         })
     }
     input.on('keyup', function () {
