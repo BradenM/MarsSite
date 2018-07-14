@@ -1,0 +1,20 @@
+.has-hidden-menu {
+  opacity: 0.6;
+  transition: opacity 0.2s ease-in-out; }
+  .has-hidden-menu:hover {
+    opacity: 1; }
+
+.is-sticky {
+  position: fixed;
+  z-index: 99; }
+  .is-sticky.bottom-right {
+    bottom: 20px;
+    right: 30px; }
+
+.has-hidden-menu.is-active {
+  background-color: white;
+  opacity: 1 !important; }
+.has-hidden-menu div[data-menu=content] {
+  display: none; }
+
+/*# sourceMappingURL=main.css.map */

@@ -14,8 +14,8 @@ class IndexView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
-        device_phones = Device.objects.filter(device_type=PHONE)
-        context['phones'] = device_phones.filter(has_family=False)
+        device_devices = Device.objects.filter(device_type=PHONE)
+        context['devices'] = device_devices.filter(has_family=False)
         context['phone_families'] = Family.objects.filter(device_type=PHONE)
         context['tablets'] = Device.objects.filter(device_type=TAB)
         context['laptops'] = Device.objects.filter(device_type=LAP)
@@ -52,22 +52,34 @@ class RepairMixin(object):
         print(brands)
         return brands
 
-    def get_phones(self):
-        phones = {}
-        for d in Device.objects.filter(device_type=PHONE):
+    def get_device(self, type):
+        devices = {}
+        for d in Device.objects.filter(device_type=type):
             if not d.has_family:
-                if not d.brand in phones.keys():
-                    phones[d.brand] = []
-                phones[d.brand].append(d)
-        for d in Family.objects.filter(device_type=PHONE):
-            if not d.brand in phones.keys():
-                phones[d.brand] = []
-            phones[d.brand].append(d)
-        return phones
+                if not d.brand in devices.keys():
+                    devices[d.brand] = []
+                devices[d.brand].append(d)
+        for d in Family.objects.filter(device_type=type):
+            if not d.brand in devices.keys():
+                devices[d.brand] = []
+            devices[d.brand].append(d)
+        return devices
 
     @property
     def devices(self):
         return Device.objects.all()
+
+    @property
+    def phones(self):
+        return self.get_device(PHONE)
+
+    @property
+    def tablets(self):
+        return self.get_device(TAB)
+
+    @property
+    def laptops(self):
+        return self.get_device(LAP)
 
 
 class ViewDevices(RepairMixin, TemplateView):

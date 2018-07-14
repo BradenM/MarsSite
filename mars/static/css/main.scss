@@ -1,0 +1,27 @@
+%smooth-opacity {
+    opacity: 0.6;
+    transition: opacity 0.2s ease-in-out;
+    &:hover {
+        opacity: 1;
+    }
+}
+
+.is-sticky {
+    &.bottom-right {
+        bottom: 20px;
+        right: 30px;
+    }
+    position: fixed;
+    z-index: 99;
+}
+
+.has-hidden-menu {
+    @extend %smooth-opacity;
+    &.is-active {
+        background-color: white;
+        opacity: 1 !important;
+    }
+    div[data-menu=content] {
+        display: none;
+    }
+}
