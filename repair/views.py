@@ -44,14 +44,6 @@ class RepairMixin(object):
     device_types = DEV_TYPES
     # devices, families = Device().get_devices()
 
-    def phone_brands(self):
-        brands = []
-        for d in Device.objects.filter(device_type=PHONE):
-            if not d.brand in brands and d.brand is not None:
-                brands.append(d.brand)
-        print(brands)
-        return brands
-
     def get_device(self, type):
         devices = {}
         for d in Device.objects.filter(device_type=type):
@@ -64,6 +56,18 @@ class RepairMixin(object):
                 devices[d.brand] = []
             devices[d.brand].append(d)
         return devices
+
+    @property
+    def types(self):
+        return DEV_TYPES
+
+    @property
+    def brands(self):
+        brands = []
+        for d in Device.objects.all():
+            if not d.brand in brands and d.brand is not None:
+                brands.append(d.brand)
+        return brands
 
     @property
     def devices(self):

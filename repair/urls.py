@@ -18,6 +18,6 @@ urlpatterns = [
     # Ajax / Info urls
     path('view/ajax/get_info/',
          views.GetDeviceInfo.as_view(), name="device_info"),
-    path('view/ajax/search_devices/',
+    path('view/ajax/search/',
          views.SearchDevices.as_view(), name="search_devices"),
 ]

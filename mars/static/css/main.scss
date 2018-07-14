@@ -18,7 +18,9 @@
 .has-hidden-menu {
     @extend %smooth-opacity;
     &.is-active {
-        background-color: white;
+        div[data-menu=content] {
+            background-color: white;
+        }
         opacity: 1 !important;
     }
     div[data-menu=content] {

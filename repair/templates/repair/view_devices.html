@@ -20,16 +20,16 @@
 
 <div class="columns is-gapless">
   <div id="device-tiles" class="column is-12">
-    <section class="section">
-      <h3 id="phones" class="title has-text-weight-light">Phones</h3>
+    <section id="phone" class="section">
+      <h3 class="title has-text-weight-light">Phones</h3>
       {% include 'repair/device_tile.html' with device_list=view.phones %}
     </section>
-    <section class="section">
-      <h3 id="tablets" class="title has-text-weight-light">Tablets</h3>
+    <section id="tablet" class="section">
+      <h3 class="title has-text-weight-light">Tablets</h3>
       {% include 'repair/device_tile.html' with device_list=view.tablets %}
     </section>
-    <section class="section">
-      <h3 id="laptops" class="title has-text-weight-light">Laptops</h3>
+    <section id="laptop" class="section">
+      <h3 class="title has-text-weight-light">Laptops</h3>
       {% include 'repair/device_tile.html' with device_list=view.laptops %}
     </section>
   </div>

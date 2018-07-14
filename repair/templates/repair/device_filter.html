@@ -1,4 +1,4 @@
-<nav class="panel">
+<nav class="panel js-filter-menu" data-filter-target='device-tiles'>
         <p class="panel-heading">
           Search Devices
         </p>
@@ -11,46 +11,19 @@
           </p>
         </div>
         <p class="panel-tabs">
-        {% for brand in view.phone_brands %}
-          <a>{{ brand }}</a>
+          <a data-filter='type' data-value='all' class="is-active">All</a>
+          {% for type, name in view.types %}
+          <a data-filter='type' data-value='{{ name|lower }}'>{{ name }}</a>
           {% endfor %}
         </p>
-        <a class="panel-block is-active">
+        {% for brand in view.brands %}
+        <a data-filter='brand' data-value='{{ brand|lower }}' class="panel-block">
           <span class="panel-icon">
             <i class="fas fa-book" aria-hidden="true"></i>
           </span>
-          bulma
+          {{ brand }}
         </a>
-        <a class="panel-block">
-          <span class="panel-icon">
-            <i class="fas fa-book" aria-hidden="true"></i>
-          </span>
-          marksheet
-        </a>
-        <a class="panel-block">
-          <span class="panel-icon">
-            <i class="fas fa-book" aria-hidden="true"></i>
-          </span>
-          minireset.css
-        </a>
-        <a class="panel-block">
-          <span class="panel-icon">
-            <i class="fas fa-book" aria-hidden="true"></i>
-          </span>
-          jgthms.github.io
-        </a>
-        <a class="panel-block">
-          <span class="panel-icon">
-            <i class="fas fa-code-branch" aria-hidden="true"></i>
-          </span>
-          daniellowtw/infboard
-        </a>
-        <a class="panel-block">
-          <span class="panel-icon">
-            <i class="fas fa-code-branch" aria-hidden="true"></i>
-          </span>
-          mojs
-        </a>
+        {% endfor %}
         <label class="panel-block">
           <input type="checkbox">
           remember me

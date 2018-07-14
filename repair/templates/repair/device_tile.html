@@ -2,7 +2,7 @@
 <div id="device_tiles">
     <div class="tile is-ancestor is-wrapping">
         {% for device in devices %}
-        <div class="tile is-3 is-parent">
+        <div brand-id="{{ brand|lower }}" class="tile is-3 is-parent">
             <div class="tile is-child is-hover-tile" style="border-radius:10px;">
                 <div class="card is-hover-card hvr-glow" data-device="{{ device.pk }}" data-family="{{ device.devices.first.has_family }}" action="{% url 'repair:device_info' %}" method='GET' style="display:inherit">
                     <div class="card-image is-flex is-horizontal-center">

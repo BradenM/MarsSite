@@ -12,8 +12,9 @@
     right: 30px; }
 
 .has-hidden-menu.is-active {
-  background-color: white;
   opacity: 1 !important; }
+  .has-hidden-menu.is-active div[data-menu=content] {
+    background-color: white; }
 .has-hidden-menu div[data-menu=content] {
   display: none; }
 
