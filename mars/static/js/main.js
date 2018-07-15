@@ -429,7 +429,7 @@ var DeviceTiles = (function () {
             var info_block = tile.parent().find($('.info-block'))
             get_info(tile, function (info_element) {
                 var $info_element = $(info_element)
-                var width = $('#device-tiles').width();
+                var width = $('#device-tiles-parent').width();
                 // Get Objects
                 var parent = tile.parent();
                 var tri_pos = tile.position().left;

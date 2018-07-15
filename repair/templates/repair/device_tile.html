@@ -24,7 +24,7 @@
         </div>
         {% endfor %}
     </div>
-    <div class="is-divider is-header title" data-content="{{ brand }}"></div> 
+    <div brand-id="{{ brand|lower }}" class="is-divider is-header title" data-content="{{ brand }}"></div> 
     {% empty %}
     <h3 class="title has-text-weight-light">{{ error }}</h3>
     {% endfor  %}

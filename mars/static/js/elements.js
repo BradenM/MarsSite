@@ -7,7 +7,7 @@ HiddenMenu.prototype.bindEvents = function () {
     var trigger = el.find('a[data-menu=trigger]')
     var menu = el.find('div[data-menu=content]')
 
-    var toggleOpen = function ($button, callback) {
+    var toggleOpen = function ($button) {
         if (el.hasClass('is-active')) {
             menu.toggle('blind', 250)
         }
@@ -49,7 +49,7 @@ FilterMenu.prototype.bindEvents = function () {
     var el = this.element
     var filters = el.find('a[data-filter]')
     var type_filters = el.find('a[data-filter=type]')
-    var brand_tiles = $('div[brand-id]')
+    var clear_filter = el.find('button[data-filter=clear]')
 
     var sections = (function ($filter) {
         var active = get_target($filter)
@@ -94,7 +94,54 @@ FilterMenu.prototype.bindEvents = function () {
         }
 
         return {
-            hide: hide
+            hide: hide,
+            showAll: showAll
+        }
+    })
+
+    var tiles = (function () {
+        var brand_tiles = $('div[brand-id]')
+
+        var get = function () {
+            visible = []
+            filters.each(function (pos, filter) {
+                var $fi = $(filter)
+                if ($fi.attr('data-filter') == 'brand' && $fi.hasClass('is-active')) {
+                    visible.push($fi)
+                }
+            })
+            if (visible.length <= 0) {
+                clear();
+            }
+            return visible
+        }
+
+        var clear = function () {
+            $(brand_tiles).show('fade', 250);
+            $(filters).not(type_filters).each(function () {
+                if (!$(this).hasClass('is-active')) {
+                    $(this).find('.panel-icon').toggle();
+                    $(this).toggleClass('is-active')
+                }
+            })
+        }
+
+        var update = function () {
+            var brand_tiles = $('div[brand-id]')
+            $(brand_tiles).hide('fade', 250, function () {
+                $(this).css('display', 'none')
+            });
+            $(get()).each(function (pos, filter) {
+                var $fi = $(filter)
+                var $fi_targ = $('div[brand-id=' + $fi.attr('data-value') + ']')
+                $fi_targ.show('fade', 250);
+            })
+
+        }
+
+        return {
+            update: update,
+            clear: clear
         }
     })
 
@@ -108,13 +155,18 @@ FilterMenu.prototype.bindEvents = function () {
     }
 
     filters.on('click', function (e) {
-        e.preventDefault();
         if ($(this).attr('data-filter') == 'type') {
             sections($(this)).hide();
         } else {
+            $(this).find('.panel-icon').toggle();
             $(this).toggleClass('is-active')
-            //tiles($(this)).tog();
+            tiles().update();
         }
+    })
+
+    clear_filter.on('click', function () {
+        tiles().clear();
+        sections($(type_filters).first()).showAll();
     })
 }
 
