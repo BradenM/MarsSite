@@ -111,19 +111,17 @@ class SearchDevices(RepairMixin, View):
             response = JsonResponse({"error": "there was an error"})
             response.status_code = 403
             return response
-        results = {}
+        resp = {'device': [], 'family': []}
         for x in self.devices:
             opt = [x.name, x.device_type, x.brand]
             r = [i for i in opt if query.lower() in i.lower()]
-            if any(r):
-                if not x.brand in results.keys():
-                    results[x.brand] = []
+            if not any(r):
                 if x.has_family:
                     family = x.devices.first()
-                    if family not in results[x.brand]:
-                        results[x.brand].append(family)
+                    if family.pk not in resp['family']:
+                        resp['family'].append(family.pk)
                 else:
-                    results[x.brand].append(x)
-        context = {'device_list': results,
-                   'error': 'No devices match your search query.'}
-        return render(request, "repair/device_tile.html", context=context)
+                    if x.pk not in resp['device']:
+                        resp['device'].append(x.pk)
+        print(resp)
+        return JsonResponse(resp)

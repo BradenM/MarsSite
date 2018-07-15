@@ -327,9 +327,11 @@ var loadCleave = function () {
 
 // Search Bar Creation
 var timeout;
-var SearchBar = function (el, page_func) {
+var SearchBar = function (el, page_func, success, error) {
     this.element = el || new jQuery();
     this.reload = page_func
+    this.success = success || false
+    this.error = error || false
 }
 SearchBar.prototype.bindEvents = function () {
     var input = $(this.element)
@@ -337,14 +339,23 @@ SearchBar.prototype.bindEvents = function () {
     var target_id = '#' + input.attr('search-target')
     var target = $(target_id)
     var baseHTML = target.html();
-    var success = function (data) {
-        target.html(data);
-        reload();
-    }
-    var error = function (data) {
-        target.load(document.URL + ' ' + target_id + ">*", function () {
+    if (!this.success) {
+        var success = function (data) {
+            console.log(data)
+            target.html(data);
             reload();
-        })
+        }
+    } else {
+        var success = this.success
+    }
+    if (!this.error) {
+        var error = function (data) {
+            target.load(document.URL + ' ' + target_id + ">*", function () {
+                reload();
+            })
+        }
+    } else {
+        var error = this.error
     }
     input.on('keyup', function () {
         clearTimeout(timeout);
@@ -361,6 +372,43 @@ var DeviceTiles = (function () {
     var search_input = $('.js-search-bar')
     var search = new SearchBar(search_input, function () {
         DeviceTiles().Repair();
+    }, function (data) {
+        var devices = data['device']
+        var family = data['family']
+        var $cards = $('div[data-device]')
+        var $divids = $('div.is-divider[brand-id]')
+        var brands = []
+        var filter = function (callback) {
+            var $tiles = $($cards.closest('.tile.is-parent'))
+            $tiles.hide('fade', 500);
+            $divids.hide('fade', 500);
+            $cards.each(function (pos, card) {
+                var pk = parseInt($(card).attr('data-device'))
+                var $tile = $($(card).closest('.tile.is-parent'))
+                var tile_brand = $tile.attr('brand-id')
+                var $divider = $('div.is-divider[brand-id=' + tile_brand + ']')
+                if (jQuery.inArray(tile_brand, brands) == -1) {
+                    brands.push(tile_brand)
+                }
+                if ($(card).attr('data-family') == 'True') {
+                    var array = family
+                } else {
+                    var array = devices
+                }
+                if (jQuery.inArray(pk, array) == -1) {
+                    $tile.show('fade', 500);
+                    $divider.show('fade', 500)
+                }
+            })
+        }
+        filter()
+    }, function (data) {
+        var $cards = $('div[data-device]')
+        var $tiles = $($cards.closest('.tile.is-parent'))
+        $tiles.hide('fade', 500);
+        setTimeout(function () {
+            $tiles.show('fade', 500);
+        }, 500)
     })
     search.bindEvents();
 
