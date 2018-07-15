@@ -1,6 +1,6 @@
 {% for brand, devices in device_list.items %}
 <div id="device_tiles">
-    <div class="tile is-ancestor is-wrapping">
+    <div class="tile is-ancestor is-flex is-wrapping">
         {% for device in devices %}
         <div brand-id="{{ brand|lower }}" class="tile is-3 is-parent">
             <div class="tile is-child is-hover-tile" style="border-radius:10px;">

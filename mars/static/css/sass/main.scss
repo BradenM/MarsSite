@@ -1,3 +1,5 @@
+@charset "utf-8";
+@import "../bulma/bulma.sass";
 %smooth-opacity {
     opacity: 0.6;
     transition: opacity 0.2s ease-in-out;
@@ -49,6 +51,19 @@
 .tile {
     &.is-uniform {
         flex: 1;
+    }
+    &.is-wrapping {
+        flex: 1;
+        flex-wrap: wrap;
+        display: flex;
+        @include touch {
+            flex-wrap: nowrap;
+            overflow-x: scroll;
+            height: 50%;
+            div.tile {
+                min-width: 100%;
+            }
+        }
     }
 }
 
