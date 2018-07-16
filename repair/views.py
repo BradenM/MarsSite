@@ -113,8 +113,8 @@ class SearchDevices(RepairMixin, View):
             return response
         resp = {'device': [], 'family': []}
         for x in self.devices:
-            opt = [x.name, x.device_type, x.brand]
-            r = [i for i in opt if query.lower() in i.lower()]
+            opt = [x.name, x.device_type, x.brand, x.model_number]
+            r = [i for i in opt if i is not None and query.lower() in i.lower()]
             if not any(r):
                 if x.has_family:
                     family = x.devices.first()
@@ -123,5 +123,4 @@ class SearchDevices(RepairMixin, View):
                 else:
                     if x.pk not in resp['device']:
                         resp['device'].append(x.pk)
-        print(resp)
         return JsonResponse(resp)

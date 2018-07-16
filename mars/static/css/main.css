@@ -6401,4 +6401,12 @@ label.panel-block {
     border-bottom: 25px solid #363636;
     border-top: 25px solid transparent; }
 
+.hero.is-section div.hero-head {
+  padding-top: 3rem; }
+.hero.is-section div.hero-body {
+  padding-top: 6rem; }
+.hero.is-section div.is-divider-vertical {
+  height: 100%;
+  margin: auto; }
+
 /*# sourceMappingURL=main.css.map */

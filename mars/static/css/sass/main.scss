@@ -87,3 +87,16 @@
         border-top: 25px solid transparent;
     }
 }
+
+.hero.is-section {
+    div.hero-head {
+        padding-top: 3rem;
+    }
+    div.hero-body {
+        padding-top: 6rem;
+    }
+    div.is-divider-vertical {
+        height: 100%;
+        margin: auto;
+    }
+}
