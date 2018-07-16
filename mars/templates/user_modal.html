@@ -1,12 +1,3 @@
-<script>
-
-    function showUserModal(){
-        var modal = document.getElementById("user_modal");
-        modal.classList.add('is-active');
-        loadCleave().phone();
-    }
-</script>
-
 {% load crispy_forms_tags %}
 
 <div id="user_modal" class="modal">
@@ -14,8 +5,8 @@
         <div class="modal-content has-text-centered is-half animated fadeInRight box">
             <div class="tabs is-fullwidth is-medium is-centered">
                 <ul>
-                    <li id="login_tab_button" class="is-active" ><a onclick="$('#login_tab').switchTab();">Login</a></li>
-                    <li id="signup_tab_button" ><a onclick="$('#signup_tab').switchTab();" >Sign Up</a></li>
+                    <li id="tab" class="is-active" data-target='login'><a>Login</a></li>
+                    <li id="tab" data-target='signup'><a>Sign Up</a></li>
                 </ul>
             </div>
 
