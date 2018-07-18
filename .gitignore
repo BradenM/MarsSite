@@ -14,6 +14,8 @@ db\.sqlite3
 \.vscode/tags
 # Sass Cache
 \.sass-cache/
+# Bulma CSS Files
+*/static/css/bulma/
 
 
 # Python Boilerplate
