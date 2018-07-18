@@ -100,3 +100,14 @@
         margin: auto;
     }
 }
+
+.tab-child {
+    display: none !important;
+    &.is-active {
+        display: flex !important;
+    }
+}
+
+.form_loader {
+    display: none;
+}

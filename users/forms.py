@@ -19,6 +19,7 @@ class ExtSignupForm(forms.Form):
         self.helper = FormHelper(self)
         self.helper.form_class = 'form'
         self.helper.form_method = "post"
+        self.helper.form_action = '/accounts/signup/'
         self.helper.form_id = 'auth_signupform'
         self.helper.layout = Layout(
             HTML(
@@ -57,9 +58,9 @@ class ExtSignupForm(forms.Form):
             ),
             Div(
                 HTML(
-                    "<a id='signupform_loader' class='button is-text is-loading is-hidden'></a>"),
+                    "<a class='button is-text is-loading form_loader'></a>"),
                 Submit('submit', 'Sign Up',
-                       css_class="button is-info is-rounded"),
+                       css_class="button is-info is-rounded", data_modal='auth_signupform'),
                 css_class="field"
             )
 
@@ -79,6 +80,7 @@ class ExtLoginForm(LoginForm):
         self.helper = FormHelper(self)
         self.helper.form_method = "post"
         self.helper.form_class = 'form'
+        self.helper.form_action = '/accounts/login/'
         self.helper.form_id = 'auth_loginform'
         self.helper.layout = Layout(
             HTML(
@@ -92,11 +94,12 @@ class ExtLoginForm(LoginForm):
                 Field('password', css_class="input"),
                 HTML("<p id='form_errors' class='help is-danger'></p>"),
                 HTML(
-                    "<a id='form_loader' class='button is-text is-loading is-hidden'></a>"),
+                    "<a class='button is-text is-loading form_loader'></a>"),
                 css_class="field"
             ),
             Div(
-                Submit('submit', 'Login', css_class="button is-info is-rounded"),
+                Submit('submit', 'Login', css_class="button is-info is-rounded",
+                       data_modal='auth_loginform'),
             )
         )
 

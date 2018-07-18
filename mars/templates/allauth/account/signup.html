@@ -2,27 +2,16 @@
 {% load account %}
 {% load socialaccount %}
 
-<div class="columns" id="signup_tab">
+<div class="columns tab-child">
         <div class="column has-text-left">
             {% if signup_form %}
             {% crispy signup_form %}
-            {% if not user.is_authenticated %}
-            {% if signup_form.errors %}
-            <script>showUserModal();</script>
-            <script>
-                $(document).ready(function(){
-                    $('#signup_tab').switchTab();
-                    loadCleave().phone();
-                });
-            </script>
-            {% endif %}
-            {% endif %}
             {% endif %}
         </div>
         <div class="is-divider-vertical" data-content="OR"></div>
         <div class="column has-text-centered">
             <p class="buttons is-centered">
-                <a href="{% provider_login_url 'google' %}" class="button is-medium is-danger">
+                <a href="{% provider_login_url 'google' %}" class="button is-medium is-danger" >
                     <span class="icon is-small">
                         <i class="fab fa-google"></i>
                     </span>
