@@ -4,6 +4,19 @@ HTML/
 *.sqlite3
 # Invoice Generation Ignores
 billing/static/billing/*
+# Media files
+mars/media*
+# Local Testing DB
+db\.sqlite3
+# Environment Props
+\.env
+# VSCode stuff
+\.vscode/tags
+# Sass Cache
+\.sass-cache/
+# Bulma CSS Files
+*/static/css/bulma/
+
 
 # Python Boilerplate
 
@@ -65,9 +78,3 @@ docs/_build/
 
 # PyBuilder
 target/
-
-db\.sqlite3
-
-\.env
-
-\.vscode/tags

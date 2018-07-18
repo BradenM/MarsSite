@@ -20,10 +20,6 @@
     cursor: pointer;
 }
 
-.is-wrapping {
-    flex-wrap: wrap !important;
-}
-
 .device-image img {
     max-width: 256px;
 }

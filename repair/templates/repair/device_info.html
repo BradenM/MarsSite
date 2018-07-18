@@ -1,0 +1,31 @@
+<div class="has-info-triangle">
+    <div class="section has-background-dark">
+        <h3 class="title has-text-light has-text-weight-light">{% if device.device_names %}{{device.name}}, {{device.device_names}}{% else %}{{ device.name }}{% endif %}</h3>
+        <p class="subtitle is-5">Model: {{ device.model_number }}</p>
+        <p class="subtitle has-text-grey-light">{{ device.format_repairs }}</p>
+        {% if device.device_names %}
+        <div class="field">
+            <label class="label">Select Device</label>
+            <div class="control">
+                <div class="select">
+                    <select name="devices" form="select_device_form">
+                        {% for device in device.devices.all %}
+                        <option value="{{ device.pk }}" name="devices">{{ device.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <div class="field">
+            <div class="control">
+                {% if device.device_names %}
+                <form class="is-hidden" id="select_device_form" name="select_device_form" action="{% url 'repair:select_device' %}" method="POST">{% csrf_token %}</form>
+                <a onclick="$('#select_device_form').submit()" class="button is-light">View Device</a>
+                {% else %}
+                <a href="{% url 'repair:device' device.slug %}" class="button is-light">View Device</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

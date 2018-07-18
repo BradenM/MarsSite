@@ -278,23 +278,8 @@ var UserAccounts = (function () {
     var ordersPage = function () {
         // Init
         var search_input = $('input[search-target]')
-
-        // Search Bar Ajax
-        var search = function (sel) {
-            var input = $(sel)
-            var target = $('#' + input.attr('search-target'))
-            var baseHTML = target.html();
-            var success = function (data) {
-                target.html(data);
-            }
-            var error = function (data) {
-                target.html(baseHTML);
-            }
-            input.on('change, paste, keyup', function () {
-                handleAjax().submitRequest($(this), $(this).serialize(), success, error)
-            })
-        }
-        search(search_input)
+        var search = new SearchBar(search_input);
+        search.bindEvents();
     }
     // ====== END Payment Methods END  ======
 
