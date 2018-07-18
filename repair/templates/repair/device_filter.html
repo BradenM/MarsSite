@@ -1,0 +1,35 @@
+<nav class="panel js-filter-menu" data-filter-target='device-tiles-parent'>
+        <p class="panel-heading">
+          Search Devices
+        </p>
+        <div class="panel-block">
+          <p class="control has-icons-left">
+            <input name="search_query" search-target="device_tiles" action="{% url 'repair:search_devices' %}" method="GET" class="input is-small js-search-bar" type="text" placeholder="Search Devices">
+            <span class="icon is-small is-left">
+              <i class="fas fa-search" aria-hidden="true"></i>
+            </span>
+          </p>
+        </div>
+        <p class="panel-tabs">
+          <a data-filter='type' data-value='all' class="is-active">All</a>
+          {% for type, name in view.types %}
+          <a data-filter='type' data-value='{{ name|lower }}'>{{ name }}</a>
+          {% endfor %}
+        </p>
+        {% for brand in view.brands %}
+        <a data-filter='brand' data-value='{{ brand|lower }}' class="panel-block is-active">
+          <span class="panel-icon">
+            <i class="fas fa-eye" aria-hidden="true"></i>
+          </span>
+          <span class="panel-icon" style="display:none;">
+            <i class="fas fa-eye-slash" aria-hidden="true"></i>
+          </span>
+          {{ brand }}
+        </a>
+        {% endfor %}
+        <div class="panel-block">
+          <button class="button is-link is-outlined is-fullwidth" data-filter='clear'>
+            Clear Filters
+          </button>
+        </div>
+      </nav>

@@ -42,8 +42,6 @@
 </section>
 
 <section id="phones" class="section has-background-light">
-
-    <div class="container">
         <h1 class="title">Phones</h1>
         <h2 class="subtitle">iPhones, Galaxy, and more.</h2>
         <hr>
@@ -91,16 +89,13 @@
         {% endfor %}
 
     </div>
-
-</div>
+    <h3 class="subtitle is-pulled-right"><a href="{% url 'repair:view_devices' %}">View all Phones &#x203A; </a></h3>
 </section>
 
 <section id="tablets" class="section box is-marginless has-background-light">
-
-        <div class="container">
-            <h1 class="title">Tablets</h1>
-            <h2 class="subtitle">Airs, Minis, Fires and more</h2>
-            <hr>
+        <h1 class="title">Tablets</h1>
+        <h2 class="subtitle">Airs, Minis, Fires and more</h2>
+        <hr>
         <div class="tile is-ancestor">
 
             <div class="tile is-4 is-parent">
@@ -122,39 +117,32 @@
             </div>
         </div>
 
-    </div>
-
     </section>
 
     <section id="laptops" class="section box is-marginless has-background-light">
+        <h1 class="title">Laptops</h1>
+        <h2 class="subtitle">Pros, Airs, and more.</h2>
+        <hr>
+        <div class="tile is-ancestor">
 
-            <div class="container">
-                <h1 class="title">Laptops</h1>
-                <h2 class="subtitle">Pros, Airs, and more.</h2>
-                <hr>
-            <div class="tile is-ancestor">
-    
-                <div class="tile is-4 is-parent">
-                    <div class="tile is-child box">
-                        <article class="media">
-                            <figure class="media-left">
-                                <p class="image is-64x64">
-                                    <img src="/home/bradenmars/Pictures/Ready/smallX.png"/>
-                                </p>
-                            </figure>
-                            <div class="media-content">
-                                <h1 class="title is-4">iPhone X</h1>
-                                <p class="subtitle">Apple <span class="tag is-pulled-right is-rounded is-success">$239.99</span> </p>
-                                <p>New futuristic looking one</p>
-                                <a class="button is-pulled-right is-info">Repair</a>
-                            </div>
-                        </article>
+        <div class="tile is-4 is-parent">
+            <div class="tile is-child box">
+                <article class="media">
+                    <figure class="media-left">
+                        <p class="image is-64x64">
+                            <img src="/home/bradenmars/Pictures/Ready/smallX.png"/>
+                        </p>
+                    </figure>
+                    <div class="media-content">
+                        <h1 class="title is-4">iPhone X</h1>
+                        <p class="subtitle">Apple <span class="tag is-pulled-right is-rounded is-success">$239.99</span> </p>
+                        <p>New futuristic looking one</p>
+                        <a class="button is-pulled-right is-info">Repair</a>
                     </div>
-                </div>
+                </article>
             </div>
-    
         </div>
-    
-        </section>
+    </div>
+</section>
 
 {% endblock %}
