@@ -1,24 +1,32 @@
-// Notification Fade Out
 $(document).ready(function () {
-    setTimeout(function () {
-        $('.notif-dismiss').addClass('fadeOut');
-        setTimeout(function () {
-            $('.notif-dismiss').remove();
-        }, 1000)
-    }, 4000);
-
     // Add Card Form Reveal
     $('.new_card').css('display', 'none');
     $('#reveal_form').on('click', function (event) {
         $('.new_card').css('display', 'block');
     });
-
-    // Set Fullheight against footer
-    var footerHeight = $('.footer').height();
-    var res = 100 - footerHeight;
-    var height = res + 'vh';
-    $('.is-fullheight-menu').css('height', height);
 });
+
+// Scroll Function (AnimateScroll Handler)
+var ScrollTo = function () {
+
+    var _scroll = function ($el) {
+        var target = $el.attr('ani-scroll')
+        $(target).animatescroll({
+            scrollSpeed: 1500,
+            easing: 'easeInOutSine'
+        })
+    }
+
+    var init = function () {
+        var elements = $('[ani-scroll]')
+        elements.on('click', function () {
+            _scroll($(this))
+        })
+    }
+    return {
+        init: init
+    }
+}
 
 // Animate.css Function
 $.fn.extend({
@@ -70,7 +78,7 @@ var Notify = (function (msg, title, html) {
     var title = title || "Heads up..."
     var text = html || "<p class='subtitle is-5 has-text-light'>" + title + "</p><p>" + msg + "</p>"
 
-    var create = function (type, timeout) {
+    var _create = function (type, timeout) {
         var to = timeout || 6000
         return {
             text: text,
@@ -84,12 +92,12 @@ var Notify = (function (msg, title, html) {
     }
 
     var info = function () {
-        var note = new Noty(create('info'))
+        var note = new Noty(_create('info'))
         return note.show()
     }
 
     var error = function () {
-        var note = new Noty(create('error'))
+        var note = new Noty(_create('error'))
         return note.show()
     }
 
@@ -195,6 +203,8 @@ var LoadCleave = (function (phone, date) {
 
 // Load needed functions on page  load
 $(document).ready(function () {
+    // AniScroll
+    ScrollTo().init();
     // Cleave
     LoadCleave();
 })
