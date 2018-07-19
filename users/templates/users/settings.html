@@ -13,7 +13,7 @@
     <div class="columns">
         <div class="column is-9" style="margin-bottom: 50px;">
             {% crispy email_form %}
-            {% crispy phone_form %}
+            
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
                     <label class="label">Email Address: </label>
@@ -23,7 +23,7 @@
                         <p class="control">
                             {% for email in user.emailaddress_set.all %}
                             {% if email.primary %}
-                            <input form="auth_addemailform" class="input" id="setting_email" type="email" value="{{ email.email }}" readonly>
+                            <input form="auth_addemailform" class="input" id="setting_email" type="email" value="{{ email.email }}" disabled>
                             {% endif %}
                             {% endfor %}
                         </p>
@@ -38,12 +38,12 @@
 
             <div class="field is-horizontal">
                     <div class="field-label is-normal">
-                        <label class="label">Phone Address: </label>
+                        <label class="label">Phone Number: </label>
                     </div>
                     <div class="field-body">
                         <div class="field has-addons">
                             <p class="control">
-                                <input form="auth_changephoneform" id="setting_phone" class="input js-phone-input" type="text" placeholder="{{ user.profile.phone }}" readonly>
+                                <input method='POST' name='phone' action="{% url 'users:change_phone'%}" id="setting_phone" class="input js-phone-input is-togglable" type="text" placeholder="{{ user.profile.phone }}" disabled>
                             </p>
                             <p class="control">
                                 <a data-unlock="setting_phone" class="button is-link">

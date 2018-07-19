@@ -76,15 +76,6 @@ class ChangePhoneForm(UserForm):
 
     def __init__(self, *args, **kwargs):
         super(ChangePhoneForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_action = '/account/change_phone/'
-        self.helper.form_method = "POST"
-        self.helper.form_class = "is-hidden"
-        self.helper.form_id = "auth_changephoneform"
-        self.helper.layout = Layout(
-            Field('phone', type="hidden", required=True),
-            Submit('Submit', 'Phone number successfully changed.', type="hidden")
-        )
 
     def save(self, request):
         prof = self.user.profile
