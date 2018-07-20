@@ -69,7 +69,13 @@
 
 .has-info-triangle {
     position: absolute;
-    transform: translateY(-25px);
+    transform: translateY(25px);
+    left: 0;
+    width: 100%;
+    z-index: 2;
+    -moz-box-shadow: inset 0 0 10px #000000;
+    -webkit-box-shadow: inset 0 0 10px #000000;
+    box-shadow: inset 0 0 10px #000000;
     .section {
         -moz-box-shadow: inset 0 0 10px #000000;
         -webkit-box-shadow: inset 0 0 10px #000000;
@@ -78,13 +84,24 @@
     &:before {
         content: "";
         display: block;
-        position: relative;
+        position: absolute;
         height: 0;
         width: 0;
+        margin: 0;
+        padding: 0;
+        transform: translateY(-98px);
         border-left: 25px solid transparent;
         border-right: 25px solid transparent;
         border-bottom: 25px solid hsl(0, 0%, 21%);
         border-top: 25px solid transparent;
+    }
+}
+
+.is-block-divider {
+    display: block;
+    width: 100%;
+    &.active {
+        margin-bottom: 300px;
     }
 }
 

@@ -178,6 +178,7 @@ var SearchBar = function (el, page_func, success, error) {
     this.success = success || false
     this.error = error || false
 }
+
 SearchBar.prototype.bindEvents = function () {
     var input = $(this.element)
     var reload = this.reload

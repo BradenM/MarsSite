@@ -136,4 +136,4 @@ var DeviceTiles = (function () {
     return {
         Repair: Repair
     }
-})
+});
