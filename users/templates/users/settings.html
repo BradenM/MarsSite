@@ -5,14 +5,13 @@
 
 {% block page %}
 
-<section data-scroll-adjust="resize" class="section">
+<section data-scroll-adjust="resize" data-user-page='settings' class="section">
 
     <h1 class="title has-text-weight-light">Settings</h1>
     <hr>
 
     <div class="columns">
         <div class="column is-9" style="margin-bottom: 50px;">
-            {% crispy email_form %}
             
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
@@ -23,7 +22,7 @@
                         <p class="control">
                             {% for email in user.emailaddress_set.all %}
                             {% if email.primary %}
-                            <input form="auth_addemailform" class="input" id="setting_email" type="email" value="{{ email.email }}" disabled>
+                            <input method='POST' name='email' action="{% url 'users:change_email'%}" class="input" id="setting_email" type="email" value="{{ email.email }}" data-success'Once you verify your new email address you may begin using it to login and remove your old one.' disabled>
                             {% endif %}
                             {% endfor %}
                         </p>
@@ -43,7 +42,7 @@
                     <div class="field-body">
                         <div class="field has-addons">
                             <p class="control">
-                                <input method='POST' name='phone' action="{% url 'users:change_phone'%}" id="setting_phone" class="input js-phone-input is-togglable" type="text" placeholder="{{ user.profile.phone }}" disabled>
+                                <input method='POST' name='phone' action="{% url 'users:change_phone'%}" id="setting_phone" class="input js-phone-input is-togglable" type="text" placeholder="{{ user.profile.phone }}" data-success='Phone number changed successfully' disabled>
                             </p>
                             <p class="control">
                                 <a data-unlock="setting_phone" class="button is-link">
@@ -68,10 +67,4 @@
         </div>
     </div>
 </section>
-
-<script>
-    $(window).bind('load', function(){
-        UserAccounts().settingsPage();
-    })
-</script>
 {% endblock %}

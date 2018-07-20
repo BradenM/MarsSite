@@ -1,5 +1,8 @@
 // Core Module for User Accounts
 var UserAccounts = (function () {
+    // Pages
+    var pages = {}
+
     // Adjust scrollabel div
     var adjustScroll = function () {
         var scrollDiv = $('section[data-scroll-adjust]');
@@ -22,11 +25,21 @@ var UserAccounts = (function () {
         })
     }
 
+    var load = function () {
+        var current_p = $('section[data-user-page]').attr('data-user-page')
+        if (current_p in pages) {
+            pages[current_p]()
+        }
+    }
+
     return {
+        pages: pages,
+        load: load,
         adjustScroll: adjustScroll,
         updateMenu: updateMenu,
     }
-});
+})();
+
 
 (function () {
     UserAccounts.elements = {
@@ -53,7 +66,8 @@ var UserAccounts = (function () {
         save: function () {
             var obj = this;
             var request = HandleAjax(this.target, function (data) {
-                Notify('Phone number changed successfully', "Success").info();
+                var msg = obj.target.attr('data-success')
+                Notify(msg, "Success").info();
             }, function (data) {
                 var fields = data.responseJSON.form.fields
                 var errors = []
@@ -83,17 +97,20 @@ var UserAccounts = (function () {
 
 
 // User Settings Page
-var Settings = (function (UserAccounts) {
+var Settings = (function (parent) {
     var _$sel = $('a[data-unlock]')
 
-    // Retunr Module
+    // Settings Module
     UserAccounts.settings = function () {
         _$sel.each(function (pos, el) {
             var $el = $(el)
             var toggle = new UserAccounts.elements.ToggleInput($el)
             toggle.bindEvents();
         })
+        return this
     }
+    parent.pages.settings = UserAccounts.settings
+    parent.load();
     return UserAccounts
 
 })(UserAccounts || {});

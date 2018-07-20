@@ -56,13 +56,8 @@ class ExtAddEmailForm(AddEmailForm):
     def __init__(self, *args, **kwargs):
         super(ExtAddEmailForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_action = "/accounts/email/"
-        self.helper.form_method = "POST"
-        self.helper.form_id = "auth_addemailform"
-        self.helper.form_class = "is-hidden"
         self.helper.layout = Layout(
             Field('email', type="hidden"),
-            Submit('Submit', 'Once you verify your new email address you may begin using it to login and remove your old one.', type="hidden")
         )
 
         def save(self, request):

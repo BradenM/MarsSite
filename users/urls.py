@@ -13,6 +13,7 @@ urlpatterns = [
 
     # Order Search
     path('orders/search/', views.SearchOrders.as_view(), name="search_orders"),
-    # Change Phone
+    # Change Info
     path('change_phone/', views.ChangePhone.as_view(), name="change_phone"),
+    path('change_email/', views.ChangeEmail.as_view(), name="change_email")
 ]
