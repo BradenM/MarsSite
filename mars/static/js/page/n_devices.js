@@ -27,6 +27,7 @@ $.widget('devices.device_tile', {
         var obj = this
         this.section = $(this.data)
         this.element.after(this.section)
+        this.section.css('height', this.section.height() + 30)
         this.section.hide();
         this.section.shown = false;
         this.element.on('click', function () {
@@ -46,19 +47,36 @@ $.widget('devices.device_tile', {
 
     _position_indicator: function (callback) {
         this.indicator = this
-        this.indicator.position = this.element.position().left
-        this.indicator.style = $('<style>.has-info-triangle.active:before{left:' + this.indicator.position + ';}</style>')
+        this.indicator.position = this.element.position().left + (this.parent_tile.width() / 2) - 24
+        this.indicator.style = $('<style>.has-info-triangle.active .inner::before{left:' + this.indicator.position + ' ;}</style>')
         this.indicator.style.appendTo('head')
         callback();
     },
 
-    _insert_margin: function () {
+    _position: function () {
+        if (!this.pos) {
+            this.section.position({ of: this.parent_tile,
+                my: "left top",
+                at: "left bottom",
+                collision: "none",
+            })
+            this.section.css('left', '0')
+            this.pos = true
+        } else {
+            return true
+        }
+    },
+
+    _insert_margin: function (callback) {
         obj = this
         var $last = this.parent_tile.row[this.parent_tile.row.length - 1]
         this.margin = $('<div></div>')
         $last.after(this.margin)
         this.margin.addClass('is-block-divider')
-        this.margin.addClass('active', 400)
+        this.margin.addClass('active', 400, function () {
+            obj._position()
+            callback();
+        })
     },
 
     hide_other: function (callback) {
@@ -69,18 +87,20 @@ $.widget('devices.device_tile', {
             if (inst.section && inst.section.shown) {
                 inst.hide();
             }
-
         })
-        callback();
+        setTimeout(function () {
+            callback();
+        }, 520)
     },
 
     hide: function () {
-        this.section.hide('blind', 400)
-        this.section.shown = false
-        this.indicator.style.remove();
         var obj = this
-        if (this.margin) {
-            this.margin.removeClass('active', 400, function () {
+        this.section.hide('blind', 500, function () {
+            obj.section.shown = false
+            obj.indicator.style.remove();
+        })
+        if (obj.margin) {
+            obj.margin.removeClass('active', 510, function () {
                 obj.margin.remove();
             })
         }
@@ -89,19 +109,20 @@ $.widget('devices.device_tile', {
     toggle: function () {
         this._get_row();
         var obj = this
-        this.hide_other(function () {
-            if (!obj.section.shown) {
-                obj._insert_margin()
-                obj._position_indicator(function () {
-                    obj.section.show('blind', 400, function () {
-                        obj.section.shown = true
+        if (!obj.section.shown) {
+            this.hide_other(function () {
+                obj._insert_margin(function () {
+                    obj._position_indicator(function () {
                         obj.section.addClass('active', 1000)
-                    })
-                });
-            } else {
-                obj.hide();
-            }
-        })
+                        obj.section.show('blind', 400, function () {
+                            obj.section.shown = true
+                        })
+                    });
+                })
+            })
+        } else {
+            obj.hide();
+        }
     }
 });
 
