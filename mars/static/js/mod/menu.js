@@ -206,7 +206,8 @@ SearchBar.prototype.bindEvents = function () {
     input.on('keyup', function () {
         clearTimeout(timeout);
         timeout = setTimeout(function () {
-                HandleAjax().submitRequest(input, input.serialize(), success, error)
+                var request = HandleAjax(input, success, error)
+                request.submit()
             },
             400
         );
