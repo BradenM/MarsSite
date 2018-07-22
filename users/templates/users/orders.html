@@ -25,7 +25,7 @@
 {% endblock %}
 
 {% block page %}
-<section data-scroll-adjust="resize" class="section">
+<section data-user-page="orders" data-scroll-adjust="resize" class="section">
     <div class="tile is-ancestor">
         <div id="order-list" class="tile is-9 is-vertical is-parent">
             {% include 'users/order_tile.html' %}
@@ -33,11 +33,5 @@
     </div>
 
 </section>
-
-<script>
-    $(window).bind('load', function(){
-        UserAccounts().ordersPage();
-    })
-</script>
 
 {% endblock %}

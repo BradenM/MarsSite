@@ -181,13 +181,14 @@ var SearchBar = function (el, page_func, success, error) {
 
 SearchBar.prototype.bindEvents = function () {
     var input = $(this.element)
-    var reload = this.reload
+    var reload = this.reload || function () {
+        console.log('search complete')
+    }
     var target_id = '#' + input.attr('search-target')
     var target = $(target_id)
     var baseHTML = target.html();
     if (!this.success) {
         var success = function (data) {
-            console.log(data)
             target.html(data);
             reload();
         }

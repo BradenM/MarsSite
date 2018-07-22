@@ -12,7 +12,7 @@
 
     <div class="columns">
             {% for source in view.sources %}
-            <div class="column is-4 is-3-desktop">
+            <div class="column is-4 is-3-fullhd">
                 <div class="card is-expandable js-payment-card">
                     <header class="card-header">
                         <div class="media">
@@ -28,7 +28,7 @@
                                         {% endif %}
                                 </p>
                                 <p class="subtitle">{{ source.name }}</p>
-                                <a class="card-header-icon is-unselectable is-overlay" aria-label="more options">
+                                <a class="card-header-icon is-unselectable is-overlay js-payment-toggle" aria-label="more options">
                                     <span class="icon">
                                         <i class="fa fa-angle-down"></i>
                                     </span>

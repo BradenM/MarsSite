@@ -1,8 +1,9 @@
+// Core Module for User Accounts
 var UserAccounts = (function () {
+    // Pages
+    var pages = {}
 
-    // ====== UserAccounts Functions =======
-
-    // Adjust Scrollable Div
+    // Adjust scrollabel div
     var adjustScroll = function () {
         var scrollDiv = $('section[data-scroll-adjust]');
         var tile = scrollDiv.find($('.is-child')).height();
@@ -12,8 +13,8 @@ var UserAccounts = (function () {
         scrollDiv.css('overflow-y', 'auto');
     }
 
-    // Set Active Menu 
-    var updateMenu = function () {
+    // Update Menu Nav
+    var updateMenu = (function () {
         var path = location.pathname
         var selectors = $('.menu li a')
         $.each(selectors, function () {
@@ -22,297 +23,247 @@ var UserAccounts = (function () {
                 return false;
             }
         })
-    }
-    // ====== END UserAccounts Functions END =======
+    })();
 
-    // ====== Login & Security (Settings) ======
-    var settingsPage = function () {
-        // Init
-
-        // Unlock Input
-        $('a[data-unlock]').click(function (e) {
-            unlockInput($(this));
-        });
-
-        // Allow Input Modify
-        var unlockInput = function (trig) {
-            var target_sel = trig.attr("data-unlock");
-            var target_inp = $('#' + target_sel);
-            // Allow Edit
-            target_inp.removeAttr('readonly');
-            // Change Trigger to 'save' and rebind
-            trig.html('Save');
-            // Unbind
-            trig.off();
-            // Bind to save
-            trig.click(function (e) {
-                saveInput(trig);
-            })
-        }
-
-        // Save Input via Ajax
-        var saveInput = function (trig) {
-            var target_sel = trig.attr('data-unlock');
-            var target_inp = $('#' + target_sel);
-            // Get Form info
-            var form = $('#' + target_inp.attr('form'))
-            var form_data = form.find('input');
-            var form_success = form.find('input[id=submit-id-submit]').attr('value');
-            console.log(form_success)
-
-            // Catch form post
-            form.on('submit', function (e) {
-                e.preventDefault();
-                form_data.val(target_inp.val()); // Set new input to form val
-                var ajax_data = form.serializeArray();
-                // Append add action data for adding email
-                ajax_data.push({
-                    name: 'action_add',
-                    value: ''
-                })
-                // Append CSRF token cookie
-                ajax_data.push({
-                    name: 'csrfmiddlewaretoken',
-                    value: getCookie('csrftoken')
-                })
-                $.ajax({
-                    url: form.attr('action'),
-                    type: form.attr('method'),
-                    data: ajax_data,
-                    dataType: 'json',
-                    success: function (data) {
-                        target_inp.attr('readonly', '');
-                        trig.html('Change');
-                        // rebind
-                        trig.off();
-                        trig.click(function (e) {
-                            unlockInput(trig);
-                        })
-                        n = infoNotify('Success!', form_success)
-                        n.show();
-                    },
-                    error: function (data) {
-                        console.log(data);
-                        var json_fields = data.responseJSON.form.fields
-                        //n = errorNotify(json_fields.email.errors);
-                        var error_msg = []
-                        $.each(json_fields, function (key, field) {
-                            error_msg.push(field.errors);
-                        })
-                        n = errorNotify(error_msg);
-                        n.show();
-                    }
-                })
-            })
-
-            // Submit
-            form.submit();
-
-        }
-
-        // Change Password Ajax
-        var loadChangePassword = function () {
-            var change_passform = $('#auth_changepass');
-            var loader = $('#pc_loader');
-            var submit_button = $('#pcsubmit');
-            change_passform.on('submit', function (e) {
-                e.preventDefault();
-                submit_button.addClass('is-hidden');
-                loader.removeClass('is-hidden');
-                $.ajax({
-                    url: change_passform.attr('action'),
-                    type: "POST",
-                    dataType: 'json',
-                    data: change_passform.serialize(),
-                    success: function (data) {
-                        location.reload();
-                    },
-                    error: function (data) {
-                        console.log(data.responseJSON.form.fields);
-                        // Short timeout to signify that request went through
-                        setTimeout(function () {
-                            $.each(data.responseJSON.form.fields, function (key, element) {
-                                loader.addClass('is-hidden');
-                                submit_button.removeClass('is-hidden');
-                                var field = $('#pc_' + key + "_errors");
-                                console.log(field);
-                                field.html(element.errors);
-                                console.log(element.errors);
-                            });
-                        }, 250)
-                    }
-                })
-            })
+    var load = function () {
+        var current_p = $('section[data-user-page]').attr('data-user-page')
+        if (current_p in pages) {
+            pages[current_p]()
         }
     }
-    // ====== END Login & Security (Settings) END ======
 
-    // ====== Payment Methods  ======
-    var paymentsPage = function () {
+    return {
+        pages: pages,
+        load: load,
+        adjustScroll: adjustScroll,
+        updateMenu: updateMenu,
+    }
+})();
 
-        // Bind Card Expansion
-        $('a.is-card-expand').click(function (e) {
-            e.preventDefault();
-            expandCard($(this))
-        })
 
-        // Bind Card Edit
-        $('span[card-edit]').click(function (e) {
-            e.preventDefault();
-            editCard($(this)).hide();
-        })
-
-        // Card Expand
-        var expandCard = function (trig) {
-            var target = $('#' + trig.attr('data-expand'))
-            target.slideToggle('fast');
-            target.toggleClass('is-active');
-            var icon = trig.find($('.icon'));
-            icon.toggleClass('fa-rotate-180');
+(function () {
+    UserAccounts.elements = {
+        ToggleInput: function (el) {
+            this.element = el || new jQuery();
+            this.target = $('#' + el.attr('data-unlock'))
+            this.lock = true;
         }
-
-        // Edit Card
-        var editCard = function (trig) {
-            // Vars
-            var target = $('#' + trig.attr('card-edit'));
-            var tar_form = target.find($('form'));
-            // Get Inputs
-            var inputs = target.find($('input'));
-            // Get button siblings
-            var siblingButtons = trig.parent().find($('span'));
-            var cancel_edit = $(siblingButtons[1]);
-            var cancel_default = cancel_edit.attr('onclick');
-
-            // Toggle last button
-            var displayLast = function (visibility, fade) {
-                // Hide Last Button
-                $(siblingButtons.last()).fadeTo(fade[0], fade[1], function () {
-                    $(siblingButtons.last()).css('visibility', visibility);
-                })
+    };
+    UserAccounts.elements.ToggleInput.prototype = {
+        toggle: function () {
+            var obj = this
+            if (obj.lock) {
+                obj.target.removeAttr('disabled');
+                this.element.html('Save');
+            } else {
+                obj.save();
+                obj.target.attr('disabled', '')
+                this.element.html('Change')
             }
-
-            // Toggle form transition
-            var transitionForm = function (status, input_display, input_type, fade) {
-                // Change Edit button to 'save'
-                trig.html(status[0]);
-                cancel_edit.html(status[1])
-                trig.toggleClass('is-primary');
-                // Hide Infos
-                $.each(inputs, function (i, el) {
-                    var info = $(this).siblings('p');
-                    info.fadeTo(fade[0], fade[1], function () {
-                        info.css('display', input_display);
-                        $(el).attr('type', input_type);
-                    })
+            obj.lock = !obj.lock
+            return this
+        },
+        save: function () {
+            var obj = this;
+            var request = HandleAjax(this.target, function (data) {
+                var msg = obj.target.attr('data-success')
+                Notify(msg, "Success").info();
+            }, function (data) {
+                var fields = data.responseJSON.form.fields
+                var errors = []
+                $.each(fields, function (key, field) {
+                    errors.push(field.errors)
                 })
+                Notify(errors).error();
+            })
+            request.type = 'json'
+            var input_data = {
+                name: this.element.attr('name'),
+                value: this.target.val()
             }
+            request.data = request.data.push(input_data)
+            request.submit();
+        },
+        bindEvents: function () {
+            var obj = this
+            this.element.on('click', function (e) {
+                e.preventDefault();
+                obj.toggle();
+            });
+        },
+    }
+})();
 
-            var hide = function () {
-                // Trans to Edit view
-                displayLast('hidden', [200, 0]);
-                transitionForm(['Save', 'Cancel'], 'none', 'text', [200, 0])
-                // Rebind save to form submit
-                trig.off();
-                trig.click(function (e) {
-                    e.preventDefault();
-                    tar_form.submit();
-                })
-                // Bind target form to saveCard
-                tar_form.on('submit', function (e) {
-                    e.preventDefault();
-                    saveCard(trig, tar_form);
-                })
-                // Bind cancel edit
-                cancel_edit.attr('onclick', '');
-                cancel_edit.on('click', function (e) {
-                    e.preventDefault();
-                    show();
-                })
-                // Load Cleave
-                loadCleave().date();
-            }
 
-            var show = function () {
-                // Trans to normal view
-                displayLast('visible', [0, 200]);
-                transitionForm(['Edit Card', 'Remove Card'], 'flex', 'hidden', [0, 200])
-                // Unbind cancel edit
-                cancel_edit.off();
-                cancel_edit.attr('onclick', cancel_default);
-                // Rebind edit card
-                trig.off();
-                trig.click(function (e) {
-                    e.preventDefault();
-                    hide();
-                })
-            }
 
-            return {
-                hide: hide
-            }
+// User Settings Page
+var Settings = (function (parent) {
+    var _$sel = $('a[data-unlock]')
 
-        }
-
-        // Save Card After Editing (w/ Ajax)
-        var saveCard = function (source, targ) {
-            source.addClass('is-loading');
-            var name_error = $('#' + targ.attr('id') + '_name_error')
-            var date_error = $('#' + targ.attr('id') + '_date_error')
-            var ajax_data = handleAjax().prepareData(targ);
-            var success = function (data) {
-                source.removeClass('is-loading');
+    // Settings Module
+    UserAccounts.settings = function () {
+        // Create Toggle Inputs
+        _$sel.each(function (pos, el) {
+            var $el = $(el)
+            var toggle = new UserAccounts.elements.ToggleInput($el)
+            toggle.bindEvents();
+        })
+        // Change Password Form
+        var $form = $('.js-change-passwd').find($('form'))
+        var $errors = $form.find('p.help')
+        var $load = $form.find('a.is-loading')
+        $form.on('submit', function (e) {
+            $errors.html('')
+            e.preventDefault();
+            $load.removeClass('is-hidden')
+            request = HandleAjax($form, function (data) {
                 location.reload();
-            }
-            var error = function (data) {
-                source.removeClass('is-loading');
-                var errors = data.responseJSON
-                date_error.html(errors['date_errors']);
-            }
-            handleAjax().submitForm(targ, ajax_data, success, error)
-        }
 
+            }, function (data) {
+                $load.addClass('is-hidden')
+                var json_errors = data.responseJSON.form.fields
+                $.each(json_errors, function (key, field) {
+                    var er_field = $errors.filter('#' + key + "_error")
+                    er_field.html(field.errors)
+                })
+            })
+            request.submit();
+        })
+        return this
     }
-    // ====== END Payment Methods END  ======
+    parent.pages.settings = UserAccounts.settings
+    parent.load();
+    return UserAccounts
 
-    // ====== Orders Page ======
-    var ordersPage = function () {
-        // Init
+})(UserAccounts || {});
+
+// Card Payment Widget
+$.widget('user.payment_card', {
+    options: {
+        buttons: {
+            edit: ['Edit Card', 'Save'],
+            remove: ['Remove Card', 'Cancel']
+        }
+    },
+    _create: function () {
+        var obj = this
+        this.parent = this.element.parent()
+        this.trigger = this.element.find('a.js-payment-toggle')
+        this.content = this.element.find('div.card-content')
+        this.edit_form = this.element.find('form')
+        this.buttons = this.parent.find($('span.button'))
+        this.remove_attr = $(this.buttons[1]).attr('onclick')
+        this.controls = this.edit_form.find('div.control')
+        this.controls.error = this.controls.parent().find('p.help');
+        this.content.hide()
+        this.trigger.on('click', function (e) {
+            obj._toggle();
+            e.preventDefault();
+        })
+        this.buttons.first().on('click', function () {
+            obj._toggle_edit()
+        })
+
+    },
+    _toggle: function () {
+        var obj = this
+        this.element.toggleClass('is-active');
+        this.content.toggle('blind', 300)
+    },
+
+    _set_html: function ($button, option) {
+        var current = $button.html()
+        $.each(option, function (pos, opt) {
+            if (current != opt) {
+                $button.html(opt)
+            }
+        })
+    },
+
+    _toggle_edit: function () {
+        var obj = this
+        var edit = $(this.buttons[0])
+        var remove = $(this.buttons[1])
+        var def = $(this.buttons[2])
+        def.toggle('fade', 300)
+        edit.toggleClass('is-primary', 300)
+        this._set_html(edit, this.options.buttons.edit)
+        this._set_html(remove, this.options.buttons.remove)
+        this.controls.children().toggle()
+        edit.off()
+        edit.on('click', function () {
+            obj._save_card(edit)
+        })
+        if (remove.attr('onclick') == this.remove_attr) {
+            remove.attr('onclick', '')
+            remove.on('click', function () {
+                obj._toggle_edit()
+            })
+        } else {
+            obj.controls.error.html('')
+            remove.off()
+            remove.attr('onclick', this.remove_attr)
+            edit.off()
+            edit.on('click', function () {
+                obj._toggle_edit();
+            })
+        }
+    },
+
+    _save_card: function ($edit) {
+        var obj = this
+        $edit.addClass('is-loading');
+        var request = HandleAjax(this.edit_form, function (data) {
+            location.reload()
+        }, function (data) {
+            $edit.removeClass('is-loading')
+            obj.controls.error.filter('#date_error').html(data.responseJSON['date_errors'])
+        })
+        request.submit()
+    }
+})
+
+// User Payments Page
+var Payments = (function (parent) {
+    // Payments Module
+    UserAccounts.payments = function () {
+        $('.js-payment-card').payment_card();
+        return this
+    }
+    parent.pages.payments = UserAccounts.payments
+    parent.load();
+    return UserAccounts
+
+})(UserAccounts || {});
+
+// User Orders Page
+var Orders = (function (parent) {
+    // Orders Module
+    UserAccounts.orders = function () {
+        UserAccounts.adjustScroll();
         var search_input = $('input[search-target]')
         var search = new SearchBar(search_input);
         search.bindEvents();
+        return this
     }
-    // ====== END Payment Methods END  ======
+    parent.pages.orders = UserAccounts.orders
+    parent.load();
+    return UserAccounts
 
-    // ====== Invoice Page ======
-    var invoicePage = function () {
-        // Order Scroll
-        var orderScroll = function () {
-            var scrollDivs = $(".is-scrollable")
-            $.each(scrollDivs, function () {
-                var orderTiles = $(this).find('.order-tile')
-                var tileHeight = orderTiles.first().height();
-                var adjust = (orderTiles.length - 4) * tileHeight;
-                // Ignore anything that doesnt need to be resized
-                if (adjust > 0) {
-                    $(this).css('height', adjust)
-                    $(this).css('overflow-y', 'auto')
-                }
-            })
-        }
-        orderScroll();
+})(UserAccounts || {});
+
+// User Orders Page
+var Invoices = (function (parent) {
+    // Orders Module
+    UserAccounts.invoices = function () {
+        UserAccounts.adjustScroll();
+        var search_input = $('input[search-target]')
+        var search = new SearchBar(search_input);
+        search.bindEvents();
+        return this
     }
-    // ====== END Invoice Page ======
+    parent.pages.invoices = UserAccounts.invoices
+    parent.load();
+    return UserAccounts
 
-
-    updateMenu();
-    adjustScroll();
-    loadCleave().load();
-    return {
-        settingsPage: settingsPage,
-        paymentsPage: paymentsPage,
-        ordersPage: ordersPage,
-        invoicePage: invoicePage
-    }
-
-
-})
+})(UserAccounts || {});
