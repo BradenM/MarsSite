@@ -12,7 +12,7 @@ db\.sqlite3
 \.env
 # VSCode stuff
 \.vscode/tags
-# Sass Cache
+# Sass Files
 \.sass-cache/
 # Bulma CSS Files
 */static/css/bulma/

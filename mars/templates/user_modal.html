@@ -1,21 +1,12 @@
-<script>
-
-    function showUserModal(){
-        var modal = document.getElementById("user_modal");
-        modal.classList.add('is-active');
-        loadCleave().phone();
-    }
-</script>
-
 {% load crispy_forms_tags %}
 
-<div id="user_modal" class="modal">
+<div class="modal js-user-modal" data-modal='modal'>
         <div class="modal-background animated fadeIn"></div>
         <div class="modal-content has-text-centered is-half animated fadeInRight box">
             <div class="tabs is-fullwidth is-medium is-centered">
                 <ul>
-                    <li id="login_tab_button" class="is-active" ><a onclick="$('#login_tab').switchTab();">Login</a></li>
-                    <li id="signup_tab_button" ><a onclick="$('#signup_tab').switchTab();" >Sign Up</a></li>
+                    <li class="is-active" ><a>Login</a></li>
+                    <li ><a>Sign Up</a></li>
                 </ul>
             </div>
 
@@ -23,5 +14,5 @@
             {% include 'account/login.html' %}
 
         </div>
-    <button class="modal-close is-large" aria-label="close" onclick="document.getElementById('user_modal').classList.remove('is-active')"></button>
+    <button class="modal-close is-large js-user-modal" aria-label="close" data-modal='trigger'></button>
 </div>
