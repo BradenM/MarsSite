@@ -170,6 +170,52 @@ FilterMenu.prototype.bindEvents = function () {
     })
 }
 
+// Search Bar Element
+var timeout;
+var SearchBar = function (el, page_func, success, error) {
+    this.element = el || new jQuery();
+    this.reload = page_func
+    this.success = success || false
+    this.error = error || false
+}
+
+SearchBar.prototype.bindEvents = function () {
+    var input = $(this.element)
+    var reload = this.reload || function () {
+        console.log('search complete')
+    }
+    var target_id = '#' + input.attr('search-target')
+    var target = $(target_id)
+    var baseHTML = target.html();
+    if (!this.success) {
+        var success = function (data) {
+            target.html(data);
+            reload();
+        }
+    } else {
+        var success = this.success
+    }
+    if (!this.error) {
+        var error = function (data) {
+            target.load(document.URL + ' ' + target_id + ">*", function () {
+                reload();
+            })
+        }
+    } else {
+        var error = this.error
+    }
+    input.on('keyup', function () {
+        clearTimeout(timeout);
+        timeout = setTimeout(function () {
+                var request = HandleAjax(input, success, error)
+                request.submit()
+            },
+            400
+        );
+    })
+}
+
+
 $(document).ready(function () {
     // Find Hidden menu elements
     var menu_elements = $('.js-hidden-menu')

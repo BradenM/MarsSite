@@ -8,7 +8,7 @@ from django.views.generic import View, TemplateView, FormView
 from billing.mixins import CustomerMixin
 from billing.models import Order
 from django.http import JsonResponse
-from .user_forms import ExtChangePasswordForm, ExtAddEmailForm, ChangePhoneForm
+from .user_forms import ExtChangePasswordForm, ExtAddEmailForm, ChangePhoneForm, AddEmailForm
 from crispy_forms.utils import render_crispy_form
 from django.template.context_processors import csrf
 from allauth.account.views import _ajax_response, AjaxCapableProcessFormViewMixin
@@ -46,6 +46,26 @@ class ChangePhone(AjaxCapableProcessFormViewMixin, FormView):
 
     def post(self, request, *args, **kwargs):
         res = super(ChangePhone, self).post(request, *args, **kwargs)
+        return res
+
+
+class ChangeEmail(AjaxCapableProcessFormViewMixin, FormView):
+    template_name = "users/forms/form.html"
+    form_class = AddEmailForm
+    success_url = reverse_lazy('users:my_account')
+
+    def get_form_kwargs(self):
+        kwargs = super(ChangeEmail, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        print(self.request.POST)
+        email = form.save(self.request)
+        return super(ChangeEmail, self).form_valid(form)
+
+    def post(self, request, *args, **kwargs):
+        res = super(ChangeEmail, self).post(request, *args, **kwargs)
         return res
 
 
