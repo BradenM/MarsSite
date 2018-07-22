@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 
 {% block scripts %}
+{{ block.super }}
 <script src="https://js.stripe.com/v3/"></script>
+<script src="/static/js/mod/menu.js"></script>
+<script src='/static/js/page/accounts.js'></script>
 {% endblock %}
 
 {% block content %}
