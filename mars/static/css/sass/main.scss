@@ -1,22 +1,7 @@
 @charset "utf-8";
 @import "../bulma/bulma.sass";
-@import "components/dropdown_card.scss";
-%smooth-opacity {
-    opacity: 0.6;
-    transition: opacity 0.2s ease-in-out;
-    &:hover {
-        opacity: 1;
-    }
-}
-
-%transition-all {
-    -moz-transition: all 1s ease-in-out, left 1.5s ease-in-out;
-    -webkit-transition: all 1s ease-in-out, left 1.5s ease-in-out;
-    -moz-transition: all 1s ease-in-out, left 1.5s ease-in-out;
-    -o-transition: all 1s ease-in-out, left 1.5s ease-in-out;
-    transition: all 1s ease-in-out, left 1.5s ease-in-out;
-}
-
+@import "utils/_all.scss";
+@import "components/_all.scss";
 .is-sticky {
     &.bottom-right {
         bottom: 20px;

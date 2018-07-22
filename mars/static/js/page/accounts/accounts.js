@@ -117,23 +117,99 @@ var Settings = (function (parent) {
 
 // Card Payment Widget
 $.widget('user.payment_card', {
+    options: {
+        buttons: {
+            edit: ['Edit Card', 'Save'],
+            remove: ['Remove Card', 'Cancel']
+        }
+    },
     _create: function () {
         var obj = this
+        this.parent = this.element.parent()
         this.trigger = this.element.find('a[data-expand]')
         this.content = this.element.find('div.card-content')
+        this.edit_form = this.element.find('form')
+        this.buttons = this.parent.find($('span.button'))
+        this.remove_attr = $(this.buttons[1]).attr('onclick')
+        this.controls = this.edit_form.find('div.control')
+        this.controls.error = this.controls.parent().find('p.help');
         this.content.hide()
         this.trigger.on('click', function (e) {
-            e.preventDefault();
             obj._toggle();
+            e.preventDefault();
+        })
+        this.buttons.first().on('click', function () {
+            obj._toggle_edit()
         })
 
     },
     _toggle: function () {
         var obj = this
-        this.content.toggle('slide', {
-            direction: 'up'
-        }, 250, function () {
-            obj.content.toggleClass('is-active');
+        this.element.toggleClass('is-active');
+        this.content.toggle('blind', 300)
+    },
+
+    _set_html: function ($button, option) {
+        var current = $button.html()
+        $.each(option, function (pos, opt) {
+            if (current != opt) {
+                $button.html(opt)
+            }
         })
+    },
+
+    _toggle_edit: function () {
+        var obj = this
+        var edit = $(this.buttons[0])
+        var remove = $(this.buttons[1])
+        var def = $(this.buttons[2])
+        def.toggle('fade', 300)
+        edit.toggleClass('is-primary', 300)
+        this._set_html(edit, this.options.buttons.edit)
+        this._set_html(remove, this.options.buttons.remove)
+        this.controls.children().toggle()
+        edit.off()
+        edit.on('click', function () {
+            obj._save_card(edit)
+        })
+        if (remove.attr('onclick') == this.remove_attr) {
+            remove.attr('onclick', '')
+            remove.on('click', function () {
+                obj._toggle_edit()
+            })
+        } else {
+            obj.controls.error.html('')
+            remove.off()
+            remove.attr('onclick', this.remove_attr)
+            edit.off()
+            edit.on('click', function () {
+                obj._toggle_edit();
+            })
+        }
+    },
+
+    _save_card: function ($edit) {
+        var obj = this
+        $edit.addClass('is-loading');
+        var request = HandleAjax(this.edit_form, function (data) {
+            location.reload()
+        }, function (data) {
+            $edit.removeClass('is-loading')
+            obj.controls.error.filter('#date_error').html(data.responseJSON['date_errors'])
+        })
+        request.submit()
     }
 })
+
+// User Payments Page
+var Payments = (function (parent) {
+    // Payments Module
+    UserAccounts.payments = function () {
+        $('.js-payment-card').payment_card();
+        return this
+    }
+    parent.pages.payments = UserAccounts.payments
+    parent.load();
+    return UserAccounts
+
+})(UserAccounts || {});

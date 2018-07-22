@@ -1,0 +1,31 @@
+// Mixins
+@mixin transition($prop, $time) {
+    -moz-transition: $prop $time ease-in-out;
+    -webkit-transition: $prop $time ease-in-out;
+    -moz-transition: $prop $time ease-in-out;
+    -o-transition: $prop $time ease-in-out;
+    transition: $prop $time ease-in-out;
+}
+
+@mixin transform($property) {
+    -webkit-transform: $property;
+    -ms-transform: $property;
+    transform: $property;
+}
+
+// Extends
+%smooth-opacity {
+    opacity: 0.6;
+    transition: opacity 0.2s ease-in-out;
+    &:hover {
+        opacity: 1;
+    }
+}
+
+%transition-all {
+    -moz-transition: all 1s ease-in-out, left 1.5s ease-in-out;
+    -webkit-transition: all 1s ease-in-out, left 1.5s ease-in-out;
+    -moz-transition: all 1s ease-in-out, left 1.5s ease-in-out;
+    -o-transition: all 1s ease-in-out, left 1.5s ease-in-out;
+    transition: all 1s ease-in-out, left 1.5s ease-in-out;
+}
