@@ -1,0 +1,19 @@
+/*
+    Bulma Card Extension
+    Dropdown Card, used to display payments
+    Braden Mars
+    
+*/
+
+.card.is-expandable {
+    .card-header-icon {
+        align-items: flex-end;
+        justify-content: flex-end;
+        padding: 0px;
+    }
+    .card-content {
+        &.is-active {
+            box-shadow: inset 0 8px 6px -6px hsl(0, 0%, 48%);
+        }
+    }
+}

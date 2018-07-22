@@ -114,3 +114,26 @@ var Settings = (function (parent) {
     return UserAccounts
 
 })(UserAccounts || {});
+
+// Card Payment Widget
+$.widget('user.payment_card', {
+    _create: function () {
+        var obj = this
+        this.trigger = this.element.find('a[data-expand]')
+        this.content = this.element.find('div.card-content')
+        this.content.hide()
+        this.trigger.on('click', function (e) {
+            e.preventDefault();
+            obj._toggle();
+        })
+
+    },
+    _toggle: function () {
+        var obj = this
+        this.content.toggle('slide', {
+            direction: 'up'
+        }, 250, function () {
+            obj.content.toggleClass('is-active');
+        })
+    }
+})

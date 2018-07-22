@@ -12,8 +12,9 @@ db\.sqlite3
 \.env
 # VSCode stuff
 \.vscode/tags
-# Sass Cache
+# Sass Files
 \.sass-cache/
+start # Shell Script to start Sass
 # Bulma CSS Files
 */static/css/bulma/
 */static/css/main.css

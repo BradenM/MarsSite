@@ -1,5 +1,10 @@
 // Tile Widget
 $.widget('devices.device_tile', {
+    options: {
+        animate: {
+            section: 'blind'
+        }
+    },
     _create: function () {
         this.parent_tile = this.element.parent().parent()
         this.parent_tile.row = $(this.parent_tile).add(this.parent_tile.siblings())
@@ -106,7 +111,7 @@ $.widget('devices.device_tile', {
 
     hide: function () {
         var obj = this
-        this.section.hide('blind', 500, function () {
+        this.section.hide(this.options.animate.section, 500, function () {
             obj.section.shown = false
             obj.indicator.style.remove();
         })
@@ -125,7 +130,7 @@ $.widget('devices.device_tile', {
                 obj._insert_margin(function () {
                     obj._position_indicator(function () {
                         obj.section.addClass('active', 1000)
-                        obj.section.show('blind', 400, function () {
+                        obj.section.show(obj.options.animate.section, 400, function () {
                             obj.section.shown = true
                         })
                     });

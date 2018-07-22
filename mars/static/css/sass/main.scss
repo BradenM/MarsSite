@@ -1,5 +1,6 @@
 @charset "utf-8";
 @import "../bulma/bulma.sass";
+@import "components/dropdown_card.scss";
 %smooth-opacity {
     opacity: 0.6;
     transition: opacity 0.2s ease-in-out;

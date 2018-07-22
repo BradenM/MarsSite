@@ -13,7 +13,7 @@
     <div class="columns">
             {% for source in view.sources %}
             <div class="column is-4">
-                <div class="card">
+                <div class="card is-expandable">
                     <header class="card-header">
                         <div class="media">
                             <div class="media-left">
@@ -28,7 +28,7 @@
                                         {% endif %}
                                 </p>
                                 <p class="subtitle">{{ source.brand }}</p>
-                                <a href="#" data-expand="{{ forloop.counter }}_content" class="card-header-icon is-unselectable is-overlay is-card-expand" aria-label="more options">
+                                <a href="#" data-expand="{{ forloop.counter }}_content" class="card-header-icon is-unselectable is-overlay" aria-label="more options">
                                     <span class="icon">
                                         <i class="fa fa-angle-down"></i>
                                     </span>
@@ -36,7 +36,7 @@
                             </div>
                         </div>
                     </header>
-                    <div id="{{ forloop.counter }}_content" class="card-content has-background-grey-lighter is-expandable" style="display:none">
+                    <div id="{{ forloop.counter }}_content" class="card-content has-background-grey-lighter">
                         <div class="columns">
                             <div id="card-data_{{ forloop.counter }}" class="column">
                                 <form id="card-form_{{ forloop.counter }}" class="is-marginless" method="POST" action="{% url 'billing:edit_card'%}">
