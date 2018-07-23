@@ -2,33 +2,15 @@
 {% for msg in messages %}
 
 {% if 'user_alert_info' in msg.tags %}
-
-<script>
-    $(window).bind("load", function() {
-        n = infoNotify('Heads up...', '{{ msg }}');
-        n.show();
-    });
- </script>
-
-</div>
+ <div data-notify="info" data-notify-msg="{{ msg }}"></div>
 {% endif %}
 
 {% if 'user_alert_important' in msg.tags %}
-<script>
-    $(window).bind("load", function() {
-        n = infoNotify('Important!', '{{ msg }}');
-        n.show();
-        });
-</script>
+<div data-notify="info" data-notify-title="Important!" data-notify-msg="{{ msg }}"></div>
 {% endif %}
 
 {% if 'user_alert_error' in msg.tags %}
-<script>
-    $(window).bind("load", function() {
-        n = errorNotify('{{ msg }}');
-        n.show();
-    });
-</script>
+<div data-notify="error" data-notify-title="There's been a Problem." data-notify-msg="{{ msg }}"></div>
 {% endif %}
 
 {% endfor %}

@@ -70,6 +70,28 @@ var Notify = (function (msg, title, html) {
     var title = title || "Heads up..."
     var text = html || "<p class='subtitle is-5 has-text-light'>" + title + "</p><p>" + msg + "</p>"
 
+    var init = function () {
+        var notifs = $('div[data-notify]');
+        notifs.each(function (pos, el) {
+            console.log('Notification Detected')
+            $el = $(el)
+            var _title = $el.attr('data-notify-title') || title
+            var _msg = $el.attr('data-notify-msg') || msg
+            text = "<p class='subtitle is-5 has-text-light'>" + _title + "</p><p>" + _msg + "</p>"
+            switch ($el.attr('data-notify')) {
+                case 'info':
+                    info()
+                    break;
+                case 'error':
+                    error()
+                    break;
+                default:
+                    console.log('Notify: Bad Parameters')
+
+            }
+        })
+    }
+
     var _create = function (type, timeout) {
         var to = timeout || 6000
         return {
@@ -95,7 +117,8 @@ var Notify = (function (msg, title, html) {
 
     return {
         info: info,
-        error: error
+        error: error,
+        init: init
     }
 })
 
@@ -193,10 +216,20 @@ var LoadCleave = (function (phone, date) {
     return init();
 })
 
+// LoadPushbar - Handler for Pushbar.js
+var LoadPushbars = (function () {
+    var pushbar = new Pushbar({
+        blur: true,
+        overlay: true
+    })
+})()
+
 // Load needed functions on page  load
 $(document).ready(function () {
     // AniScroll
     ScrollTo().init();
     // Cleave
     LoadCleave();
+    // Detect Notifications
+    Notify().init()
 })
