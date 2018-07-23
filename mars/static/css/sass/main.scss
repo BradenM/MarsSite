@@ -97,6 +97,9 @@
     }
     div.hero-body {
         padding-top: 6rem;
+        &.is-small {
+            padding-top: 3rem;
+        }
     }
     div.is-divider-vertical {
         height: 100%;

@@ -1,0 +1,9 @@
+<div data-pushbar-id="cart_pushbar" class="pushbar from_right is-half has-background-white-ter">
+        <a class="button is-outlined is-danger" data-pushbar-close>
+                        <span class="icon is-small">
+                                <i class="fas fa-times"></i>
+                        </span>
+                        <span>Close Cart</span>
+                </a>
+        <div data-pushbar-load action="{% url 'store:cart' %}" method="GET"></div>
+</div>

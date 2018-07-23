@@ -12,12 +12,16 @@
     <link rel="stylesheet" type="text/css" href="/static/css/main.css">
     <link rel="stylesheet" href='/static/css/bulma/extensions.css'>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/lib/pushbar.js"></script>
     {% block head %}
     {% endblock %}
 </head>
 
 <body class="Site">
-    <main class="Site-content">
+    {% block cart %}
+    {% include 'store/side_cart.html'%}
+    {% endblock %}
+    <main class="Site-content pushbar_main_content">
     {% get_login as login_form %}
     {% get_signup as signup_form %}
     {% if not user.is_authenticated %}
@@ -26,7 +30,6 @@
     {% block content %}
     {% endblock %}
     </main>
-</body>
 
 <footer class="footer has-background-dark">
     <div class="container">
@@ -48,3 +51,4 @@
     <script type="text/javascript" src="/static/js/lib/jquery-ui.js"></script>
     {% endblock %}
 </footer>
+</body>

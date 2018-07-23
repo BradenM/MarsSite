@@ -76,3 +76,8 @@
 
 
 {% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script src="/static/js/mod/quickview.js"></script>
+{% endblock %}
