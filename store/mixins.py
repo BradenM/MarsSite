@@ -1,5 +1,7 @@
 from .models import Cart, CartEntry, REPAIR
 from django.contrib import messages
+from django.shortcuts import HttpResponseRedirect
+
 
 class CartMixin:
     status_removed = "removed from your cart"
@@ -22,8 +24,18 @@ class CartMixin:
         user_cart = Cart.objects.get(user=self.user)
         user_cart.total = 0.00
         user_cart.save()
+        self.notify_cart_update(None, None, msg='You Cart has been cleared.')
 
-    def notify_cart_update(self, item, status):
+    def redirect(self):
+        redirect = self.request.GET.get('next')
+        if not redirect:
+            redirect = self.request.META['HTTP_REFERER']
+        return HttpResponseRedirect(redirect)
+
+    def notify_cart_update(self, item, status, msg=None):
+        if msg:
+            messages.success(self.request, msg, extra_tags='user_alert_info')
+            return True
         messages.success(
             self.request, f'{item.product.device.name} {item.product.repair.name} {item.type} has been {status}.', extra_tags='user_alert_info')
 

@@ -23,21 +23,20 @@ class AddCartEntry(View, CartMixin):
     def get(self, request, pk):
         item = DeviceRepair.objects.get(pk=pk)
         self.add_item(item)
-        redirect = request.GET['next']
-        return HttpResponseRedirect(redirect)
+        return self.redirect()
 
 
 class RemoveCartEntry(View, CartMixin):
     def get(self, request, pk):
         entry = CartEntry.objects.get(pk=pk)
         self.remove_item(entry)
-        return HttpResponseRedirect(reverse('store:cart'))
+        return self.redirect()
 
 
 class ClearCart(View, CartMixin):
     def get(self, request):
         self.clear_cart()
-        return HttpResponseRedirect(reverse('store:cart'))
+        return self.redirect()
 
 
 # Checkout

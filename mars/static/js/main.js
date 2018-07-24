@@ -1,8 +1,7 @@
 // Scroll Function (AnimateScroll Handler)
-var ScrollTo = function () {
-
-    var _scroll = function ($el) {
-        var target = $el.attr('ani-scroll')
+var ScrollTo = function ($sel) {
+    var _scroll = function ($target, $el) {
+        var target = $target || $el.attr('ani-scroll')
         $(target).animatescroll({
             scrollSpeed: 1500,
             easing: 'easeInOutSine'
@@ -15,6 +14,11 @@ var ScrollTo = function () {
             _scroll($(this))
         })
     }
+
+    if ($sel) {
+        _scroll($sel)
+    }
+
     return {
         init: init
     }

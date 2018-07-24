@@ -24,16 +24,6 @@
     }
 }
 
-.card.is-hover-card {
-    figure {
-        padding-top: 1.5rem;
-    }
-    border-radius: 10px;
-    background: rgba(0, 0, 0, 0);
-    cursor: pointer;
-    height: 100%;
-}
-
 .tile {
     &.is-uniform {
         flex: 1;

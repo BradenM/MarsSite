@@ -1,0 +1,50 @@
+/*
+    Extended Bulma Styling
+    Braden Mars
+
+*/
+
+// Card
+.card {
+    &.is-hover-card {
+        figure,
+        span {
+            padding-top: 1.5rem;
+        }
+        border-radius: 10px;
+        background: rgba(0, 0, 0, 0);
+        cursor: pointer;
+        height: 100%;
+    }
+    &.tile-child {
+        display: block;
+        cursor: pointer;
+        border-radius: 5px;
+        .card-image {
+            padding-top: 1rem;
+        }
+        .card-content {
+            padding: 1rem;
+        }
+        &.is-active {
+            box-shadow: rgba(10, 10, 10, 0.1) 0px 2px 3px, $info 0px 0px 1px 1px;
+        }
+    }
+}
+
+// Divider
+.is-divider-vertical,
+.is-divider {
+    &.is-tall {
+        height: 100%;
+    }
+    &.is-header {
+        &[data-content]::after {
+            padding-top: 0px;
+            font-size: $size-large;
+            color: $text;
+            font-weight: $weight-semibold;
+            transform: translateY(-1.3rem);
+        }
+    }
+}

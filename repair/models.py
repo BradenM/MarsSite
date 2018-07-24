@@ -27,7 +27,7 @@ class Repair(models.Model):
 
 class DeviceRepair(models.Model):
     device = models.ForeignKey(
-        'Device', related_name="repair", on_delete=models.CASCADE)
+        'Device', related_name="devrep", on_delete=models.CASCADE)
     repair = models.ForeignKey(
         Repair, related_name="repair", on_delete=models.CASCADE)
     type = models.CharField(max_length=200, default="screen")

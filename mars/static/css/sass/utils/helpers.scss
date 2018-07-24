@@ -25,3 +25,10 @@
     position: relative;
     z-index: 999;
 }
+
+.has-space- {
+    &vertical {
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+    }
+}

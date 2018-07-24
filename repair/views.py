@@ -3,6 +3,7 @@ from django.shortcuts import HttpResponseRedirect, redirect, get_object_or_404, 
 from django.views.generic import ListView, TemplateView, View, DetailView
 from .models import Device, Family, Repair, DeviceRepair, LAP, PHONE, TAB, DEV_TYPES
 from django.http import JsonResponse
+from .mixins import RepairMixin
 
 
 class IndexView(ListView):
@@ -31,59 +32,14 @@ def select_device(request):
 
 class DeviceView(DetailView):
     model = Device
-    template_name = "repair/detail.html"
+    template_name = "repair/device.html"
 
 
-def get_repair(request, slug, pk):
-    repair = get_object_or_404(DeviceRepair, pk=pk)
-    print(repair.repair.name)
-    return render(request, 'repair/repair_detail.html', {'active_repair': repair})
-
-
-class RepairMixin(object):
-    device_types = DEV_TYPES
-    # devices, families = Device().get_devices()
-
-    def get_device(self, type):
-        devices = {}
-        for d in Device.objects.filter(device_type=type):
-            if not d.has_family:
-                if not d.brand in devices.keys():
-                    devices[d.brand] = []
-                devices[d.brand].append(d)
-        for d in Family.objects.filter(device_type=type):
-            if not d.brand in devices.keys():
-                devices[d.brand] = []
-            devices[d.brand].append(d)
-        return devices
-
-    @property
-    def types(self):
-        return DEV_TYPES
-
-    @property
-    def brands(self):
-        brands = []
-        for d in Device.objects.all():
-            if not d.brand in brands and d.brand is not None:
-                brands.append(d.brand)
-        return brands
-
-    @property
-    def devices(self):
-        return Device.objects.all()
-
-    @property
-    def phones(self):
-        return self.get_device(PHONE)
-
-    @property
-    def tablets(self):
-        return self.get_device(TAB)
-
-    @property
-    def laptops(self):
-        return self.get_device(LAP)
+class GetRepair(RepairMixin, View):
+    def get(self, request):
+        query = request.GET.get('repair_pk')
+        repair = get_object_or_404(DeviceRepair, pk=query)
+        return render(request, 'repair/repair_detail.html', context={'devrep': repair})
 
 
 class ViewDevices(RepairMixin, TemplateView):
