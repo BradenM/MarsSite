@@ -3,30 +3,25 @@
 {% load repair_tags %}
 
 {% block content %}
+{% include 'notif.html' %}
 <section class="hero is-info is-bold is-fullheight">
-    <div class="hero-head animated fadeIn">
+    <div class="hero-head is-top animated fadeIn">
         {% include 'nav.html' %}
     </div>
 
-    {% include 'notif.html' %}
-    
     <div class="hero-body">
-        <div class="container">
-            <div class="level">
-                <div class="level-left animated fadeInLeft">
-                    <div class="column">
-                        <h1 class="level-item title is-1">Mobile Repair</h1>
-                        <h1 class="level-item subtitle">Broken screen? Won't Charge? Get it fixed today.</h1>
-                    </div>
-                </div>
-                <div class="level-right animated bounceInUp">
-                    <div class="level-item">
-                        <figure class="image">
-                            <img src="/media/largeX.png"/>
-                        </figure>
-                    </div>
-                </div>
+        <div class="columns is-fullwidth is-centered is-vcentered">
+            <div class="column is-1"></div>
+            <div class="column">
+                <h1 class="level-item title is-1">Mobile Repair</h1>
+                <h1 class="level-item subtitle">Broken screen? Won't Charge? Get it fixed today.</h1>
             </div>
+            <div class="column is-flex is-horizontal-center is-3">
+                <figure class="image has-maxwidth-384">
+                    <img src="/media/images/hero-phone.png"/>
+                </figure>
+            </div>
+            <div class="column is-2"></div>
         </div>
     </div>
 

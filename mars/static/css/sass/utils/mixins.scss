@@ -1,3 +1,9 @@
+/*
+    Extensions and Mixins for various purposes
+    Braden Mars
+    
+*/
+
 // Mixins
 @mixin transition($prop, $time) {
     -moz-transition: $prop $time ease-in-out;
