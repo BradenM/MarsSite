@@ -2,16 +2,17 @@
 var UserAccounts = (function () {
     // Pages
     var pages = {}
+    var resizeTimer;
 
     // Adjust scrollabel div
     var adjustScroll = function () {
         var scrollDiv = $('section[data-scroll-adjust]');
-        var tile = scrollDiv.find($('.is-child')).height();
-        var tileNum = Math.ceil(scrollDiv.height() / tile)
-        var tileAdjust = scrollDiv.height() - (tile * (tileNum - 4))
-        scrollDiv.css('height', tileAdjust);
+        var innerHeight = $("body").prop("clientHeight")
+        var headerHeight = $('#account-view .hero').height()
+        var adjustHeight = innerHeight - headerHeight
+        scrollDiv.css('height', adjustHeight);
         scrollDiv.css('overflow-y', 'auto');
-    }
+    };
 
     // Update Menu Nav
     var updateMenu = (function () {
@@ -30,6 +31,13 @@ var UserAccounts = (function () {
         if (current_p in pages) {
             pages[current_p]()
         }
+        adjustScroll();
+        $(window).on('resize', function (e) {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function () {
+                adjustScroll();
+            }, 250);
+        })
     }
 
     return {
@@ -240,7 +248,6 @@ var Payments = (function (parent) {
 var Orders = (function (parent) {
     // Orders Module
     UserAccounts.orders = function () {
-        UserAccounts.adjustScroll();
         var search_input = $('input[search-target]')
         var search = new SearchBar(search_input);
         search.bindEvents();
@@ -256,7 +263,6 @@ var Orders = (function (parent) {
 var Invoices = (function (parent) {
     // Orders Module
     UserAccounts.invoices = function () {
-        UserAccounts.adjustScroll();
         var search_input = $('input[search-target]')
         var search = new SearchBar(search_input);
         search.bindEvents();
