@@ -45,10 +45,6 @@ class Checkout(TemplateView, CustomerMixin, CartMixin):
 
     def get_context_data(self, **kwargs):
         context = super(Checkout, self).get_context_data(**kwargs)
-        context['user'] = self.user
-        context['cart'] = self.cart
-        context['customer'] = self.customer
-        context['sources'] = self.sources
         context['stripe_id'] = settings.PINAX_STRIPE_PUBLIC_KEY
         return context
 

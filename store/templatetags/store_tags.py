@@ -29,6 +29,7 @@ def get_card_image(source):
 
     return 'blank'
 
+
 @register.simple_tag(name="default_source")
 def get_default_source(source):
     default_id = source.customer.stripe_customer.default_source
@@ -36,3 +37,12 @@ def get_default_source(source):
     if source_id == default_id:
         return "checked=checked"
     return ''
+
+
+@register.simple_tag(name="format_phone")
+def format_phone_number(number):
+    try:
+        result = "%s%s %s%s%s-%s%s%s-%s%s%s%s" % tuple(str(number))
+    except TypeError:
+        result = number
+    return result

@@ -19,6 +19,29 @@
     transform: $property;
 }
 
+@mixin padding($vert, $horz) {
+    @if $vert {
+        padding-top: $vert;
+        padding-bottom: $vert;
+    }
+    @if $horz {
+        padding-left: $horz;
+        padding-right: $horz;
+    }
+}
+
+// Flex position bottom righht
+@mixin flex-bottom-right($padding:false) {
+    align-items: flex-end;
+    justify-content: flex-end;
+    @if $padding {
+        padding: $padding;
+    }
+    @else {
+        padding: 0px;
+    }
+}
+
 // Extends
 %smooth-opacity {
     opacity: 0.6;

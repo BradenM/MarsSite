@@ -6,144 +6,148 @@
 {% load crispy_forms_tags %} 
 {% load store_tags %}
 
-<section class="section is-paddingless">
-    <div class="hero is-small is-info is-bold">
-        <div class="hero-head">
-            {% include 'nav.html' %}
-        </div>
-    </div>
-</section>
+{% include 'nav.html' %}
 {% include 'notif.html'%}
 
-<section class="section">
-    <div class="columns is-multiline">
-
-        <div class="column">
-            <div class="card">
-                <header class="card-header has-background-dark">
-                    <p class="card-header-title has-text-light">
-                        Your Information
-                    </p>
-                </header>
-                <div class="card-content">
-                    <div class="block">
-                        <ul class="is-info-list">
-                            <li>
-                                <span>Name: </span>{{ user.first_name }} {{ user.last_name }}</li>
-                            <li>
-                                <span>Email: </span>{{ user.email }}</li>
-                            <li>
-                                <span>Phone: </span>{{ user.profile.phone }}</li>
-                        </ul>
+<div class="columns has-space-all">
+    <div class="column">
+        <div class="card">
+            <div class="card-header has-background-dark">
+                <h1 class="card-header-title has-text-light">Information</h1>
+            </div>
+            <div class="card-content">
+                {% with view.user as user %}
+                <div class="columns">
+                    <div class="column">
+                        <div class="columns is-centered is-list">
+                            <div class="column">
+                                <p>Name: </p>
+                                <p>Email: </p>
+                                <p>Phone: </p>
+                            </div>
+                            <div class="column">
+                                <p>{{ user.first_name }} {{ user.last_name }}</p>
+                                <p>{{ user.email }}</p>
+                                <p>{% format_phone user.profile.phone %}</p>
+                            </div>
+                        </div>
                     </div>
+                    <div class="column is-two-thirds"></div>
                 </div>
+                {% endwith %}
             </div>
         </div>
-
-        <div class="column">
-            <div class="card">
-                <header class="card-header has-background-dark">
-                    <p class="card-header-title has-text-light">
-                        Your Cart Summary
-                    </p>
-                </header>
-                <div class="card-content">
-                    <div class="content">
-                        <table class="table is-striped has-text-centered">
-                            <thead>
-                                <tr>
-                                    <th>Repairs</th>
-                                </tr>
-                            </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>Total: ${{ cart.total }}</th>
-                                </tr>
-                            </tfoot>
-                            <tbody>
-                                {% for item in cart.entries.all %}
-                                <tr>
-                                    <td>{{ item.product.device }}</td>
-                                    <td>{{ item.product.repair.name }}</td>
-                                    <td>${{ item.product.price }}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
-
-    <div class="columns">
-
-        <div class="column">
-            <div class="card">
-                <header class="card-header has-background-dark">
-                    <p class="card-header-title has-text-light">
-                        Payment Method
-                    </p>
-                </header>
-                <div class="card-content">
-                    <section class="accordions">
-                        <article class="accordion is-active">
-                            <div class="accordion-header toggle">
-                                <p>Paypal</p>
-                            </div>
-                            <div class="accordion-body">
-                                <div class="accordion-content">
-                                    {% comment %} {% include 'store/paypal_payments.html' %} {% endcomment %}
-                                </div>
-                            </div>
-                        </article>
-                        <article class="accordion">
-                            <div class="accordion-header toggle">
-                                <p>Credit/Debit Card</p>
-                            </div>
-                            <div class="accordion-body">
-                                <div class="accordion-content">
-                                    {% if sources %} 
-                                    {% include 'store/card.html' %}
-                                    <a id="reveal_form" class="button is-link">Add Card</a>
-                                    <div class="new_card animated fadeIn column">
-                                        {% include 'store/stripe_card.html' %}
-                                    </div>
-                                    {% else %}
-                                    <p class="subtitle">You have no active cards on your account, please add one to continue. </p>
-                                    <div class="is-divider"></div>
-                                    {% include 'store/stripe_card.html' %} 
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </article>
-                    </section>
-
-                </div>
+    <div class="column">
+        <div class="card">
+            <div class="card-header has-background-dark">
+                <h1 class="card-header-title has-text-light">Cart Summary</h1>
+            </div>
+            <div class="card-content">
+                {% with view.cart as cart %}
+                <table class="table is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>Device</th>
+                            <th>Order</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in cart.entries.all %}
+                        {% with entry.product as product %}
+                        <tr>
+                            <td>{{ product.device }}</td>
+                            <td>{{ product.repair.name }}</td>
+                            <td>${{ product.price }}</td>
+                        </tr>
+                        {% endwith %}
+                        {% endfor %}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <th>Subtotal: <span class="has-text-weight-normal">${{ cart.total }}</span></th>
+                        </tr>
+                    </tbody>
+                </table>
+                {% endwith %}
             </div>
         </div>
+    </div>
+</div>
 
-        <div class="column">
-            <div class="card">
-                <header class="card-header has-background-dark">
-                    <p class="card-header-title has-text-light">
-                        Checkout
-                    </p>
-                </header>
-                <div class="card-content">
-                    <div class="content">
-                        <form id="order-form" method="post" action="{% url 'billing:complete_order' %}">
-                            {% csrf_token %}
-                            <input type="submit" value="Pay">
-                        </form>
+<div class="columns is-centered has-space-all">
+    <div class="column">
+        <div class="card">
+            <div class="card-header has-background-dark">
+                <h1 class="card-header-title has-text-light">Payment Method</h1>
+            </div>
+            <div class="card-content">
+                <div class="is-divider is-header is-left is-medium" data-content="Your Saved Cards"></div>
+                <div class="columns is-multiline">
+                    {% include 'store/card.html' with sources=view.sources %}
+                </div>
+                <div class="columns">
+                    <div class="column is-half">
+                        <a>+ Add a new credit or debit card</a>
+                        {% comment %} {% include 'store/stripe_card.html' with input_len='half'%} {% endcomment %}
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
-</section>
-
+    <div class="column">
+        <div class="card">
+            <div class="card-header has-background-dark">
+                <h1 class="card-header-title has-text-light">Order Summary</h1>
+            </div>
+            <div class="card-content">
+                <div class="columns has-space-horizontal">
+                    <div class="column">
+                        <div class="is-divider is-header is-small" data-content="Payment Details"></div>
+                        <div class="columns is-list">
+                            <div class="column">
+                                <p>Method: </p>
+                                <p>Name on Card: </p>
+                                <p>Brand: </p>
+                                <p>Ending in: </p>
+                            </div>
+                            <div class="column">
+                                <p>Card</p>
+                                <p>Braden Mars</p>
+                                <p>Visa</p>
+                                <p>4242</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="is-divider is-header is-small" data-content="Summary"></div>
+                        <div class="columns is-gapless is-list">
+                            {% with view.cart as cart %}
+                            <div class="column has-divider">
+                                <p>Subtotal:</p>
+                                <p>Tax:</p>
+                                <div class="is-divider"></div>
+                                <p>Order Total:</p>
+                            </div>
+                            <div class="column has-divider">
+                                <p>${{ cart.total }}</p>
+                                <p>$0.00</p>
+                                <div class="is-divider"></div>
+                                <p>${{ cart.total }}</p>
+                            </div>
+                            {% endwith %}
+                        </div>
+                    </div>
+                </div>
+                <div class="columns has-space-vertical vtop">
+                    <div class="column is-offset-9">
+                        <a class="button is-link">Place Order</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

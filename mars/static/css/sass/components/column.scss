@@ -1,0 +1,38 @@
+/*
+    Extended Bulma Column Styling
+    Braden Mars
+
+*/
+
+.columns.is-list {
+    .column {
+        &:first-child {
+            p {
+                font-weight: $weight-semibold;
+            }
+            &.has-divider {
+                .is-divider {
+                    margin-left: auto !important;
+                    margin-right: 0px !important;
+                }
+                p:last-child {
+                    text-align: right;
+                    padding-right: 1rem;
+                }
+            }
+        }
+        &.has-divider {
+            .is-divider {
+                margin-top: 1.5rem;
+                margin-bottom: .5rem;
+                margin-right: auto;
+                margin-left: 0px;
+                width: 85%;
+            }
+            p:last-child {
+                color: $dark;
+                font-size: $size-medium;
+            }
+        }
+    }
+}

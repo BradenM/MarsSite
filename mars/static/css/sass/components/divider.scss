@@ -1,0 +1,47 @@
+/*
+    Bulma Divider Extensions
+    Braden Mars
+    
+*/
+
+// Divider Header 
+.is-divider.is-header {
+    &.is-left {
+        text-align: left;
+        &[data-content]::after {
+            padding-left: 0px;
+        }
+    }
+    &.is-small {
+        &[data-content]::after {
+            font-size: $size-normal;
+            color: $text-strong;
+            font-weight: $weight-light;
+            transform: translateY(-1.2rem);
+        }
+    }
+    &.is-medium {
+        &[data-content]::after {
+            font-size: $size-medium;
+            color: $text-strong;
+            font-weight: $weight-light;
+            transform: translateY(-1.5rem);
+        }
+    }
+    &.is-large {
+        &[data-content]::after {
+            padding-top: 0px;
+            font-size: $size-large;
+            color: $text;
+            font-weight: $weight-semibold;
+            transform: translateY(-1.3rem);
+        }
+    }
+}
+
+// Divider Vertical Styles
+.is-divider-vertical {
+    &.is-tall {
+        height: 100%;
+    }
+}
