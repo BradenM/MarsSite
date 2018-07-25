@@ -1,61 +1,76 @@
 {% extends 'base.html' %}
+{% load repair_tags %}
 {% block title %}Repair - {{device.name}}{% endblock %}
 
 {% block content %}
 
-<section class="hero is-info is-small is-bold">
-    <div class="hero-head">
-        {% include 'nav.html' %}
-    </div>
-    <div class="hero-body">
-        <div class="container has-text-centered">
-            <h1 class="title is-1">{{device.name}}</h1>
+<section class="section is-paddingless">
+    <div class="hero is-small is-info is-bold">
+        <div class="hero-head">
+            {% include 'nav.html' %}
+        </div>
+        <div class="hero-body">
+            <div class="has-text-centered">
+                <h1 class="title is-1">{{ device.name }}</h1>
+            </div>
         </div>
     </div>
 </section>
+{% include 'notif.html' %}
 
-
-<section class="section">
-    <div class="container">
-        <div class="content">
-        <article class="media">
-            <figure class="media-left">
-                <p class="image">
-                    <img width='256' height='256' src="/media/largeX.png">
-                </p>
+<section id="main" class="has-space-vertical">
+    <div class="columns is-centered is-vcentered">
+        <div class="column is-3"></div>
+        <div class="column is-2 is-flex is-horizontal-center">
+            <figure class="image">
+                <img src="/media/{{ device.image }}">
             </figure>
-            <div class="media-content">
-                <div class="content has-text-centered">
-                    <div class="card">
-                        <header class="card-header">
-                            <div class="hero card-header-title is-dark is-small">
-                                <h1 class="hero-body title">Repairs</h1>
-                            </div>
-                        </header>
-                        <div class="card-content">
-                            <div class="content">
-                                <div class="tile is-ancestor is-wrapping">
-                                    {% for r in device.get_repairs %}
-                                    <div class="tile is-4 is-parent">
-                                        <div class="tile is-child hvr-float-shadow box">
-                                            <span class="icon {{ r.bulma_icon_color }} is-large">
-                                                <i class="{{ r.icon }}"></i>
-                                            </span>
-                                            <div class="has-overlay">
-                                                <p class="subtitle is-6">{{ r.short_name }}</p>
-                                            </div>
-                                        </div>
+        </div>
+        <div class="column is-narrow">
+            <div class="is-divider-vertical is-tall"></div>
+        </div>
+        <div class="column is-4">
+            <div class="card">
+                <header class="card-header has-background-dark">
+                    <h3 class="card-header-title is-centered has-text-light">
+                        Repairs
+                    </h3>
+                </header>
+                <div class="card-content" action="{% url 'repair:get_repair' %}" method="GET">
+                    <div class="tile is-ancestor is-flex is-wrapping">
+                        {% for devrep in device.devrep.all %}
+                        <div class="tile is-4 is-parent">
+                            <div class="tile has-text-centered is-child">
+                                <div class="card tile-child hvr-glow js-repair-tile" data-repair="{{ devrep.pk }}">
+                                    {% with devrep.repair as repair %}
+                                    <div class="card-image">
+                                        <span class="icon {{ repair.bulma_icon_color }} is-large">
+                                            <i class="{{ repair.icon }}"></i>
+                                        </span>
                                     </div>
-                                    {% endfor %}
+                                    <div class="card-content ">
+                                        <p class="title is-6 has-text-weight-normal">{{ repair.short_name }}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        {% endwith %}
+                        {% endfor %}
                     </div>
                 </div>
             </div>
-        </article>
+        </div>
+        <div class="column is-2"></div>
     </div>
-</div>
 </section>
 
+<section id="repair_details" class="has-space-vertical">
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script src="/static/js/lib/scrolly.js"></script>
+<script src="/static/js/page/device_repair.js"></script>
 {% endblock %}

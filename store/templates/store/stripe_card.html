@@ -3,7 +3,7 @@
     <div class="field">
         <label class="label">Name on Card</label>
         <div class="control">
-            <input class="input" type="text" name="card_holder" placeholder="John Smith">
+            <input class="input {% if input_len %}has-maxwidth-{{ input_len }}{% endif %}" type="text" name="card_holder" placeholder="John Smith">
         </div>
     </div>
     <div class="field form-row">

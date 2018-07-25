@@ -1,0 +1,23 @@
+/*
+    Form Element Styles
+    Braden Mars
+    
+*/
+
+// Form Reveal Element
+.is-form-reveal {
+    a:first-child {
+        display: inline;
+    }
+    div#form {
+        display: none;
+    }
+    &.is-active {
+        a:first-child {
+            display: none;
+        }
+        div#form {
+            display: block;
+        }
+    }
+}

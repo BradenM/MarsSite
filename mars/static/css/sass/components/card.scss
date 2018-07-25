@@ -1,0 +1,57 @@
+/*
+    Bulma Card Extensions
+    Braden Mars
+    
+*/
+
+// Hover Card with a div dropdown, used on view devices
+.card.is-hover-card {
+    figure,
+    span {
+        padding-top: 1.5rem;
+    }
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0);
+    cursor: pointer;
+    height: 100%;
+}
+
+// TIle Child, used for cards that are direct children of tiles
+.card.tile-child {
+    display: block;
+    cursor: pointer;
+    border-radius: 5px;
+    .card-image {
+        padding-top: 1rem;
+    }
+    .card-content {
+        padding: 1rem;
+    }
+    &.is-active {
+        box-shadow: rgba(10, 10, 10, 0.1) 0px 2px 3px, $info 0px 0px 1px 1px;
+    }
+}
+
+// Dropdown Card, used to display payments
+.card.is-expandable {
+    .card-header-icon {
+        @include flex-bottom-right()
+    }
+    &.is-active {
+        .card-content {
+            @include transition(box-shadow, 1s);
+            box-shadow: inset 0 8px 6px -6px hsl(0, 0%, 48%);
+        }
+        .card-header-icon span {
+            @include transition(transform, 1s);
+            @include transform(rotate(180deg));
+        }
+    }
+}
+
+// Select Card, used to select payments
+.card.is-select-card {
+    .card-header-icon {
+        @include flex-bottom-right(0.20rem)
+    }
+}

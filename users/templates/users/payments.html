@@ -6,11 +6,11 @@
 
 {% block page %}
 
-<section data-user-page="payments" data-scroll-adjust="resize" class="section">
+<section data-user-page="payments" class="section">
     <h1 class="title has-text-weight-light">Your Cards</h1>
     <hr>
 
-    <div class="columns">
+    <div class="columns is-multiline">
             {% for source in view.sources %}
             <div class="column is-4 is-3-fullhd">
                 <div class="card is-expandable js-payment-card">
@@ -86,10 +86,9 @@
 
 </section>
 
-<section data-scroll-adjust="resize" class="section">
+<section class="section">
     <h1 class="title has-text-weight-light">Add Card</h1>
     <hr>
-
     <div class="columns">
         <div class="column is-one-third">
             {% include 'store/stripe_card.html' %}

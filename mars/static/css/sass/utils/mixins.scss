@@ -1,3 +1,9 @@
+/*
+    Extensions and Mixins for various purposes
+    Braden Mars
+    
+*/
+
 // Mixins
 @mixin transition($prop, $time) {
     -moz-transition: $prop $time ease-in-out;
@@ -11,6 +17,29 @@
     -webkit-transform: $property;
     -ms-transform: $property;
     transform: $property;
+}
+
+@mixin padding($vert, $horz) {
+    @if $vert {
+        padding-top: $vert;
+        padding-bottom: $vert;
+    }
+    @if $horz {
+        padding-left: $horz;
+        padding-right: $horz;
+    }
+}
+
+// Flex position bottom righht
+@mixin flex-bottom-right($padding:false) {
+    align-items: flex-end;
+    justify-content: flex-end;
+    @if $padding {
+        padding: $padding;
+    }
+    @else {
+        padding: 0px;
+    }
 }
 
 // Extends

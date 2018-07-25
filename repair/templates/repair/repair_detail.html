@@ -1,50 +1,28 @@
 {% load repair_tags %}
-
-<header class="quickview-header">
-    <h1 class="title is-6">{{ active_repair.repair.name }}</h1>
-    <span id="quickview-dismiss" class="delete" data-dismiss="quickview"></span>
-</header>
-
-<div class="quickview-body">
-    <div class="quickview-block">
-        <section class="section">
-            <div class="content">
-                <div class="content has-text-centered">
-                    <span class="icon {{ active_repair.repair.bulma_icon_color }} is-large">
-                        <i style="font-size:5em;" class="{{ active_repair.repair.icon }}"></i>
-                    </span>
+<div class="columns is-centered is-vertical">
+        <div class="column is-two-thirds">
+            <div class="is-divider is-header is-large" data-content="{{ devrep.repair.name }}"></div>
+            <div class="columns is-multiline has-space-vertical">
+                <div class="column is-half">
+                    <p class="title has-text-weight-light is-4">Description</p>
+                    <p class="">{% lorem 2 %}}</p>
                 </div>
-                </br>
-                
-                <div class="content">
-                <h1 class="subtitle is-5">Description: </h1>
-                <p>{{ active_repair.repair.desc }}</p>
+                <div class="column is-half">
+                    <p class="title has-text-weight-light is-4">Information</p>
+                    <p class="">{% lorem 2 %}</p>
                 </div>
-                <div class="is-divider" data-content=""></div>
-                <div class="content">
-                    <h1 class="subtitle is-5">Information: </h1>
-                    <p>{{ active_repair.repair.desc }}</p>
-                </div>
-        </section>
-    </div>
-</div>
-
-<footer class="quickview-footer">
-    <div class="container">
-        <nav class="level">
-            <div class="level-left">
-                <div class="level-item">
-                    <h4 class="subtitle is-4">${{ active_repair.price }}</h4>
+                <div class="column"></div>
+                <div class="column has-text-centered is-3 is-offset-9 has-background-white-ter">
+                    <p class="title has-text-weight-semibold is-4">Purchase</p>
+                    <nav class="level">
+                        <div class="level-item has-text-centered">
+                            <h3 class="subtitle is-4">${{ devrep.price }}</h3>
+                        </div>
+                        <div class="level-item">
+                            <a href="{% url 'store:add_cart' devrep.pk %}?next={% url 'repair:device' devrep.device.slug %}" class="button is-info is-rounded hvr-glow">Add to Cart</a>
+                        </div>
+                    </nav>
                 </div>
             </div>
-            <div class="level-right">
-                    <div class="level-item">
-                        <a href="/store/cart/add/{{ active_repair.pk }}?next={{ request.path|url_base|urlencode}}" class="button is-info is-rounded hvr-glow">Order Now</a>
-                    </div>                
-            </div>
-        </nav>
+        </div>
     </div>
-</footer>
-
-
-

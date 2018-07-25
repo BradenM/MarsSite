@@ -1,0 +1,49 @@
+/*
+    Helper Classes
+    Braden Mars
+    
+*/
+
+.is-fullwidth {
+    width: 100%;
+    &.force-help {
+        width: 100% !important;
+    }
+}
+
+// Image Helpers
+.has-max {
+    &width {
+        &-384 {
+            max-width: 384px;
+        }
+    }
+}
+
+// Positioning
+.is-top {
+    position: relative;
+    z-index: 999;
+}
+
+.has-space- {
+    &all {
+        @include padding(1.5rem, 1.5rem)
+    }
+    &vertical {
+        @include padding(1.5rem, false);
+        &.vtop {
+            padding-bottom: 0rem;
+        }
+    }
+    &horizontal {
+        @include padding(false, 1.5rem);
+    }
+}
+
+// Size
+.has-maxwidth- {
+    &half {
+        max-width: 50%;
+    }
+}

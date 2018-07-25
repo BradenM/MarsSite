@@ -1,31 +1,36 @@
-{% for source in sources %} 
 {% load store_tags %}
 
-<div class="tile is-ancestor">
-    <div class="tile is-4 is-wrapping is-parent has-text-center">
-        <div class="tile is-child">
-            <div class="level box">
-                <div class="level-item">
-                    <figure class="image" style="width: 96px;">
-                        <img src="{% get_card_image source %}" border='0' />
+{% for source in sources %}
+<div class="column is-4">
+    <div class="card is-select-card js-payment-select">
+        <header class="card-header">
+            <div class="media">
+                <div class="media-left">
+                    <figure class="image has-max-120">
+                        <img src="{% get_card_image source %}">
                     </figure>
                 </div>
-                <div class="level-item" style="padding-left:20px;padding-right:10px;">
-                    <p class="subtitle">{{ source.last4 }}</p>
-                </div>
-                <div class="level-item has-text-centered">
-                    <div class="field">
-                        <input form="order-form" value="{{ source.pk }}" class="is-checkradio is-circle is-success" id="card_{{ source.pk }}" type="radio" name="selected_card" autocomplete="off" {% default_source source %}>
-                        <label for="card_{{ source.pk }}"></label>
-                        <a href="{% url 'billing:remove_card' source.pk %}" class="tooltip" data-tooltip="Remove Card">
-                            <span class="delete">
-                        </a>
+                <div class="media-content">
+                    <p class="title is-5">{{ source.last4 }}
+                            {% if source.stripe_id == source.customer.default_source %}
+                            <span class="tag is-small is-primary is-rounded has-text-weight-normal">Default</span>
+                            {% endif %}
+                    </p>
+                    <p class="subtitle">{{ source.name }}</p>
+                    <div class="card-header-icon is-overlay js-payment-select" aria-label="more options">
+                        <div class="field">
+                            <input data-source="payment_method{{ forloop.counter }}" 
+                            data-source-brand="{{ source.brand }}" 
+                            data-source-name="{{ source.name }}" 
+                            data-source-last4="{{ source.last4 }}"
+                            type="hidden">
+                            <input form="order_form" class="is-checkradio is-rtl is-circle is-small" id="payment_method{{ forloop.counter }}" type="radio" value="{{ source.pk }}" name="payment_method_card" autocomplete="off">
+                            <label for="payment_method{{ forloop.counter }}"></label>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </header>
     </div>
 </div>
-
-
 {% endfor %}

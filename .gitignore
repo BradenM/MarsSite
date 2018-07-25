@@ -17,6 +17,8 @@ db\.sqlite3
 # Bulma CSS Files
 */static/css/bulma/
 */static/css/main.css
+# VsCode
+\.vscode
 
 
 # Python Boilerplate

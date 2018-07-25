@@ -9,9 +9,10 @@ urlpatterns = [
 
     # Device Info
     path('select/', views.select_device, name="select_device"),
-    path('devices/<slug:slug>/', views.DeviceView.as_view(), name="device"),
-    path('devices/<slug:slug>/repair/<int:pk>',
-         views.get_repair, name="get_repair"),
+    path('devices/repair/<slug:slug>/',
+         views.DeviceView.as_view(), name="device"),
+    path('devices/get_repair/',
+         views.GetRepair.as_view(), name="get_repair"),
     # View Devices
     path('view/',
          views.ViewDevices.as_view(), name="view_devices"),

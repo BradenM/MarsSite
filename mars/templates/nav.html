@@ -49,15 +49,22 @@
                                     <a href="{% url 'users:my_orders' %}" class="dropdown-item">
                                             <span>My Orders</span>
                                     </a>
-                                    <a href="{% url 'store:cart' %}" class="dropdown-item">
-                                        <span>My Cart</span>
-                                    </a>
                                     <a href="{% url 'account_logout' %}" class="dropdown-item">
                                         <strong>Logout</strong>
                                     </a>
                                     </div>
                                 </div>
                                 </div>
+                    </div>
+                    <div class="navbar-item">
+                        <a data-pushbar-target="cart_pushbar" class="button is-primary is-inverted is-outlined">
+                            <span class="icon is-small">
+                                <i class="fas fa-shopping-cart"></i>
+                            </span>
+                            <span>
+                                My Cart
+                            </span>
+                        </a>
                     </div>
                     {% endif %}
                 </div>

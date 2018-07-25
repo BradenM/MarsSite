@@ -1,64 +1,51 @@
-{% extends 'base.html' %}
-
-{% block title %}Your Cart{% endblock %}
-
-{% block content %}
-
-<section class="section is-paddingless">
-    <div class="hero is-small is-info is-bold">
-        <div class="hero-head">
-            {% include 'nav.html' %}
+<div class="hero is-section has-background-white-ter">
+                <div class="hero-head has-text-centered">
+                        <h1 class="title has-text-weight-light">Your Cart <span class="subtitle">({{ cart.entries.all|length }} Items)</span></h1>
+                </div>
+                {% if cart.entries.all|length >= 1 %}
+                <div class="hero-body is-small">
+                <table class="table is-fullwidth has-background-white-ter">
+                        <thead>
+                                <tr>
+                                <th>Type</th>
+                                <th>Device</th>
+                                <th>Order</th>
+                                <th>Price</th>
+                                <th class="has-text-centered">Remove</th>
+                                </tr>
+                        </thead>
+                        <tfoot>
+                                <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th>Total: ${{ cart.total }}</th>
+                                </tr>
+                        </tfoot>
+                        <tbody>
+                                {% for item in cart.entries.all %}
+                                <tr>
+                                <td>{{ item.type }}</td>
+                                <td>{{ item.product.device.name }}</td>
+                                <td>{{ item.product.repair.name }}</td>
+                                <td>${{ item.product.price }}</td>
+                                <td class="has-text-centered"><a href="{% url 'store:remove_cart' item.pk %}"><span class="delete is-small"></span></td>
+                                </tr>
+                                {% endfor %}
+                        </tbody>
+                </table>
+                </div>
         </div>
-    </div>
-</section>
-
-{% include 'notif.html' %}
-
-<section class="section">
-    <div class="container">
-        <h1 class="title">Your Cart <span class="subtitle">({{ cart.entries.all|length }})</span></h1>
-    {% if cart.entries.all|length >= 1 %}
-        <table class="table is-fullwidth is-striped">
-            <thead>
-                <tr>
-                    <th>Type</th>
-                    <th>Device</th>
-                    <th>Order</th>
-                    <th>Price</th>
-                    <th class="has-text-centered">Remove</th>
-                </tr>
-            </thead>
-            <tfoot>
-                <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th>Total: ${{ cart.total }}</th>
-                </tr>
-            </tfoot>
-            <tbody>
-                {% for item in cart.entries.all %}
-                <tr>
-                    <td>{{ item.type }}</td>
-                    <td>{{ item.product.device.name }}</td>
-                    <td>{{ item.product.repair.name }}</td>
-                    <td>${{ item.product.price }}</td>
-                    <td class="has-text-centered"><a href="{% url 'store:remove_cart' item.pk %}"><span class="delete is-small"></span></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <p class="buttons is-pulled-right">
-            <a href="{% url 'store:clear_cart' %}" class="button is-info is-rounded">Clear Cart</a>
-            <a href="{% url 'store:checkout' %}" class="button is-success is-rounded">Checkout</a>
-        </p>
+        <div class="is-divider"></div>
+        <div class="column is-12">
+                <p class="buttons is-pulled-right">
+                        <a href="{% url 'store:clear_cart' %}" class="button is-info is-rounded">Clear Cart</a>
+                        <a href="{% url 'store:checkout' %}" class="button is-success is-rounded">Checkout</a>
+                </p>
+        </div>
         {% else %}
         <div class="is-divider"></div>
-        <h6 class="subtitle has-text-centered"> You current have no items in your cart</h6>
+        <h6 class="subtitle has-text-centered"> You currently have no items in your cart</h6>
         {% endif %}
-    </div>
-</section>
-
-
-{% endblock %}
+</div>
