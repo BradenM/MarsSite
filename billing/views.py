@@ -68,7 +68,7 @@ class ChargeCustomer(View, CustomerMixin, CartMixin):
     def post(self, request):
         try:
             # Get Payment Method
-            payment_selection = request.POST.get("selected_card")
+            payment_selection = request.POST.get("payment_method_card")
             source_obj = Card.objects.get(pk=payment_selection)
             source = source_obj.stripe_id
             # Get Cart Total

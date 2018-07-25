@@ -19,7 +19,12 @@
                     <p class="subtitle">{{ source.name }}</p>
                     <div class="card-header-icon is-overlay js-payment-select" aria-label="more options">
                         <div class="field">
-                            <input class="is-checkradio is-rtl is-small" id="payment_method{{ forloop.counter }}" type="radio" name="payment_method_card" autocomplete="off">
+                            <input data-source="payment_method{{ forloop.counter }}" 
+                            data-source-brand="{{ source.brand }}" 
+                            data-source-name="{{ source.name }}" 
+                            data-source-last4="{{ source.last4 }}"
+                            type="hidden">
+                            <input form="order_form" class="is-checkradio is-rtl is-circle is-small" id="payment_method{{ forloop.counter }}" type="radio" value="{{ source.pk }}" name="payment_method_card" autocomplete="off">
                             <label for="payment_method{{ forloop.counter }}"></label>
                         </div>
                     </div>
