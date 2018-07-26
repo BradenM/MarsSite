@@ -13,11 +13,17 @@ from .validators import validate_date
 from .render import InvoiceFile
 
 
-class SaveCard(View, CustomerMixin):
+class SaveCard(CustomerMixin, CartMixin, View):
     def post(self, request, *args, **kwargs):
         next = request.GET.get('next')
+        token = request.POST.get('stripeToken')
+        holder = request.POST.get('card_holder')
+        save = request.POST.get('save_card', False)
         try:
-            self.create_card(request)
+            card = self.create_card(token, holder)
+            if not save:
+                self.set_temp_source(card)
+                return render(request, 'store/card.html', context={'source': card})
             return redirect(next)
         except stripe.CardError as e:
             print(e)

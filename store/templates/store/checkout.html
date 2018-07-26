@@ -78,14 +78,16 @@
 
 <div class="columns is-centered has-space-all">
     <div class="column">
-        <div class="card">
+        <div class="card is-multipage">
             <div class="card-header has-background-dark">
                 <h1 class="card-header-title has-text-light">Payment Method</h1>
             </div>
-            <div class="card-content">
+            <div class="card-content is-active">
                 <div class="is-divider is-header is-left is-medium" data-content="Your Saved Cards"></div>
                 <div class="columns is-multiline">
-                    {% include 'store/card.html' with sources=view.sources %}
+                    {% for source in view.sources %}
+                    {% include 'store/card.html' %}
+                    {% endfor %}
                 </div>
                 <div class="columns">
                     <div class="column is-half">
@@ -97,6 +99,12 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="is-divider is-header is-left is-medium" data-content="New Card (Unsaved)"></div>
+                <div class="columns is-multiline">
+                    <div class="js-page-inject"></div>
                 </div>
             </div>
         </div>

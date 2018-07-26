@@ -9,16 +9,16 @@ from pinax.stripe import mixins
 from pinax.stripe.actions import charges, customers, sources
 from pinax.stripe.models import Card
 from store.mixins import CartMixin
+from store.models import Cart
 from tracker.models import Tracker, TrackerUpdate
 
 
 class CustomerMixin(mixins.CustomerMixin):
 
-    def create_card(self, request):
-        token = request.POST.get('stripeToken')
-        holder = request.POST.get('card_holder')
+    def create_card(self, token, holder):
         card = sources.create_card(self.customer, token=token)
         sources.update_card(self.customer, card.stripe_id, name=holder)
+        return card
 
     def delete_card(self, stripe_id):
         sources.delete_card(self.customer, stripe_id)
@@ -84,7 +84,14 @@ class CustomerMixin(mixins.CustomerMixin):
 
     @property
     def sources(self):
-        return Card.objects.filter(customer=self.customer)
+        user_cart = Cart.objects.get(user=self.request.user)
+        temp_source = user_cart.temp_source
+        sources_all = Card.objects.filter(customer=self.customer)
+        if temp_source:
+            sources = [
+                item for item in sources_all if item.pk is not temp_source.pk]
+            return sources
+        return sources_all
 
     @property
     def invoices(self):

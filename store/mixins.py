@@ -23,8 +23,14 @@ class CartMixin:
         self.cart.entries.all().delete()
         user_cart = Cart.objects.get(user=self.user)
         user_cart.total = 0.00
+        user_cart.temp_source = None
         user_cart.save()
         self.notify_cart_update(None, None, msg='You Cart has been cleared.')
+
+    def set_temp_source(self, source):
+        user_cart = Cart.objects.get(user=self.user)
+        user_cart.temp_source = source
+        user_cart.save()
 
     def redirect(self):
         redirect = self.request.GET.get('next')

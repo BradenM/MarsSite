@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from repair.models import DeviceRepair
+from pinax.stripe.models import Card
 
 REPAIR = "Repair"
 COMPUTER = "Computer"
@@ -14,6 +15,8 @@ class Cart(models.Model):
     user = models.ForeignKey(
         User, null=True, blank=True, on_delete=models.CASCADE)
     total = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
+    temp_source = models.ForeignKey(
+        Card, null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.user}'s cart - Total: {self.total}"
