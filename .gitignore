@@ -1,6 +1,5 @@
 # My Ignores
 HTML/
-*/migrations
 *.sqlite3
 # Invoice Generation Ignores
 billing/static/billing/*
