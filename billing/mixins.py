@@ -17,10 +17,8 @@ class CustomerMixin(mixins.CustomerMixin):
     def get_card(self, stripe_id):
         return PaymentCard.objects.get(stripe_id=stripe_id)
 
-    def create_card(self, request):
-        token = request.POST.get('stripeToken')
-        holder = request.POST.get('card_holder')
-        card = PaymentCard.objects.create(token, user=request.user)
+    def create_card(self, token, holder, temp=False):
+        card = PaymentCard.objects.create(token, user=self.request.user, temporary=temp)
         card.update_card(name=holder)
 
     def delete_card(self, stripe_id):

@@ -16,8 +16,15 @@ from .render import InvoiceFile
 class SaveCard(View, CustomerMixin):
     def post(self, request, *args, **kwargs):
         next = request.GET.get('next')
+        token = request.POST.get('stripeToken')
+        holder = request.POST.get('card_holder')
+        save = request.POST.get('save_card', False)
+        print(f'SAVE: {save}')
         try:
-            self.create_card(request)
+            if save:    
+                self.create_card(token, holder)
+            else:
+                self.create_card(token, holder, temp=True)
             return redirect(next)
         except stripe.CardError as e:
             print(e)
