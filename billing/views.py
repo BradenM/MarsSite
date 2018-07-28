@@ -21,10 +21,11 @@ class SaveCard(View, CustomerMixin):
         save = request.POST.get('save_card', False)
         print(f'SAVE: {save}')
         try:
-            if save:    
+            if save:
                 self.create_card(token, holder)
             else:
-                self.create_card(token, holder, temp=True)
+                card = self.create_card(token, holder, temp=True)
+                return render(request, 'store/card.html', context={'sources': [card]})
             return redirect(next)
         except stripe.CardError as e:
             print(e)
@@ -38,7 +39,7 @@ class RemoveCard(View, CustomerMixin):
             source = PaymentCard.objects.get(pk=pk)
             self.delete_card(source.stripe_id)
             return redirect(next)
-        except stripe.CardError as e:
+        except stripe.error.CardError as e:
             print(e)
             return redirect(next)
 

@@ -5,6 +5,9 @@ from datetime import datetime
 from store.models import REPAIR, COMPUTER
 from pinax.stripe.models import Charge, Card
 from pinax.stripe.actions import sources, customers
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
+import stripe
 
 ORDER_TYPE = {
     REPAIR: 'REP',
@@ -89,7 +92,7 @@ class Order(models.Model):
         return f"{self.user.email}'s order of {self.product} -- Order #: {self.order_no}"
 
 
-# Payment Model to house all methods 
+# Payment Model to house all methods
 PAYMENT_TYPES = (
     ('card', 'Card'),
     ('paypal', 'Paypal'),
@@ -152,7 +155,13 @@ class PaymentCard(UserPayment):
     def delete_card(self):
         self.active = False
         self.save()
-        return sources.delete_card(self.customer, self.stripe_id)
+        try:
+            sources.delete_card(self.customer, self.stripe_id)
+        except stripe.error.InvalidRequestError as e:
+            print("Stripe Error")
+            print(e)
+            pass
+        return self
 
     def set_default(self):
         cur_default = PaymentCard.objects.filter(default=True)

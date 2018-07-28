@@ -17,7 +17,7 @@ $.widget('handlestripe.stripe_card', {
     _create: function () {
         var obj = this
         this.stripe = Stripe(this.options.stripe_key)
-        this.container = this.element.parents('.card')
+        this.container = this.element.parents('.card-content')
         console.log(this.container)
         this.card = this.stripe.elements().create('card', {
             style: obj.options.style
@@ -73,12 +73,24 @@ $.widget('handlestripe.stripe_card', {
     },
     _handle_tempcard: function () {
         var obj = this
-        this.pages = this.container.find('.card-content')
-        this.temp_page = this.pages.not('.is-active').find('.js-page-inject')
-        this.pages.filter('.is-active').effect('fade', 1000, function () {
-            obj.temp_page.html(obj.data)
-            obj.pages.toggleClass('is-active')
-        });
+        this.container_base = this.container.html()
+        this.container.find('.is-header').attr('data-content', 'Unsaved Card')
+        this.container_card = this.container.find('.columns.is-multiline')
+        this.container.find($('.columns')).hide('fade', 600, function () {
+            obj.container_card.html(obj.data)
+        })
+        obj.$cancel_temp = $('<a>Cancel</a>')
+        obj.container_card.after(obj.$cancel_temp)
+        this.container_card.show('fade', 600, function () {
+            var source = $(this).find('input[name=payment_method_card]').source_select();
+            source.source_select('update');
+            obj.$cancel_temp.on('click', function (e) {
+                obj.container.effect('fade', 600, function () {
+                    obj.container.html(obj.container_base)
+                })
+            })
+        })
+
     }
 })
 

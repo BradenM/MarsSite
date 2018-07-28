@@ -18,8 +18,10 @@ class CustomerMixin(mixins.CustomerMixin):
         return PaymentCard.objects.get(stripe_id=stripe_id)
 
     def create_card(self, token, holder, temp=False):
-        card = PaymentCard.objects.create(token, user=self.request.user, temporary=temp)
+        card = PaymentCard.objects.create(
+            token, user=self.request.user, temporary=temp)
         card.update_card(name=holder)
+        return card
 
     def delete_card(self, stripe_id):
         card = self.get_card(stripe_id)
@@ -43,12 +45,13 @@ class CustomerMixin(mixins.CustomerMixin):
         return charge
 
     def create_order(self, cart, charge, tracker=True):
+        card = self.get_card(charge.card.stripe_id)
         # Create Invoice
         invoice = Invoice.objects.create(
             user=self.user,
             total=self.cart.total,
             charge=charge,
-            payment=self.get_card(charge.card.stripe_id)
+            payment=card
         )
         # Create Orders
         for item in cart.entries.all():
@@ -67,6 +70,9 @@ class CustomerMixin(mixins.CustomerMixin):
                 TrackerUpdate.objects.create(
                     tracker=new_track
                 )
+        # Delete Card if one time payment
+        if card.temporary:
+            card.delete_card()
         # Generate and send invoice
         self.send_receipt(invoice)
 

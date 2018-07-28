@@ -11,10 +11,10 @@ $.widget('payment.source_select', {
             last4: this.source_data.attr('data-source-last4')
         }
         this.element.on('click', function () {
-            obj._update();
+            obj.update();
         })
     },
-    _update: function () {
+    update: function () {
         var children = this.target.children($('p[data-source-target]'))
         $.map(this.data, function (value, type) {
             var target = children.filter("[data-source-target=" + type + "]")
