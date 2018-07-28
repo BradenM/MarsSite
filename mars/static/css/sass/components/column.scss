@@ -6,6 +6,9 @@
 
 .columns.is-list {
     .column {
+        p {
+            white-space: nowrap;
+        }
         &:first-child {
             p {
                 font-weight: $weight-semibold;
