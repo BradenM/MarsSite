@@ -51,7 +51,7 @@
                     <div class="column is-one-third">
                         <p class="title has-text-weight-light">Payment Details</p>
                         <ul class="has-text-justified">
-                            {% with invoice.charge.card as card %}
+                            {% with invoice.payment as card %}
                             <li><span class="has-text-weight-semibold">Name: </span>{{ card.name }}</li>
                             <li><span class="has-text-weight-semibold">Brand: </span>{{ card.brand }}</li>
                             <li><span class="has-text-weight-semibold">Ending In: </span>{{ card.last4 }}</li>
