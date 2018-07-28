@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 {% load store_tags %}
 
-{% block title %}Payments Methods {% endblock %}
+{% block title %}Payment Methods {% endblock %}
 
 {% block page %}
 
@@ -91,8 +91,13 @@
     <hr>
     <div class="columns">
         <div class="column is-one-third">
-            {% include 'store/stripe_card.html' %}
+            {% include 'store/stripe_card.html' with auto_save='yes' %}
         </div>
     </div>
 </section>
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script src="/static/js/mod/stripe.js"></script>
 {% endblock %}

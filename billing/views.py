@@ -1,6 +1,6 @@
 import stripe
 from .mixins import CustomerMixin
-from .models import Invoice, Order
+from .models import Invoice, Order, PaymentCard
 from django.conf import settings
 from django.shortcuts import HttpResponse, redirect, render, Http404
 from django.http import JsonResponse
@@ -16,8 +16,15 @@ from .render import InvoiceFile
 class SaveCard(View, CustomerMixin):
     def post(self, request, *args, **kwargs):
         next = request.GET.get('next')
+        token = request.POST.get('stripeToken')
+        holder = request.POST.get('card_holder')
+        save = request.POST.get('save_card', False)
+        print(f'SAVE: {save}')
         try:
-            self.create_card(request)
+            if save:    
+                self.create_card(token, holder)
+            else:
+                self.create_card(token, holder, temp=True)
             return redirect(next)
         except stripe.CardError as e:
             print(e)
@@ -28,7 +35,7 @@ class RemoveCard(View, CustomerMixin):
     def get(self, request, pk):
         next = request.GET.get('next')
         try:
-            source = Card.objects.get(pk=pk)
+            source = PaymentCard.objects.get(pk=pk)
             self.delete_card(source.stripe_id)
             return redirect(next)
         except stripe.CardError as e:
@@ -40,7 +47,7 @@ class SetDefaultCard(CustomerMixin, View):
     def get(self, request, pk):
         next = request.GET.get('next')
         try:
-            source = Card.objects.get(pk=pk)
+            source = PaymentCard.objects.get(pk=pk)
             self.set_default_card(source.stripe_id)
             return redirect(next)
         except stripe.CardError as e:
@@ -69,7 +76,7 @@ class ChargeCustomer(View, CustomerMixin, CartMixin):
         try:
             # Get Payment Method
             payment_selection = request.POST.get("payment_method_card")
-            source_obj = Card.objects.get(pk=payment_selection)
+            source_obj = PaymentCard.objects.get(pk=payment_selection)
             source = source_obj.stripe_id
             # Get Cart Total
             charge_amnt = self.cart.total

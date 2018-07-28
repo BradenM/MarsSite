@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 from repair.models import DeviceRepair
 from datetime import datetime
 from store.models import REPAIR, COMPUTER
-from pinax.stripe.models import Charge
-from pinax.stripe.models import Card
+from pinax.stripe.models import Charge, Card
+from pinax.stripe.actions import sources, customers
 
 ORDER_TYPE = {
     REPAIR: 'REP',
@@ -18,7 +18,9 @@ class Invoice(models.Model):
         max_length=512, blank=True, null=True)
     date = models.DateTimeField(default=datetime.now, blank=True)
     charge = models.ForeignKey(
-        Charge, on_delete=models.PROTECT, related_name='server_invoice', null=True)
+        Charge, on_delete=models.SET_NULL, related_name='server_invoice', blank=True, null=True)
+    payment = models.ForeignKey(
+        'UserPayment', on_delete=models.CASCADE, related_name='charges', null=True)
     total = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
 
     def get_invoice_no(self):
@@ -85,3 +87,85 @@ class Order(models.Model):
 
     def __str__(self):
         return f"{self.user.email}'s order of {self.product} -- Order #: {self.order_no}"
+
+
+# Payment Model to house all methods 
+PAYMENT_TYPES = (
+    ('card', 'Card'),
+    ('paypal', 'Paypal'),
+    ('other', 'Other'),
+)
+
+
+class UserPayment(models.Model):
+    type = models.CharField(max_length=32, choices=PAYMENT_TYPES)
+    user = models.ForeignKey(
+        User, related_name='payment_methods', on_delete=models.CASCADE)
+    temporary = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
+    default = models.BooleanField(default=False)
+    name = models.CharField(max_length=64, blank=True, null=True)
+    last4 = models.CharField(max_length=64, blank=True, null=True)
+    brand = models.CharField(max_length=64, blank=True, null=True)
+    exp_month = models.CharField(max_length=64, blank=True, null=True)
+    exp_year = models.CharField(max_length=64, blank=True, null=True)
+    stripe_id = models.CharField(max_length=256, blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.user}: {self.type} - Active: {self.active} - Temp: {self.temporary}"
+
+
+class PaymentCardManager(models.Manager):
+    def create(self, stripe_token, *args, **kwargs):
+        # Create Stripe Card
+        customer = customers.get_customer_for_user(kwargs['user'])
+        card = sources.create_card(customer, token=stripe_token)
+        kwargs['name'] = card.name
+        kwargs['last4'] = card.last4
+        kwargs['brand'] = card.brand
+        kwargs['exp_month'] = card.exp_month
+        kwargs['exp_year'] = card.exp_year
+        kwargs['stripe_id'] = card.stripe_id
+        kwargs['type'] = 'card'
+        return super(PaymentCardManager, self).create(*args, **kwargs)
+
+    def get_queryset(self):
+        return super(PaymentCardManager, self).get_queryset().filter(type='card')
+
+
+class PaymentCard(UserPayment):
+    objects = PaymentCardManager()
+
+    def update_card(self, **kwargs):
+        name = kwargs.get('name')
+        exp_month = kwargs.get('exp_month')
+        exp_year = kwargs.get('exp_year')
+        if name is not None:
+            self.name = name
+        if exp_month is not None:
+            self.exp_month = exp_month
+        if exp_year is not None:
+            self.exp_year = exp_year
+        self.save()
+        return sources.update_card(self.customer, self.stripe_id, **kwargs)
+
+    def delete_card(self):
+        self.active = False
+        self.save()
+        return sources.delete_card(self.customer, self.stripe_id)
+
+    def set_default(self):
+        cur_default = PaymentCard.objects.filter(default=True)
+        if cur_default:
+            cur_default.default = False
+            cur_default.save()
+        self.default = True
+        self.save()
+        return customers.set_default_source(self.customer, self.stripe_id)
+
+    @property
+    def customer(self):
+        return customers.get_customer_for_user(self.user)
+
+    class Meta:
+        proxy = True

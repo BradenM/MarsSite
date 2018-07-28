@@ -50,7 +50,7 @@
                 </div>
                 <div class="card-content">
                     <ul class="has-text-justified">
-                        {% with order.invoice.charge.card as card %}
+                        {% with order.invoice.payment as card %}
                         <li><span class="has-text-weight-semibold">Method: </span>{{ card.brand }} ending in {{ card.last4 }}</li>
                         {% endwith %}
                         {% if order.invoice.charge.paid %}

@@ -1,7 +1,7 @@
 import stripe
 from .models import Invoice, ORDER_TYPE, Order
 from .render import InvoiceFile
-from billing.models import Invoice
+from billing.models import Invoice, PaymentCard
 from django.conf import settings
 from django.shortcuts import HttpResponse, redirect, render
 from django.views.generic import View
@@ -14,27 +14,30 @@ from tracker.models import Tracker, TrackerUpdate
 
 class CustomerMixin(mixins.CustomerMixin):
 
-    def create_card(self, request):
-        token = request.POST.get('stripeToken')
-        holder = request.POST.get('card_holder')
-        card = sources.create_card(self.customer, token=token)
-        sources.update_card(self.customer, card.stripe_id, name=holder)
+    def get_card(self, stripe_id):
+        return PaymentCard.objects.get(stripe_id=stripe_id)
+
+    def create_card(self, token, holder, temp=False):
+        card = PaymentCard.objects.create(token, user=self.request.user, temporary=temp)
+        card.update_card(name=holder)
 
     def delete_card(self, stripe_id):
-        sources.delete_card(self.customer, stripe_id)
+        card = self.get_card(stripe_id)
+        card.delete_card()
 
     def set_default_card(self, stripe_id):
-        customers.set_default_source(self.customer, stripe_id)
+        card = self.get_card(stripe_id)
+        card.set_default()
 
     def edit_card(self, stripe_id, date=None, name=None):
-        sources.update_card(self.customer, stripe_id,
-                            exp_month=date.month, exp_year=date.year, name=name)
+        card = self.get_card(stripe_id)
+        card.update_card(exp_month=date.month, exp_year=date.year, name=name)
 
-    def charge_customer(self, amount, source):
+    def charge_customer(self, amount, stripe_id):
         charge = charges.create(
             amount=amount,
             customer=self.customer,
-            source=source,
+            source=stripe_id,
             send_receipt=False
         )
         return charge
@@ -44,7 +47,8 @@ class CustomerMixin(mixins.CustomerMixin):
         invoice = Invoice.objects.create(
             user=self.user,
             total=self.cart.total,
-            charge=charge
+            charge=charge,
+            payment=self.get_card(charge.card.stripe_id)
         )
         # Create Orders
         for item in cart.entries.all():
@@ -84,7 +88,7 @@ class CustomerMixin(mixins.CustomerMixin):
 
     @property
     def sources(self):
-        return Card.objects.filter(customer=self.customer)
+        return PaymentCard.objects.filter(user=self.request.user, active=True, temporary=False)
 
     @property
     def invoices(self):
